@@ -1,18 +1,30 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { fonts } from './utils/fonts'
+import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { fonts } from './utils/fonts';
+import { color } from './utils/colors';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { LoginSignup } from './screens';
 
 const App = () => {
-  return (
-    <View>
-      <Text style={{
-        fontFamily: fonts.bold,
-        fontSize: 25
-      }}>App</Text>
-    </View>
-  )
-}
+  const Stack = createStackNavigator();
 
-export default App
+  const AuthStack = () => (
+    <Stack.Navigator initialRouteName="LoginSignup">
+      <Stack.Screen name="LoginSignup" component={LoginSignup} />
+    </Stack.Navigator>
+  );
 
-const styles = StyleSheet.create({})
+  const AppNav = () => (
+    <NavigationContainer>
+      <AuthStack />
+    </NavigationContainer>
+  );
+
+  return <AppNav />;
+};
+
+export default App;
+
+const styles = StyleSheet.create({});
