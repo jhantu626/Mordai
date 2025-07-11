@@ -1,3 +1,7 @@
-import LoginSignup from './AuthScreens/LoginSignup';
+import Layout from './Layout/Layout';
 
-export { LoginSignup };
+// Auth Screens
+import LoginSignup from './AuthScreens/LoginSignup';
+import Otp from './AuthScreens/Otp';
+
+export { Layout, LoginSignup, Otp };

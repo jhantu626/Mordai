@@ -5,14 +5,21 @@ import { color } from './utils/colors';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { LoginSignup } from './screens';
+import { LoginSignup, Otp } from './screens';
 
 const App = () => {
   const Stack = createStackNavigator();
 
   const AuthStack = () => (
-    <Stack.Navigator initialRouteName="LoginSignup">
+    <Stack.Navigator
+      initialRouteName="Otp"
+      screenOptions={{
+        headerShown: false,
+        animation: 'slide_from_left',
+      }}
+    >
       <Stack.Screen name="LoginSignup" component={LoginSignup} />
+      <Stack.Screen name="Otp" component={Otp} />
     </Stack.Navigator>
   );
 
