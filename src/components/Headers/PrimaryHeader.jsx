@@ -31,7 +31,6 @@ const PrimaryHeader = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
     width: '100%',
     height: 50,
     flexDirection: 'row',
