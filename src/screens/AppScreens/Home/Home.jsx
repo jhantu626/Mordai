@@ -1,12 +1,15 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Layout from '../../Layout/Layout';
-import { PrimaryHeader } from '../../../components';
+import { PrimaryHeader, SearchInput } from '../../../components';
 
 const Home = () => {
   return (
     <Layout>
       <PrimaryHeader />
+      <View style={{ marginTop: 20 }}>
+        <SearchInput />
+      </View>
     </Layout>
   );
 };
