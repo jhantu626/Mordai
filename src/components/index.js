@@ -1,3 +1,6 @@
 import DefaultInput from './Inputs/DefaultInput';
 
-export { DefaultInput };
+// Headers
+import PrimaryHeader from './Headers/PrimaryHeader';
+
+export { DefaultInput,PrimaryHeader };
