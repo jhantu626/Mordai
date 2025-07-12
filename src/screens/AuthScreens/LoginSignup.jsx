@@ -10,8 +10,11 @@ import Layout from '../Layout/Layout';
 import { DefaultInput } from '../../components';
 import { colors } from '../../utils/colors';
 import { fonts } from '../../utils/fonts';
+import { useNavigation } from '@react-navigation/native';
 
 const LoginSignup = () => {
+  const navigation = useNavigation();
+
   const [mobileNumber, setMobileNumber] = useState('');
   return (
     <Layout>
@@ -24,14 +27,19 @@ const LoginSignup = () => {
           value={mobileNumber}
           setValue={setMobileNumber}
         />
-        <TouchableOpacity style={styles.btnContainer}>
+        <TouchableOpacity
+          style={styles.btnContainer}
+          onPress={() => {
+            navigation.navigate('Otp');
+          }}
+        >
           <Text style={styles.btnText}>Send OTP</Text>
         </TouchableOpacity>
         <Text style={styles.otpText}>
           We'll send you a 6-digit OTP to verify your number
         </Text>
       </ScrollView>
-      <Text style={styles.publisherText}>Powered by Mordai</Text>
+      <Text style={styles.publisherText}>Powered by মড়াই</Text>
     </Layout>
   );
 };
@@ -74,7 +82,7 @@ const styles = StyleSheet.create({
     color: '#00000080',
     alignSelf: 'center',
     marginBottom: 20,
-  }
+  },
 });
 
 export default LoginSignup;

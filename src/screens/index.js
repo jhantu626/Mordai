@@ -4,4 +4,9 @@ import Layout from './Layout/Layout';
 import LoginSignup from './AuthScreens/LoginSignup';
 import Otp from './AuthScreens/Otp';
 
-export { Layout, LoginSignup, Otp };
+// App Screens
+
+// Home
+import Home from './AppScreens/Home/Home';
+
+export { Layout, LoginSignup, Otp, Home };
