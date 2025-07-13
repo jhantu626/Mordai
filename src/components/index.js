@@ -5,4 +5,7 @@ import SearchInput from './Inputs/SearchInput';
 // Headers
 import PrimaryHeader from './Headers/PrimaryHeader';
 
-export { DefaultInput, PrimaryHeader, SearchInput };
+// CARDS
+import BannerCard from './Cards/BannerCard';
+
+export { DefaultInput, PrimaryHeader, SearchInput, BannerCard };

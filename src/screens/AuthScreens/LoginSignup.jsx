@@ -46,7 +46,6 @@ const LoginSignup = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
     paddingTop: 20,
     alignItems: 'center',
     gap: 20,

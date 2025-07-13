@@ -10,8 +10,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import Layout from '../Layout/Layout';
 import { fonts } from '../../utils/fonts';
 import { colors } from '../../utils/colors';
+import { useNavigation } from '@react-navigation/native';
 
 const Otp = () => {
+  const navigation = useNavigation();
+
   const [timer, setTimer] = useState(60);
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -24,7 +27,7 @@ const Otp = () => {
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [otp, setOtp] = useState(['', '', '', '']);
   const inputRefs = useRef([]);
 
   const handleOtpChange = (text, index) => {
@@ -80,7 +83,12 @@ const Otp = () => {
           ))}
         </View>
 
-        <TouchableOpacity style={styles.btnContainer}>
+        <TouchableOpacity
+          style={styles.btnContainer}
+          onPress={() => {
+            navigation.navigate('Home');
+          }}
+        >
           <Text style={styles.btnText}>Verify OTP</Text>
         </TouchableOpacity>
 
@@ -104,7 +112,6 @@ const Otp = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
     paddingTop: 20,
     alignItems: 'center',
     gap: 20,
@@ -156,7 +163,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 5,
-    marginTop: 30
+    marginTop: 30,
   },
   resendText: {
     color: colors.primary,
