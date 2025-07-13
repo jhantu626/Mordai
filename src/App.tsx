@@ -5,7 +5,7 @@ import { colors } from './utils/colors';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { Home, LoginSignup, Otp } from './screens';
+import { Accounts, Cart, Home, LoginSignup, Order, Otp } from './screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -56,7 +56,7 @@ const App = () => {
       />
       <Tab.Screen
         name="Cart"
-        component={Home}
+        component={Cart}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="add-shopping-cart" size={24} color={color} />
@@ -70,7 +70,7 @@ const App = () => {
       />
       <Tab.Screen
         name="Order"
-        component={Home}
+        component={Order}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="shopping-bag" size={24} color={color} />
@@ -79,7 +79,7 @@ const App = () => {
       />
       <Tab.Screen
         name="Account"
-        component={Home}
+        component={Accounts}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="person" size={24} color={color} />

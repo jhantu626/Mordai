@@ -1,5 +1,6 @@
 import {
   Dimensions,
+  FlatList,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,11 +9,69 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import Layout from '../../Layout/Layout';
-import { BannerCard, PrimaryHeader, SearchInput } from '../../../components';
+import {
+  BannerCard,
+  PrimaryHeader,
+  ProductCard,
+  SearchInput,
+} from '../../../components';
 import { colors } from '../../../utils/colors';
 import { fonts } from '../../../utils/fonts';
 
 const categories = ['All', 'Fruits', 'Vegetables', 'Juice', 'Dairy', 'Bakery'];
+
+const product = [
+  {
+    name: 'Orange Juice',
+    price: 50.0,
+    originalPrice: 55.0,
+    discount: '10% Off',
+    category: 'Juices',
+    orderCode: '12345625',
+    purchaseDate: '31 May 2023',
+    paymentMethod: 'Online payment',
+    image: require('./../../../../assets/images/product1.png'),
+  },
+  {
+    name: 'Capsicum',
+    price: 30.0,
+    originalPrice: 35.0,
+    discount: '8% Off',
+    category: 'Vegetables',
+    image: require('./../../../../assets/images/product2.png'),
+  },
+  {
+    name: 'Ripe Mango',
+    price: 50.0,
+    originalPrice: 55.0,
+    discount: '10% Off',
+    category: 'Fruits',
+    orderCode: '12345678',
+    purchaseDate: '31 May 2023',
+    paymentMethod: 'Online payment',
+    image: require('./../../../../assets/images/product3.png'),
+  },
+  {
+    price: 30.0,
+    originalPrice: 35.0,
+    name: 'Black Grape',
+    category: 'Fruits',
+    orderCode: '12345678',
+    purchaseDate: '31 May 2023',
+    paymentMethod: 'Online payment',
+    image: require('./../../../../assets/images/product4.png'),
+  },
+  {
+    price: 30.0,
+    originalPrice: 35.0,
+    name: 'Fresh Coconut',
+    category: 'Fruits',
+    orderCode: '12344672',
+    purchaseDate: '31 May 2023',
+    paymentMethod: 'Online payment',
+    image: require('./../../../../assets/images/product1.png'),
+  },
+];
 
 const Home = () => {
   const [banners, setBanners] = useState([
@@ -58,55 +117,85 @@ const Home = () => {
   return (
     <Layout>
       <PrimaryHeader />
-      <View style={{ marginTop: 20, gap: 20 }}>
-        <SearchInput />
-        <ScrollView
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-        >
-          {banners.map((banner, index) => {
-            console.log('banner', banner);
-            return (
-              <View
-                style={{
-                  width: width - 40,
-                }}
-                key={index}
-              >
-                <BannerCard banner={banner} />
-              </View>
-            );
-          })}
-        </ScrollView>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {categories.map((category, index) => {
-            return (
+
+      <FlatList
+        data={product}
+        keyExtractor={(item, index) => index + 'product'}
+        ListHeaderComponent={() => (
+          <View style={{ marginTop: 20, gap: 15 }}>
+            <SearchInput />
+            <ScrollView
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+            >
+              {banners.map((banner, index) => {
+                console.log('banner', banner);
+                return (
+                  <View
+                    style={{
+                      width: width - 40,
+                    }}
+                    key={index}
+                  >
+                    <BannerCard banner={banner} />
+                  </View>
+                );
+              })}
+            </ScrollView>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <TouchableOpacity
                 onPress={() => {
                   setSelectedCategory(category);
                 }}
                 style={[
                   styles.categoryCont,
-                  selectedCategory === category && {
+                  {
                     backgroundColor: colors.primary,
                   },
                 ]}
-                key={'category-' + index}
               >
-                <Text
-                  style={[
-                    styles.categoryText,
-                    selectedCategory === category && { color: '#fff' },
-                  ]}
-                >
-                  {category}
+                <Text style={[styles.categoryText, { color: '#fff' }]}>
+                  {selectedCategory}
                 </Text>
               </TouchableOpacity>
-            );
-          })}
-        </ScrollView>
-      </View>
+              {categories.map((category, index) => {
+                return (
+                  selectedCategory !== category && (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSelectedCategory(category);
+                      }}
+                      style={[
+                        styles.categoryCont,
+                        selectedCategory === category && {
+                          backgroundColor: colors.primary,
+                        },
+                      ]}
+                      key={'category-' + index}
+                    >
+                      <Text
+                        style={[
+                          styles.categoryText,
+                          selectedCategory === category && { color: '#fff' },
+                        ]}
+                      >
+                        {category}
+                      </Text>
+                    </TouchableOpacity>
+                  )
+                );
+              })}
+            </ScrollView>
+          </View>
+        )}
+        numColumns={2}
+        columnWrapperStyle={styles.row}
+        renderItem={({ item }, index) => (
+          <ProductCard product={item} key={'product-' + index} />
+        )}
+        showsVerticalScrollIndicator={false}
+      />
     </Layout>
   );
 };
@@ -114,9 +203,9 @@ const Home = () => {
 const styles = StyleSheet.create({
   categoryCont: {
     backgroundColor: colors.inputBackground,
-    marginHorizontal: 10,
+    marginHorizontal: 5,
     paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingVertical: 5,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -131,6 +220,10 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 14,
     fontFamily: fonts.regular,
+  },
+  row: {
+    justifyContent: 'space-between',
+    gap: 4,
   },
 });
 

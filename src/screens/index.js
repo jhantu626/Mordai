@@ -9,4 +9,13 @@ import Otp from './AuthScreens/Otp';
 // Home
 import Home from './AppScreens/Home/Home';
 
-export { Layout, LoginSignup, Otp, Home };
+// Cart
+import Cart from './AppScreens/Cart/Cart';
+
+// Orders
+import Order from './AppScreens/Orders/Order';
+
+// Account
+import Accounts from './AppScreens/Account/Accounts';
+
+export { Layout, LoginSignup, Otp, Home, Cart, Order, Accounts };

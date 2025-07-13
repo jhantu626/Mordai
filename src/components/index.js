@@ -7,5 +7,6 @@ import PrimaryHeader from './Headers/PrimaryHeader';
 
 // CARDS
 import BannerCard from './Cards/BannerCard';
+import ProductCard from './Cards/ProductCard';
 
-export { DefaultInput, PrimaryHeader, SearchInput, BannerCard };
+export { DefaultInput, PrimaryHeader, SearchInput, BannerCard, ProductCard };
