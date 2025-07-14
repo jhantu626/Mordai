@@ -9,6 +9,10 @@ import SecondaryHeader from './Headers/SecondaryHeader';
 // CARDS
 import BannerCard from './Cards/BannerCard';
 import ProductCard from './Cards/ProductCard';
+import CartItem from './Cards/CartItem';
+
+// Dividers
+import DottedDivider from './Dividers/DottedDivider';
 
 export {
   DefaultInput,
@@ -17,4 +21,6 @@ export {
   BannerCard,
   ProductCard,
   SecondaryHeader,
+  DottedDivider,
+  CartItem,
 };
