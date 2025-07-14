@@ -18,6 +18,7 @@ const SearchInput = () => {
         style={styles.textInput}
         selectionColor={'#000'}
         multiline={true}
+        placeholderTextColor={'#000'}
       />
       <TouchableOpacity>
         <Octicons name="search" size={20} color="black" />

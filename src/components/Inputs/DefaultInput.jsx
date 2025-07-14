@@ -19,6 +19,7 @@ const DefaultInput = ({
         selectionColor={colors.primary}
         style={styles.inputBox}
         keyboardType={keyboardType}
+        placeholderTextColor={'#00000050'}
       />
     </View>
   );

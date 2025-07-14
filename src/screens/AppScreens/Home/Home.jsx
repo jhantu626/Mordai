@@ -119,10 +119,11 @@ const Home = () => {
       <PrimaryHeader />
 
       <FlatList
+      contentContainerStyle={styles.container}
         data={product}
         keyExtractor={(item, index) => index + 'product'}
         ListHeaderComponent={() => (
-          <View style={{ marginTop: 20, gap: 15 }}>
+          <View style={{ marginTop: 20, gap: 10 }}>
             <SearchInput />
             <ScrollView
               horizontal
@@ -201,6 +202,9 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
+  container:{
+    paddingBottom: 50
+  },
   categoryCont: {
     backgroundColor: colors.inputBackground,
     marginHorizontal: 5,
