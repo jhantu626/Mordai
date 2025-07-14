@@ -43,8 +43,8 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   logo: {
-    width: 70,
-    height: 70,
+    width: 55,
+    height: 55,
   },
   locationContainer: {
     flexDirection: 'row',
