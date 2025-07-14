@@ -1,6 +1,7 @@
 import {
   Dimensions,
   FlatList,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -91,7 +92,9 @@ const Cart = () => {
 
   const decrease = index => {
     setCartItems(prev => {
-      if (prev[index].quantity === 1) return prev;
+      if (prev[index].quantity === 1) {
+        return prev.filter((_, i) => i !== index);
+      }
       const newCartItems = [...prev];
       newCartItems[index].quantity -= 1;
       return newCartItems;
@@ -114,6 +117,15 @@ const Cart = () => {
             onDecrease={() => decrease(index)}
             onIncrease={() => increase(index)}
           />
+        )}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyContainer}>
+            <Image
+              style={styles.emptyImage}
+              source={require('./../../../../assets/images/empty-cart.png')}
+            />
+            <Text style={styles.emptyText}>Your cart is empty</Text>
+          </View>
         )}
       />
 
@@ -192,5 +204,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: fonts.semiBold,
     color: '#000000',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 50,
+  },
+  emptyText: {
+    fontSize: 16,
+    fontFamily: fonts.semiBold,
+    color: '#00000080',
+  },
+  emptyImage: {
+    width: 200,
+    height: 200,
   },
 });
