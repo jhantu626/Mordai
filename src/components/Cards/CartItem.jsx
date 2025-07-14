@@ -4,7 +4,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { colors } from '../../utils/colors';
 import { fonts } from '../../utils/fonts';
 
-const CartItem = () => {
+const CartItem = ({ item, onIncrease, onDecrease }) => {
+  console.log(item);
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
@@ -12,20 +13,26 @@ const CartItem = () => {
           <Image
             style={styles.image}
             resizeMode="contain"
-            source={require('./../../../assets/images/product1.png')}
+            source={item.image}
           />
         </View>
         <View style={styles.leftRightContainer}>
-          <Text style={styles.productName}>Organic Apple</Text>
-          <Text style={styles.weightText}>500 Gram</Text>
+          <Text style={styles.productName}>{item.name}</Text>
+          <Text style={styles.weightText}>{item.size}</Text>
         </View>
       </View>
       <View style={styles.rightContainer}>
-        <TouchableOpacity style={styles.btnContainer}>
+        <TouchableOpacity
+          style={styles.btnContainer}
+          onPress={() => onDecrease()}
+        >
           <Entypo name="minus" size={21} color="black" />
         </TouchableOpacity>
-        <Text style={styles.quantityText}>2</Text>
-        <TouchableOpacity style={styles.btnContainer}>
+        <Text style={styles.quantityText}>{item.quantity}</Text>
+        <TouchableOpacity
+          style={styles.btnContainer}
+          onPress={() => onIncrease()}
+        >
           <Entypo name="plus" size={21} color="black" />
         </TouchableOpacity>
       </View>

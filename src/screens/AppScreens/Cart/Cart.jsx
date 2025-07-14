@@ -18,6 +18,86 @@ const Cart = () => {
 
   const [bottomContainerHeight, setBOttomContainerHeight] = useState(0);
 
+  const [cartItems, setCartItems] = useState([
+    {
+      name: 'Orange Juice',
+      price: 50.0,
+      originalPrice: 55.0,
+      discount: '10% Off',
+      category: 'Juices',
+      orderCode: '12345625',
+      purchaseDate: '31 May 2023',
+      paymentMethod: 'Online payment',
+      quantity: 1,
+      size: '500 ml',
+      image: require('./../../../../assets/images/product1.png'),
+    },
+    {
+      name: 'Capsicum',
+      price: 30.0,
+      originalPrice: 35.0,
+      discount: '8% Off',
+      category: 'Vegetables',
+      quantity: 1,
+      size: '500 gm',
+      image: require('./../../../../assets/images/product2.png'),
+    },
+    {
+      name: 'Ripe Mango',
+      price: 50.0,
+      originalPrice: 55.0,
+      discount: '10% Off',
+      category: 'Fruits',
+      orderCode: '12345678',
+      purchaseDate: '31 May 2023',
+      paymentMethod: 'Online payment',
+      quantity: 1,
+      size: '500 gm',
+      image: require('./../../../../assets/images/product3.png'),
+    },
+    {
+      name: 'Black Grape',
+      price: 30.0,
+      originalPrice: 35.0,
+      category: 'Fruits',
+      orderCode: '12345678',
+      purchaseDate: '31 May 2023',
+      paymentMethod: 'Online payment',
+      quantity: 1,
+      size: '500 gm',
+      image: require('./../../../../assets/images/product4.png'),
+    },
+    {
+      name: 'Fresh Coconut',
+      price: 30.0,
+      originalPrice: 35.0,
+      category: 'Fruits',
+      orderCode: '12344672',
+      purchaseDate: '31 May 2023',
+      paymentMethod: 'Online payment',
+      quantity: 1,
+      size: '1 pc',
+      image: require('./../../../../assets/images/product1.png'),
+    },
+  ]);
+
+  const increase = index => {
+    setCartItems(prev => {
+      const newCartItems = [...prev];
+      newCartItems[index].quantity += 1;
+      return newCartItems;
+    });
+  };
+
+  const decrease = index => {
+    setCartItems(prev => {
+      if (prev[index].quantity === 1) return prev;
+      const newCartItems = [...prev];
+      newCartItems[index].quantity -= 1;
+      return newCartItems;
+    });
+  };
+
   return (
     <Layout>
       <SecondaryHeader />
@@ -25,9 +105,16 @@ const Cart = () => {
         style={{ flex: 1 }}
         contentContainerStyle={{ paddingBottom: bottomContainerHeight }}
         showsVerticalScrollIndicator={false}
-        data={[...Array(5)]}
+        data={cartItems}
         keyExtractor={(_, index) => 'cart-item-' + index}
-        renderItem={() => <CartItem />}
+        renderItem={({ item, index }) => (
+          <CartItem
+            item={item}
+            key={index + 'cartItem'}
+            onDecrease={() => decrease(index)}
+            onIncrease={() => increase(index)}
+          />
+        )}
       />
 
       <View
