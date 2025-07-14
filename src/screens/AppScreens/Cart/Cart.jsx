@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import Layout from '../../Layout/Layout';
+import { SecondaryHeader } from '../../../components';
 
 const Cart = () => {
-  return (
-    <View>
-      <Text>Cart</Text>
-    </View>
-  )
-}
+  return <Layout>
+    <SecondaryHeader/>
+  </Layout>;
+};
 
-export default Cart
+export default Cart;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
