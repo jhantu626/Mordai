@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { fonts } from './utils/fonts';
 import { colors } from './utils/colors';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -9,10 +9,15 @@ import { Accounts, Cart, Home, LoginSignup, Order, Otp } from './screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
   const Stack = createStackNavigator();
   const Tab = createBottomTabNavigator();
+
+  useEffect(()=>{
+    SplashScreen.hide();
+  },[])
 
   const AuthStack = () => (
     <Stack.Navigator
@@ -29,7 +34,7 @@ const App = () => {
 
   const AppStack = () => (
     <Tab.Navigator
-      initialRouteName="Cart"
+      initialRouteName="Home"
       backBehavior="fullHistory"
       screenOptions={{
         headerShown: false,
