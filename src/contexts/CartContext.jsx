@@ -26,6 +26,7 @@ const CartProvider = ({ children }) => {
   useEffect(() => {
     const saveCarts = async () => {
       try {
+        console.log(carts);
         await AsyncStorage.setItem('carts', JSON.stringify(carts));
       } catch (e) {
         console.error('Failed to save carts to storage', e);

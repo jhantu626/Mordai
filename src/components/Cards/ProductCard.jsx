@@ -6,7 +6,6 @@ import { useCartContext } from '../../contexts/CartContext';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 const ProductCard = ({ product }) => {
-  console.log('product', product);
   const { carts, addToCart, getQuiantity,removeFromCart } = useCartContext();
 
   const hasProductInCart = carts.some(cart => cart.id === product.id);
@@ -45,10 +44,11 @@ const ProductCard = ({ product }) => {
           <TouchableOpacity
             style={styles.btnContainer}
             onPress={() => {
+              console.log(product);
               removeFromCart({
                 item: {
                   id: product.id,
-                  size: product.sizes[0].size,
+                  size: product.sizes[0].label,
                 },
               });
             }}
@@ -57,7 +57,7 @@ const ProductCard = ({ product }) => {
           </TouchableOpacity>
           <Text style={styles.quantityText}>
             {getQuiantity({
-              item: { id: product.id, size: product.sizes[0].size },
+              item: { id: product.id, size: product.sizes[0].label },
             })}
           </Text>
           <TouchableOpacity
@@ -66,7 +66,7 @@ const ProductCard = ({ product }) => {
               addToCart({
                 cart: {
                   id: product.id,
-                  size: product.sizes[0].size,
+                  size: product.sizes[0].label,
                 },
               });
             }}
@@ -81,10 +81,11 @@ const ProductCard = ({ product }) => {
             addToCart({
               cart: {
                 id: product.id,
-                size: product.sizes[0].size,
+                size: product.sizes[0].label,
                 price: product.sizes[0].price,
                 originalPrice: product.sizes[0].originalPrice,
                 image: product.image,
+                name: product.name,
               },
             })
           }
