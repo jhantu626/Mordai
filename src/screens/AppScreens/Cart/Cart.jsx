@@ -13,93 +13,19 @@ import Layout from '../../Layout/Layout';
 import { CartItem, DottedDivider, SecondaryHeader } from '../../../components';
 import { colors } from '../../../utils/colors';
 import { fonts } from '../../../utils/fonts';
+import { useCartContext } from '../../../contexts/CartContext';
 
 const Cart = () => {
+  const { carts, addToCart, removeFromCart } = useCartContext();
+
   const { width } = Dimensions.get('screen');
 
   const [bottomContainerHeight, setBOttomContainerHeight] = useState(0);
 
-  const [cartItems, setCartItems] = useState([
-    {
-      name: 'Orange Juice',
-      price: 50.0,
-      originalPrice: 55.0,
-      discount: '10% Off',
-      category: 'Juices',
-      orderCode: '12345625',
-      purchaseDate: '31 May 2023',
-      paymentMethod: 'Online payment',
-      quantity: 1,
-      size: '500 ml',
-      image: require('./../../../../assets/images/product1.png'),
-    },
-    {
-      name: 'Capsicum',
-      price: 30.0,
-      originalPrice: 35.0,
-      discount: '8% Off',
-      category: 'Vegetables',
-      quantity: 1,
-      size: '500 gm',
-      image: require('./../../../../assets/images/product2.png'),
-    },
-    {
-      name: 'Ripe Mango',
-      price: 50.0,
-      originalPrice: 55.0,
-      discount: '10% Off',
-      category: 'Fruits',
-      orderCode: '12345678',
-      purchaseDate: '31 May 2023',
-      paymentMethod: 'Online payment',
-      quantity: 1,
-      size: '500 gm',
-      image: require('./../../../../assets/images/product3.png'),
-    },
-    {
-      name: 'Black Grape',
-      price: 30.0,
-      originalPrice: 35.0,
-      category: 'Fruits',
-      orderCode: '12345678',
-      purchaseDate: '31 May 2023',
-      paymentMethod: 'Online payment',
-      quantity: 1,
-      size: '500 gm',
-      image: require('./../../../../assets/images/product4.png'),
-    },
-    {
-      name: 'Fresh Coconut',
-      price: 30.0,
-      originalPrice: 35.0,
-      category: 'Fruits',
-      orderCode: '12344672',
-      purchaseDate: '31 May 2023',
-      paymentMethod: 'Online payment',
-      quantity: 1,
-      size: '1 pc',
-      image: require('./../../../../assets/images/product1.png'),
-    },
-  ]);
-
-  const increase = index => {
-    setCartItems(prev => {
-      const newCartItems = [...prev];
-      newCartItems[index].quantity += 1;
-      return newCartItems;
-    });
-  };
-
-  const decrease = index => {
-    setCartItems(prev => {
-      if (prev[index].quantity === 1) {
-        return prev.filter((_, i) => i !== index);
-      }
-      const newCartItems = [...prev];
-      newCartItems[index].quantity -= 1;
-      return newCartItems;
-    });
-  };
+  const totalAmount = carts.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  );
 
   return (
     <Layout>
@@ -108,14 +34,14 @@ const Cart = () => {
         style={{ flex: 1 }}
         contentContainerStyle={{ paddingBottom: bottomContainerHeight }}
         showsVerticalScrollIndicator={false}
-        data={cartItems}
+        data={carts}
         keyExtractor={(_, index) => 'cart-item-' + index}
         renderItem={({ item, index }) => (
           <CartItem
             item={item}
             key={index + 'cartItem'}
-            onDecrease={() => decrease(index)}
-            onIncrease={() => increase(index)}
+            onDecrease={() => removeFromCart({ item: item })}
+            onIncrease={() => addToCart({ cart: item })}
           />
         )}
         ListEmptyComponent={() => (
@@ -136,11 +62,11 @@ const Cart = () => {
         <View style={{ gap: 7 }}>
           <View style={styles.bottomSubContainer}>
             <Text style={styles.totalAmountText}>Total Amount</Text>
-            <Text style={styles.amountText}>₹500</Text>
+            <Text style={styles.amountText}>₹{totalAmount}</Text>
           </View>
           <View style={styles.bottomSubContainer}>
             <Text style={styles.totalAmountText}>Shipping Charge</Text>
-            <Text style={styles.amountText}>₹50</Text>
+            <Text style={styles.amountText}>₹{totalAmount * 0.05}</Text>
           </View>
           <View style={styles.bottomSubContainer}>
             <Text style={styles.totalAmountText}>Packing Charge</Text>
@@ -152,7 +78,9 @@ const Cart = () => {
           <Text style={[styles.totalAmountText, { fontFamily: fonts.bold }]}>
             SubTotal
           </Text>
-          <Text style={styles.amountText}>₹500</Text>
+          <Text style={styles.amountText}>
+            ₹{totalAmount + totalAmount * 0.05}
+          </Text>
         </View>
         <TouchableOpacity style={styles.checkoutBtn}>
           <Text style={styles.checkoutBtnText}>Checkout</Text>

@@ -3,9 +3,9 @@ import React from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { colors } from '../../utils/colors';
 import { fonts } from '../../utils/fonts';
+import { useCartContext } from '../../contexts/CartContext';
 
 const CartItem = ({ item, onIncrease, onDecrease }) => {
-  console.log(item);
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
