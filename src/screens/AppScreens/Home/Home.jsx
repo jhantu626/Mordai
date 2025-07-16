@@ -23,8 +23,10 @@ const categories = ['All', 'Fruits', 'Vegetables', 'Juice', 'Dairy', 'Bakery'];
 const product = [
   {
     name: 'Orange Juice',
-    price: 50.0,
-    originalPrice: 55.0,
+    sizes: [
+      { label: '500ml', price: 30.0, originalPrice: 35.0 },
+      { label: '1L', price: 50.0, originalPrice: 55.0 },
+    ],
     discount: '10% Off',
     category: 'Juices',
     orderCode: '12345625',
@@ -34,16 +36,19 @@ const product = [
   },
   {
     name: 'Capsicum',
-    price: 30.0,
-    originalPrice: 35.0,
+    sizes: [
+      { label: '250g', price: 15.0, originalPrice: 18.0 },
+      { label: '500g', price: 30.0, originalPrice: 35.0 },
+    ],
     discount: '8% Off',
     category: 'Vegetables',
     image: require('./../../../../assets/images/product2.png'),
   },
   {
     name: 'Ripe Mango',
-    price: 50.0,
-    originalPrice: 55.0,
+    sizes: [
+      { label: '1kg', price: 50.0, originalPrice: 55.0 },
+    ],
     discount: '10% Off',
     category: 'Fruits',
     orderCode: '12345678',
@@ -52,9 +57,10 @@ const product = [
     image: require('./../../../../assets/images/product3.png'),
   },
   {
-    price: 30.0,
-    originalPrice: 35.0,
     name: 'Black Grape',
+    sizes: [
+      { label: '500g', price: 30.0, originalPrice: 35.0 },
+    ],
     category: 'Fruits',
     orderCode: '12345678',
     purchaseDate: '31 May 2023',
@@ -62,9 +68,11 @@ const product = [
     image: require('./../../../../assets/images/product4.png'),
   },
   {
-    price: 30.0,
-    originalPrice: 35.0,
     name: 'Fresh Coconut',
+    sizes: [
+      { label: '1 pc', price: 30.0, originalPrice: 35.0 },
+      { label: '2 pcs', price: 55.0, originalPrice: 70.0 },
+    ],
     category: 'Fruits',
     orderCode: '12344672',
     purchaseDate: '31 May 2023',
@@ -72,6 +80,7 @@ const product = [
     image: require('./../../../../assets/images/product1.png'),
   },
 ];
+
 
 const Home = () => {
   const [banners, setBanners] = useState([

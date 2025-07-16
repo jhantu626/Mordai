@@ -16,9 +16,12 @@ const ProductCard = ({ product }) => {
         )}
       </View>
       <View style={styles.priceContainer}>
-        <Text style={styles.priceText}>₹{product.price}</Text>
-        <Text style={styles.originalPriceText}>₹{product.originalPrice}</Text>
+        <Text style={styles.priceText}>₹{product.sizes[0].price}</Text>
+        <Text style={styles.originalPriceText}>
+          ₹{product.sizes[0].originalPrice}
+        </Text>
       </View>
+      <Text style={styles.weightText}>1 KG</Text>
       <Text style={styles.productName}>{product.name}</Text>
       <TouchableOpacity style={styles.addToCartBtn}>
         <Text style={styles.addToCartText}>Add To Cart</Text>
@@ -96,6 +99,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: fonts.medium,
     color: colors.inputBackground,
+  },
+  weightText: {
+    fontSize: 12,
+    fontFamily: fonts.semiBold,
+    marginTop: -5,
   },
 });
 
