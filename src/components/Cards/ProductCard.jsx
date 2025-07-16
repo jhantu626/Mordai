@@ -1,10 +1,16 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { colors } from '../../utils/colors';
 import { fonts } from '../../utils/fonts';
+import { useCartContext } from '../../contexts/CartContext';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const ProductCard = ({ product }) => {
   console.log('product', product);
+  const { carts, addToCart, getQuiantity,removeFromCart } = useCartContext();
+
+  const hasProductInCart = carts.some(cart => cart.id === product.id);
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -23,9 +29,69 @@ const ProductCard = ({ product }) => {
       </View>
       <Text style={styles.weightText}>1 KG</Text>
       <Text style={styles.productName}>{product.name}</Text>
-      <TouchableOpacity style={styles.addToCartBtn}>
-        <Text style={styles.addToCartText}>Add To Cart</Text>
-      </TouchableOpacity>
+      {product.sizes.length > 1 ? (
+        <TouchableOpacity style={styles.addToCartBtn}>
+          <Text style={styles.addToCartText}>
+            {hasProductInCart ? 'Increase Quantity' : 'Add To Cart'}
+          </Text>
+        </TouchableOpacity>
+      ) : hasProductInCart ? (
+        <View
+          style={[
+            styles.addToCartBtn,
+            { backgroundColor: 'transparent', flexDirection: 'row', gap: 5 },
+          ]}
+        >
+          <TouchableOpacity
+            style={styles.btnContainer}
+            onPress={() => {
+              removeFromCart({
+                item: {
+                  id: product.id,
+                  size: product.sizes[0].size,
+                },
+              });
+            }}
+          >
+            <Entypo name="minus" size={21} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.quantityText}>
+            {getQuiantity({
+              item: { id: product.id, size: product.sizes[0].size },
+            })}
+          </Text>
+          <TouchableOpacity
+            style={styles.btnContainer}
+            onPress={() => {
+              addToCart({
+                cart: {
+                  id: product.id,
+                  size: product.sizes[0].size,
+                },
+              });
+            }}
+          >
+            <Entypo name="plus" size={21} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <TouchableOpacity
+          style={styles.addToCartBtn}
+          onPress={() =>
+            addToCart({
+              cart: {
+                id: product.id,
+                size: product.sizes[0].size,
+                price: product.sizes[0].price,
+                originalPrice: product.sizes[0].originalPrice,
+                image: product.image,
+              },
+            })
+          }
+        >
+          <Text style={styles.addToCartText}>Add To Cart</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -104,6 +170,19 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: fonts.semiBold,
     marginTop: -5,
+  },
+  btnContainer: {
+    width: 40,
+    height: '100%',
+    backgroundColor: colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  quantityText: {
+    fontSize: 16,
+    fontFamily: fonts.semiBold,
+    marginHorizontal: 10,
   },
 });
 

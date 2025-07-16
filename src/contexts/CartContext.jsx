@@ -9,9 +9,12 @@ const CartProvider = ({ children }) => {
   useEffect(() => {
     const loadCarts = async () => {
       try {
+        // await AsyncStorage.clear();
         const jsonValue = await AsyncStorage.getItem('carts');
         if (jsonValue != null) {
           setCarts(JSON.parse(jsonValue));
+        } else {
+          setCarts([]);
         }
       } catch (e) {
         console.error('Failed to load carts from storage', e);
@@ -48,20 +51,39 @@ const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = ({ item }) => {
-    setCarts(prevCarts => {
-      if (item.quantity === 1) {
-        return prevCarts.filter(
-          cartItem => !(cartItem.id === item.id && cartItem.size === item.size),
-        );
-      } else {
-        return prevCarts.map(cartItem => {
-          if (cartItem.id === item.id && cartItem.size === item.size) {
-            return { ...cartItem, quantity: cartItem.quantity - 1 };
-          }
-          return cartItem;
-        });
+    setCarts((prevCarts) => {
+      // Find the cart item matching both id and size
+      const cartItem = prevCarts.find(
+        (cartItem) => cartItem.id === item.id && cartItem.size === item.size
+      );
+
+      // If item is not found, return the previous cart unchanged
+      if (!cartItem) {
+        console.warn(`Item with id ${item.id} and size ${item.size} not found in cart.`);
+        return prevCarts;
       }
+
+      // If quantity is 1, remove the item from the cart
+      if (cartItem.quantity === 1) {
+        return prevCarts.filter(
+          (cartItem) => !(cartItem.id === item.id && cartItem.size === item.size)
+        );
+      }
+
+      // Otherwise, decrease the quantity by 1
+      return prevCarts.map((cartItem) =>
+        cartItem.id === item.id && cartItem.size === item.size
+          ? { ...cartItem, quantity: cartItem.quantity - 1 }
+          : cartItem
+      );
     });
+  };
+
+  const getQuiantity = ({ item }) => {
+    const cart = carts.find(
+      cartItem => cartItem.id === item.id && cartItem.size === item.size,
+    );
+    return cart ? cart.quantity : 0;
   };
 
   return (
@@ -71,6 +93,7 @@ const CartProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         numOfCarts: carts.reduce((sum, item) => sum + item.quantity, 0),
+        getQuiantity,
       }}
     >
       {children}

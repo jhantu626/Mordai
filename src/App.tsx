@@ -68,7 +68,7 @@ const App = () => {
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="add-shopping-cart" size={24} color={color} />
             ),
-            tabBarBadge: numOfCarts,
+            tabBarBadge: numOfCarts>0? numOfCarts: 0,
             tabBarBadgeStyle: {
               backgroundColor: colors.primary,
               color: '#fff',

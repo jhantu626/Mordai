@@ -22,6 +22,7 @@ const categories = ['All', 'Fruits', 'Vegetables', 'Juice', 'Dairy', 'Bakery'];
 
 const product = [
   {
+    id: 1,
     name: 'Orange Juice',
     sizes: [
       { label: '500ml', price: 30.0, originalPrice: 35.0 },
@@ -35,6 +36,7 @@ const product = [
     image: require('./../../../../assets/images/product1.png'),
   },
   {
+    id: 2,
     name: 'Capsicum',
     sizes: [
       { label: '250g', price: 15.0, originalPrice: 18.0 },
@@ -45,6 +47,7 @@ const product = [
     image: require('./../../../../assets/images/product2.png'),
   },
   {
+    id: 3,
     name: 'Ripe Mango',
     sizes: [
       { label: '1kg', price: 50.0, originalPrice: 55.0 },
@@ -57,6 +60,7 @@ const product = [
     image: require('./../../../../assets/images/product3.png'),
   },
   {
+    id: 4,
     name: 'Black Grape',
     sizes: [
       { label: '500g', price: 30.0, originalPrice: 35.0 },
@@ -68,6 +72,7 @@ const product = [
     image: require('./../../../../assets/images/product4.png'),
   },
   {
+    id: 5,
     name: 'Fresh Coconut',
     sizes: [
       { label: '1 pc', price: 30.0, originalPrice: 35.0 },
@@ -140,7 +145,6 @@ const Home = () => {
               showsHorizontalScrollIndicator={false}
             >
               {banners.map((banner, index) => {
-                console.log('banner', banner);
                 return (
                   <View
                     style={{
