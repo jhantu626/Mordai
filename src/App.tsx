@@ -7,17 +7,17 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Accounts, Cart, Home, LoginSignup, Order, Otp } from './screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SplashScreen from 'react-native-splash-screen';
+import CartProvider, { useCartContext } from './contexts/CartContext';
 
 const App = () => {
   const Stack = createStackNavigator();
   const Tab = createBottomTabNavigator();
 
-  useEffect(()=>{
+  useEffect(() => {
     SplashScreen.hide();
-  },[])
+  }, []);
 
   const AuthStack = () => (
     <Stack.Navigator
@@ -32,67 +32,70 @@ const App = () => {
     </Stack.Navigator>
   );
 
-  const AppStack = () => (
-    <Tab.Navigator
-      initialRouteName="Home"
-      backBehavior="fullHistory"
-      screenOptions={{
-        headerShown: false,
-        animation: 'shift',
-        tabBarInactiveTintColor: 'gray',
-        tabBarActiveTintColor: colors.primary,
-        tabBarStyle: {
-          paddingVertical: 20,
-        },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontFamily: fonts.medium,
-        },
-      }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="home" size={24} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Cart"
-        component={Cart}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="add-shopping-cart" size={24} color={color} />
-          ),
-          tabBarBadge: 3,
-          tabBarBadgeStyle: {
-            backgroundColor: colors.primary,
-            color: '#fff',
+  const AppStack = () => {
+    const { numOfCarts } = useCartContext();
+    return (
+      <Tab.Navigator
+        initialRouteName="Home"
+        backBehavior="fullHistory"
+        screenOptions={{
+          headerShown: false,
+          animation: 'shift',
+          tabBarInactiveTintColor: 'gray',
+          tabBarActiveTintColor: colors.primary,
+          tabBarStyle: {
+            paddingVertical: 20,
+          },
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontFamily: fonts.medium,
           },
         }}
-      />
-      <Tab.Screen
-        name="Order"
-        component={Order}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="shopping-bag" size={24} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Account"
-        component={Accounts}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="person" size={24} color={color} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
-  );
+      >
+        <Tab.Screen
+          name="Home"
+          component={Home}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name="home" size={24} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Cart"
+          component={Cart}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name="add-shopping-cart" size={24} color={color} />
+            ),
+            tabBarBadge: numOfCarts,
+            tabBarBadgeStyle: {
+              backgroundColor: colors.primary,
+              color: '#fff',
+            },
+          }}
+        />
+        <Tab.Screen
+          name="Order"
+          component={Order}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name="shopping-bag" size={24} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Account"
+          component={Accounts}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name="person" size={24} color={color} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    );
+  };
 
   const AppNav = () => {
     const isLoggedIn = true;
@@ -103,7 +106,11 @@ const App = () => {
     );
   };
 
-  return <AppNav />;
+  return (
+    <CartProvider>
+      <AppNav />
+    </CartProvider>
+  );
 };
 
 export default App;
