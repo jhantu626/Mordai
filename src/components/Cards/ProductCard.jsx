@@ -5,8 +5,8 @@ import { fonts } from '../../utils/fonts';
 import { useCartContext } from '../../contexts/CartContext';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-const ProductCard = ({ product }) => {
-  const { carts, addToCart, getQuiantity,removeFromCart } = useCartContext();
+const ProductCard = ({ product, openBottomSheet }) => {
+  const { carts, addToCart, getQuiantity, removeFromCart } = useCartContext();
 
   const hasProductInCart = carts.some(cart => cart.id === product.id);
 
@@ -29,7 +29,12 @@ const ProductCard = ({ product }) => {
       <Text style={styles.weightText}>1 KG</Text>
       <Text style={styles.productName}>{product.name}</Text>
       {product.sizes.length > 1 ? (
-        <TouchableOpacity style={styles.addToCartBtn}>
+        <TouchableOpacity
+          style={styles.addToCartBtn}
+          onPress={() => {
+            openBottomSheet({ product: product });
+          }}
+        >
           <Text style={styles.addToCartText}>
             {hasProductInCart ? 'Increase Quantity' : 'Add To Cart'}
           </Text>

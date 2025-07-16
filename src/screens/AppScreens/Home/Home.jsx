@@ -1,22 +1,30 @@
 import {
   Dimensions,
   FlatList,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import Layout from '../../Layout/Layout';
 import {
   BannerCard,
+  CartAdd,
   PrimaryHeader,
   ProductCard,
   SearchInput,
 } from '../../../components';
 import { colors } from '../../../utils/colors';
 import { fonts } from '../../../utils/fonts';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import BottomSheet, {
+  BottomSheetFlatList,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const categories = ['All', 'Fruits', 'Vegetables', 'Juice', 'Dairy', 'Bakery'];
 
@@ -49,9 +57,7 @@ const product = [
   {
     id: 3,
     name: 'Ripe Mango',
-    sizes: [
-      { label: '1kg', price: 50.0, originalPrice: 55.0 },
-    ],
+    sizes: [{ label: '1kg', price: 50.0, originalPrice: 55.0 }],
     discount: '10% Off',
     category: 'Fruits',
     orderCode: '12345678',
@@ -62,9 +68,7 @@ const product = [
   {
     id: 4,
     name: 'Black Grape',
-    sizes: [
-      { label: '500g', price: 30.0, originalPrice: 35.0 },
-    ],
+    sizes: [{ label: '500g', price: 30.0, originalPrice: 35.0 }],
     category: 'Fruits',
     orderCode: '12345678',
     purchaseDate: '31 May 2023',
@@ -85,7 +89,6 @@ const product = [
     image: require('./../../../../assets/images/product1.png'),
   },
 ];
-
 
 const Home = () => {
   const [banners, setBanners] = useState([
@@ -128,95 +131,143 @@ const Home = () => {
   ]);
   const { width } = Dimensions.get('screen');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  return (
-    <Layout>
-      <PrimaryHeader />
 
-      <FlatList
-      contentContainerStyle={styles.container}
-        data={product}
-        keyExtractor={(item, index) => index + 'product'}
-        ListHeaderComponent={() => (
-          <View style={{ marginTop: 20, gap: 10 }}>
-            <SearchInput />
-            <ScrollView
-              horizontal
-              pagingEnabled
-              showsHorizontalScrollIndicator={false}
-            >
-              {banners.map((banner, index) => {
-                return (
-                  <View
-                    style={{
-                      width: width - 40,
-                    }}
-                    key={index}
-                  >
-                    <BannerCard banner={banner} />
-                  </View>
-                );
-              })}
-            </ScrollView>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <TouchableOpacity
-                onPress={() => {
-                  setSelectedCategory(category);
-                }}
-                style={[
-                  styles.categoryCont,
-                  {
-                    backgroundColor: colors.primary,
-                  },
-                ]}
+  const [selectedProductBottomSheet, setSelectedProductBottomSheet] = useState(
+    {},
+  );
+  // Ref
+  const bottomSheetRef = useRef(null);
+
+  const openBottomSheet = ({ product }) => {
+    setSelectedProductBottomSheet(product);
+    console.log(product);
+    bottomSheetRef.current?.expand();
+  };
+
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Layout>
+        <PrimaryHeader />
+        <FlatList
+          contentContainerStyle={styles.container}
+          data={product}
+          keyExtractor={(item, index) => index + 'product'}
+          ListHeaderComponent={() => (
+            <View style={{ marginTop: 20, gap: 10 }}>
+              <SearchInput />
+              <ScrollView
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
               >
-                <Text style={[styles.categoryText, { color: '#fff' }]}>
-                  {selectedCategory}
-                </Text>
-              </TouchableOpacity>
-              {categories.map((category, index) => {
-                return (
-                  selectedCategory !== category && (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setSelectedCategory(category);
+                {banners.map((banner, index) => {
+                  return (
+                    <View
+                      style={{
+                        width: width - 40,
                       }}
-                      style={[
-                        styles.categoryCont,
-                        selectedCategory === category && {
-                          backgroundColor: colors.primary,
-                        },
-                      ]}
-                      key={'category-' + index}
+                      key={index}
                     >
-                      <Text
+                      <BannerCard banner={banner} />
+                    </View>
+                  );
+                })}
+              </ScrollView>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setSelectedCategory(category);
+                  }}
+                  style={[
+                    styles.categoryCont,
+                    {
+                      backgroundColor: colors.primary,
+                    },
+                  ]}
+                >
+                  <Text style={[styles.categoryText, { color: '#fff' }]}>
+                    {selectedCategory}
+                  </Text>
+                </TouchableOpacity>
+                {categories.map((category, index) => {
+                  return (
+                    selectedCategory !== category && (
+                      <TouchableOpacity
+                        onPress={() => {
+                          setSelectedCategory(category);
+                        }}
                         style={[
-                          styles.categoryText,
-                          selectedCategory === category && { color: '#fff' },
+                          styles.categoryCont,
+                          selectedCategory === category && {
+                            backgroundColor: colors.primary,
+                          },
                         ]}
+                        key={'category-' + index}
                       >
-                        {category}
-                      </Text>
-                    </TouchableOpacity>
-                  )
-                );
-              })}
-            </ScrollView>
-          </View>
-        )}
-        numColumns={2}
-        columnWrapperStyle={styles.row}
-        renderItem={({ item }, index) => (
-          <ProductCard product={item} key={'product-' + index} />
-        )}
-        showsVerticalScrollIndicator={false}
-      />
-    </Layout>
+                        <Text
+                          style={[
+                            styles.categoryText,
+                            selectedCategory === category && { color: '#fff' },
+                          ]}
+                        >
+                          {category}
+                        </Text>
+                      </TouchableOpacity>
+                    )
+                  );
+                })}
+              </ScrollView>
+            </View>
+          )}
+          numColumns={2}
+          columnWrapperStyle={styles.row}
+          renderItem={({ item }, index) => (
+            <ProductCard
+              product={item}
+              key={'product-' + index}
+              openBottomSheet={openBottomSheet}
+            />
+          )}
+          showsVerticalScrollIndicator={false}
+        />
+      </Layout>
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={useMemo(() => ['20%'], [])}
+        index={-1}
+        enablePanDownToClose
+        dynam
+        enableOverDrag
+        animationConfigs={{
+          duration: 200,
+        }}
+      >
+        <BottomSheetView>
+          <BottomSheetFlatList
+            data={selectedProductBottomSheet.sizes || []}
+            keyExtractor={(_, index) => 'size-' + index}
+            contentContainerStyle={{ paddingHorizontal: 20, gap: 10 }}
+            renderItem={({ item }, index) => (
+              <CartAdd
+                product={{
+                  id: selectedProductBottomSheet.id,
+                  name: selectedProductBottomSheet.name,
+                  image: selectedProductBottomSheet.image,
+                  price: item.price,
+                  size: item.label,
+                }}
+              />
+            )}
+          />
+        </BottomSheetView>
+      </BottomSheet>
+    </GestureHandlerRootView>
   );
 };
 
 const styles = StyleSheet.create({
-  container:{
-    paddingBottom: 50
+  container: {
+    paddingBottom: 50,
   },
   categoryCont: {
     backgroundColor: colors.inputBackground,
