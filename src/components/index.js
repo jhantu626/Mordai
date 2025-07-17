@@ -11,6 +11,7 @@ import BannerCard from './Cards/BannerCard';
 import ProductCard from './Cards/ProductCard';
 import CartItem from './Cards/CartItem';
 import CartAdd from './Cards/CartAdd';
+import CategoryCard from './Cards/CategoryCard';
 
 // Dividers
 import DottedDivider from './Dividers/DottedDivider';
@@ -25,4 +26,5 @@ export {
   DottedDivider,
   CartItem,
   CartAdd,
+  CategoryCard,
 };

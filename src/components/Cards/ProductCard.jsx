@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: '100%',
-    height: 150,
+    height: 120,
     borderRadius: 10,
     backgroundColor: colors.productImageBackgorund,
     justifyContent: 'center',
@@ -133,30 +133,31 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   image: {
-    width: 140,
-    height: 140,
+    width: 100,
+    height: 100,
     resizeMode: 'contain',
   },
   priceContainer: {
     flexDirection: 'row',
     gap: 15,
-    marginVertical: 10,
+    // marginVertical: 10,
+    marginTop: 10,
     alignItems: 'center',
   },
   priceText: {
-    fontFamily: fonts.semiBold,
-    fontSize: 16,
+    fontFamily: fonts.medium,
+    fontSize: 14,
   },
   originalPriceText: {
     fontFamily: fonts.semiBold,
     fontStyle: 'italic',
-    fontSize: 15,
+    fontSize: 13,
     color: colors.borderColor,
     textDecorationLine: 'line-through',
   },
   productName: {
-    fontSize: 16,
-    fontFamily: fonts.semiBold,
+    fontSize: 14,
+    fontFamily: fonts.medium,
   },
   addToCartBtn: {
     backgroundColor: colors.primary,
