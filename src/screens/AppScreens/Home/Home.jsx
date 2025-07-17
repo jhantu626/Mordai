@@ -126,7 +126,6 @@ const product = [
   },
 ];
 
-
 const category = [
   {
     id: 1,
@@ -200,6 +199,9 @@ const category = [
   },
 ];
 
+const { width } = Dimensions.get('window');
+
+
 const Home = () => {
   const [banners, setBanners] = useState([
     {
@@ -240,7 +242,7 @@ const Home = () => {
       image: require('./../../../../assets/images/banner3.png'),
     },
   ]);
-  const { width } = Dimensions.get('screen');
+  // const { width } = Dimensions.get('screen');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const [selectedProductBottomSheet, setSelectedProductBottomSheet] = useState(
@@ -442,26 +444,30 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 4,
   },
-  footerCOntainerStyle: {
+  footerContainerStyle: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 8,
   },
   categoryContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
-    // justifyContent: 'space-between',
     alignItems: 'center',
+    marginHorizontal: -4,
   },
   footerContent: {
     justifyContent: 'center',
-    gap: 15,
+    gap: 6, 
+    paddingTop: 8,
+    marginTop: 10
   },
   categoryTitle: {
-    fontSize: 16,
+    fontSize: width < 400 ? 14 : 16,
     fontFamily: fonts.semiBold,
+    paddingHorizontal: 8,
   },
   poweredBy: {
     // marginTop: 10,
@@ -474,12 +480,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     opacity: 0.5,
   },
-  poweredByText:{
+  poweredByText: {
     fontSize: 16,
     fontFamily: fonts.medium,
     opacity: 0.5,
-    marginTop: -55
-  }
+    marginTop: -55,
+  },
 });
 
 export default Home;
