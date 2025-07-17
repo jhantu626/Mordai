@@ -21,6 +21,7 @@ import { colors } from '../../../utils/colors';
 import { fonts } from '../../../utils/fonts';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, {
+  BottomSheetBackdrop,
   BottomSheetFlatList,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
@@ -144,6 +145,19 @@ const Home = () => {
     bottomSheetRef.current?.expand();
   };
 
+  const renderBackdrop = useMemo(
+    () => props =>
+      (
+        <BottomSheetBackdrop
+          {...props}
+          disappearsOnIndex={-1}
+          appearsOnIndex={0}
+          opacity={0.8}
+        />
+      ),
+    [],
+  );
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Layout>
@@ -239,8 +253,9 @@ const Home = () => {
         dynam
         enableOverDrag
         animationConfigs={{
-          duration: 200,
+          duration: 400,
         }}
+        backdropComponent={renderBackdrop}
       >
         <BottomSheetView>
           <BottomSheetFlatList
