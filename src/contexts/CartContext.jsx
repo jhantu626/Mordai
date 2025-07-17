@@ -93,7 +93,7 @@ const CartProvider = ({ children }) => {
         carts,
         addToCart,
         removeFromCart,
-        numOfCarts: carts.reduce((sum, item) => sum + item.quantity, 0),
+        numOfCarts: carts.length,
         getQuiantity,
       }}
     >
