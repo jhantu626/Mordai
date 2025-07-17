@@ -13,6 +13,7 @@ import Layout from '../../Layout/Layout';
 import {
   BannerCard,
   CartAdd,
+  CategoryCard,
   PrimaryHeader,
   ProductCard,
   SearchInput,
@@ -25,7 +26,6 @@ import BottomSheet, {
   BottomSheetFlatList,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
-import Entypo from 'react-native-vector-icons/Entypo';
 
 const categories = ['All', 'Fruits', 'Vegetables', 'Juice', 'Dairy', 'Bakery'];
 
@@ -39,9 +39,6 @@ const product = [
     ],
     discount: '10% Off',
     category: 'Juices',
-    orderCode: '12345625',
-    purchaseDate: '31 May 2023',
-    paymentMethod: 'Online payment',
     image: require('./../../../../assets/images/product1.png'),
   },
   {
@@ -61,9 +58,6 @@ const product = [
     sizes: [{ label: '1kg', price: 50.0, originalPrice: 55.0 }],
     discount: '10% Off',
     category: 'Fruits',
-    orderCode: '12345678',
-    purchaseDate: '31 May 2023',
-    paymentMethod: 'Online payment',
     image: require('./../../../../assets/images/product3.png'),
   },
   {
@@ -71,9 +65,6 @@ const product = [
     name: 'Black Grape',
     sizes: [{ label: '500g', price: 30.0, originalPrice: 35.0 }],
     category: 'Fruits',
-    orderCode: '12345678',
-    purchaseDate: '31 May 2023',
-    paymentMethod: 'Online payment',
     image: require('./../../../../assets/images/product4.png'),
   },
   {
@@ -84,10 +75,80 @@ const product = [
       { label: '2 pcs', price: 55.0, originalPrice: 70.0 },
     ],
     category: 'Fruits',
-    orderCode: '12344672',
-    purchaseDate: '31 May 2023',
-    paymentMethod: 'Online payment',
     image: require('./../../../../assets/images/product1.png'),
+  },
+];
+
+const category = [
+  {
+    id: 1,
+    name: 'Cart 1',
+    image: require('./../../../../assets/images/cat1.png'),
+  },
+  {
+    id: 2,
+    name: 'Cart 2',
+    image: require('./../../../../assets/images/cat2.png'),
+  },
+  {
+    id: 3,
+    name: 'Cart 3',
+    image: require('./../../../../assets/images/cat3.png'),
+  },
+  {
+    id: 4,
+    name: 'Cart 4',
+    image: require('./../../../../assets/images/cart4.png'),
+  },
+  {
+    id: 5,
+    name: 'Cart 5',
+    image: require('./../../../../assets/images/cat1.png'),
+  },
+  {
+    id: 6,
+    name: 'Cart 6',
+    image: require('./../../../../assets/images/cat2.png'),
+  },
+  {
+    id: 7,
+    name: 'Cart 7',
+    image: require('./../../../../assets/images/cat3.png'),
+  },
+  {
+    id: 8,
+    name: 'Cart 8',
+    image: require('./../../../../assets/images/cart4.png'),
+  },
+  {
+    id: 9,
+    name: 'Cart 9',
+    image: require('./../../../../assets/images/cat1.png'),
+  },
+  {
+    id: 10,
+    name: 'Cart 10',
+    image: require('./../../../../assets/images/cat2.png'),
+  },
+  {
+    id: 15,
+    name: 'Cart 15',
+    image: require('./../../../../assets/images/cat3.png'),
+  },
+  {
+    id: 18,
+    name: 'Cart 18',
+    image: require('./../../../../assets/images/cat2.png'),
+  },
+  {
+    id: 19,
+    name: 'Cart 19',
+    image: require('./../../../../assets/images/cat3.png'),
+  },
+  {
+    id: 20,
+    name: 'Cart 20',
+    image: require('./../../../../assets/images/cart4.png'),
   },
 ];
 
@@ -99,6 +160,7 @@ const Home = () => {
       subtitle: 'Cold Process Organic',
       offer: 'BUY 1 GET 1 FREE',
       buttonText: 'Shop Now',
+      category: 'Fruits',
       backgroundColor: '#fef07a',
       image: require('./../../../../assets/images/straw.png'),
     },
@@ -243,6 +305,29 @@ const Home = () => {
             />
           )}
           showsVerticalScrollIndicator={false}
+          ListFooterComponent={() => (
+            <View style={styles.footerContent}>
+              <Text style={styles.categoryTitle}>Shop by category</Text>
+              <View style={styles.categoryContainer}>
+                {category.map((cat, index) => {
+                  return (
+                    <CategoryCard
+                      key={index + 'category-card'}
+                      category={cat}
+                    />
+                  );
+                })}
+              </View>
+              <View style={styles.poweredBy}>
+                <Image
+                  style={styles.bottomImage}
+                  source={require('./../../../../assets/images/bottom.png')}
+                />
+                <Text style={styles.poweredByText}>Powered By মড়াই</Text>
+              </View>
+            </View>
+          )}
+          // ListFooterComponentStyle={{ marginTop: 20 }}
         />
       </Layout>
       <BottomSheet
@@ -253,7 +338,7 @@ const Home = () => {
         dynam
         enableOverDrag
         animationConfigs={{
-          duration: 400,
+          duration: 300,
         }}
         backdropComponent={renderBackdrop}
       >
@@ -282,7 +367,8 @@ const Home = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: 50,
+    // paddingBottom: 50,
+    // paddingBottom: 10,
   },
   categoryCont: {
     backgroundColor: colors.inputBackground,
@@ -308,6 +394,44 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 4,
   },
+  footerCOntainerStyle: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  categoryContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    // justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  footerContent: {
+    justifyContent: 'center',
+    gap: 15,
+  },
+  categoryTitle: {
+    fontSize: 16,
+    fontFamily: fonts.semiBold,
+  },
+  poweredBy: {
+    // marginTop: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bottomImage: {
+    width: 300,
+    height: 300,
+    resizeMode: 'contain',
+    opacity: 0.5,
+  },
+  poweredByText:{
+    fontSize: 16,
+    fontFamily: fonts.medium,
+    opacity: 0.5,
+    marginTop: -55
+  }
 });
 
 export default Home;
