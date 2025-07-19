@@ -31,29 +31,39 @@ const ExploreNewCategory = () => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ gap: 10,marginTop:10 }}
+          contentContainerStyle={{ gap: 10, marginTop: 10 }}
         >
-          {[1, 2, 3, 4, 5].map((item, index) => (
-            <LinearGradient
-              key={index + 'category-item'}
-              colors={['#d9cbe6', '#d1b8d9']}
-            //   colors={['#90EE90', '#73C973']}
-              style={styles.imageCOntainer}
-            >
-              <TouchableOpacity
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
+          {[
+            'Fruits',
+            'Vegetables',
+            'Dairy',
+            'Bread & Bakery',
+            'Meat & Fish',
+          ].map((item, index) => (
+            <View key={index + 'category-item'}>
+              <LinearGradient
+                colors={['#d9cbe6', '#d1b8d9']}
+                //   colors={['#90EE90', '#73C973']}
+                style={styles.imageCOntainer}
               >
-                <Image
-                  style={styles.categoryImage}
-                  source={require('./../../../assets/images/cat1.png')}
-                />
-              </TouchableOpacity>
-            </LinearGradient>
+                <TouchableOpacity
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Image
+                    style={styles.categoryImage}
+                    source={require('./../../../assets/images/cat1.png')}
+                  />
+                </TouchableOpacity>
+              </LinearGradient>
+              <Text style={styles.text} numberOfLines={2}>
+                {item}
+              </Text>
+            </View>
           ))}
         </ScrollView>
       </View>
@@ -92,5 +102,12 @@ const styles = StyleSheet.create({
     width: '80%',
     height: '80%',
     resizeMode: 'contain',
+  },
+  text: {
+    fontSize: 12,
+    fontFamily: fonts.semiBold,
+    textAlign: 'center',
+    marginTop: 5,
+    width: width/3-50
   },
 });
