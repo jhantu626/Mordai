@@ -9,17 +9,24 @@ import React from 'react';
 import { colors } from '../../utils/colors';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { fonts } from '../../utils/fonts';
+import { useNavigation } from '@react-navigation/native';
 
-const SearchInput = () => {
+const SearchInput = ({ type = 'input', screen }) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <TextInput
+        onPress={() => {
+          if (type === 'navigation') {
+            navigation.navigate(screen);
+          }
+        }}
         placeholder="Search"
         style={styles.textInput}
         selectionColor={'#000'}
         // multiline={true}
         placeholderTextColor={'#00000060'}
-        enterKeyHint='done'
+        enterKeyHint="done"
       />
       <TouchableOpacity>
         <Octicons name="search" size={20} color="black" />
