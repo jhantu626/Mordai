@@ -11,7 +11,7 @@ import Layout from '../../Layout/Layout';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { fonts } from '../../../utils/fonts';
 import { colors } from '../../../utils/colors';
-import { ExploreNewCategory } from '../../../components';
+import { EmptyShopping, ExploreNewCategory } from '../../../components';
 import { useNavigation } from '@react-navigation/native';
 
 const Search = () => {
@@ -36,8 +36,12 @@ const Search = () => {
           />
         </View>
 
+        <View style={{ marginTop: 20 }}>
+          <EmptyShopping />
+        </View>
+
         {/* Categories */}
-        <View style={{ marginTop: 0 }}>
+        <View style={{ marginTop: 20 }}>
           <ExploreNewCategory />
         </View>
       </Layout>

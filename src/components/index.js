@@ -13,6 +13,7 @@ import CartItem from './Cards/CartItem';
 import CartAdd from './Cards/CartAdd';
 import CategoryCard from './Cards/CategoryCard';
 import ExploreNewCategory from './Cards/ExploreNewCategory';
+import EmptyShopping from './Cards/EmptyShopping';
 
 // Dividers
 import DottedDivider from './Dividers/DottedDivider';
@@ -28,5 +29,6 @@ export {
   CartItem,
   CartAdd,
   CategoryCard,
-  ExploreNewCategory
+  ExploreNewCategory,
+  EmptyShopping,
 };
