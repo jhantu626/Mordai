@@ -12,6 +12,7 @@ import ProductCard from './Cards/ProductCard';
 import CartItem from './Cards/CartItem';
 import CartAdd from './Cards/CartAdd';
 import CategoryCard from './Cards/CategoryCard';
+import ExploreNewCategory from './Cards/ExploreNewCategory';
 
 // Dividers
 import DottedDivider from './Dividers/DottedDivider';
@@ -27,4 +28,5 @@ export {
   CartItem,
   CartAdd,
   CategoryCard,
+  ExploreNewCategory
 };

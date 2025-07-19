@@ -44,7 +44,7 @@ const App = () => {
     return (
       <Stack.Navigator
         initialRouteName="Home"
-        screenOptions={{ headerShown: false, animation: 'slide_from_right' }}
+        screenOptions={{ headerShown: false, animation: 'slide_from_bottom' }}
       >
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen
