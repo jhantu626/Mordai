@@ -18,7 +18,7 @@ const SearchInput = () => {
         style={styles.textInput}
         selectionColor={'#000'}
         // multiline={true}
-        placeholderTextColor={'#000'}
+        placeholderTextColor={'#00000060'}
         enterKeyHint='done'
       />
       <TouchableOpacity>
