@@ -26,7 +26,7 @@ const ProductCard = ({ product, openBottomSheet }) => {
           ₹{product.sizes[0].originalPrice}
         </Text>
       </View>
-      <Text style={styles.weightText}>1 KG</Text>
+      <Text style={styles.weightText}>{product.sizes[0].label}</Text>
       <Text style={styles.productName}>{product.name}</Text>
       {product.sizes.length > 1 ? (
         <TouchableOpacity
