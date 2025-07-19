@@ -6,7 +6,7 @@ import { fonts } from '../../utils/fonts';
 const { width } = Dimensions.get('window');
 
 
-const CARD_CONTAINER_WIDTH = width / 4-16; 
+const CARD_CONTAINER_WIDTH = width / 4-11; 
 const CARD_IMAGE_SIZE = CARD_CONTAINER_WIDTH * 0.8;
 
 const CategoryCard = ({ category }) => {
