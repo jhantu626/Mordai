@@ -17,8 +17,9 @@ const SearchInput = () => {
         placeholder="Search"
         style={styles.textInput}
         selectionColor={'#000'}
-        multiline={true}
+        // multiline={true}
         placeholderTextColor={'#000'}
+        enterKeyHint='done'
       />
       <TouchableOpacity>
         <Octicons name="search" size={20} color="black" />
@@ -30,7 +31,7 @@ const SearchInput = () => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    minHeight: 50,
+    height: 50,
     backgroundColor: colors.inputBackground,
     borderRadius: 10,
     paddingHorizontal: 20,
@@ -41,15 +42,14 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-
     elevation: 0.5,
   },
   textInput: {
     flex: 1,
     fontSize: 14,
     fontFamily: fonts.medium,
-    flexWrap: 'wrap',
-    height: 'auto',
+    // flexWrap: 'wrap',
+    height: '100%',
   },
 });
 
