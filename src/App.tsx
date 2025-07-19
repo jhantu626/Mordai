@@ -52,12 +52,11 @@ const App = () => {
           component={Search}
           options={{
             presentation: 'modal',
-            animation: 'slide_from_bottom',
             transitionSpec: {
               open: {
                 animation: 'timing',
                 config: {
-                  duration: 400,
+                  duration: 200,
                 },
               },
               close: {
@@ -65,7 +64,7 @@ const App = () => {
                 config: {
                   duration: 400,
                 },
-              }
+              },
             },
           }}
         />

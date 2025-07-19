@@ -1,4 +1,5 @@
 import {
+  Keyboard,
   StyleSheet,
   Text,
   TextInput,
@@ -18,6 +19,7 @@ const SearchInput = ({ type = 'input', screen }) => {
       <TextInput
         onPress={() => {
           if (type === 'navigation') {
+            Keyboard.dismiss();
             navigation.navigate(screen);
           }
         }}
