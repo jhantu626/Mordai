@@ -5,7 +5,15 @@ import { colors } from './utils/colors';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { Accounts, Cart, Home, LoginSignup, Order, Otp } from './screens';
+import {
+  Accounts,
+  Cart,
+  Home,
+  LoginSignup,
+  Order,
+  Otp,
+  Search,
+} from './screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SplashScreen from 'react-native-splash-screen';
@@ -32,6 +40,39 @@ const App = () => {
     </Stack.Navigator>
   );
 
+  const HomeStack = () => {
+    return (
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{ headerShown: false, animation: 'slide_from_right' }}
+      >
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen
+          name="Search"
+          component={Search}
+          options={{
+            presentation: 'modal',
+            animation: 'slide_from_bottom',
+            transitionSpec: {
+              open: {
+                animation: 'timing',
+                config: {
+                  duration: 400,
+                },
+              },
+              close: {
+                animation: 'timing',
+                config: {
+                  duration: 400,
+                },
+              }
+            },
+          }}
+        />
+      </Stack.Navigator>
+    );
+  };
+
   const AppStack = () => {
     const { numOfCarts } = useCartContext();
     return (
@@ -54,7 +95,7 @@ const App = () => {
       >
         <Tab.Screen
           name="Home"
-          component={Home}
+          component={HomeStack}
           options={{
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="home" size={24} color={color} />
@@ -68,7 +109,7 @@ const App = () => {
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="add-shopping-cart" size={24} color={color} />
             ),
-            tabBarBadge: numOfCarts>0? numOfCarts: 0,
+            tabBarBadge: numOfCarts > 0 ? numOfCarts : 0,
             tabBarBadgeStyle: {
               backgroundColor: colors.primary,
               color: '#fff',

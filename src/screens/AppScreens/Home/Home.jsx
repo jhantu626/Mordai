@@ -280,7 +280,7 @@ const Home = () => {
           keyExtractor={(item, index) => index + 'product'}
           ListHeaderComponent={() => (
             <View style={{ marginTop: 20, gap: 10 }}>
-              <SearchInput />
+              <SearchInput type='navigation' screen={'Search'}/>
               <ScrollView
                 horizontal
                 pagingEnabled
