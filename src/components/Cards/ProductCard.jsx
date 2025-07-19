@@ -22,9 +22,11 @@ const ProductCard = ({ product, openBottomSheet }) => {
       </View>
       <View style={styles.priceContainer}>
         <Text style={styles.priceText}>₹{product.sizes[0].price}</Text>
-        <Text style={styles.originalPriceText}>
-          ₹{product.sizes[0].originalPrice}
-        </Text>
+        {product.sizes[0].originalPrice > 0 && (
+          <Text style={styles.originalPriceText}>
+            ₹{product.sizes[0].originalPrice}
+          </Text>
+        )}
       </View>
       <Text style={styles.weightText}>{product.sizes[0].label}</Text>
       <Text style={styles.productName}>{product.name}</Text>
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.semiBold,
     fontStyle: 'italic',
     fontSize: 13,
-    color: colors.borderColor,
+    color: '#FF000080',
     textDecorationLine: 'line-through',
   },
   productName: {
