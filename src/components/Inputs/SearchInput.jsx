@@ -1,5 +1,6 @@
 import {
   Keyboard,
+  Pressable,
   StyleSheet,
   Text,
   TextInput,
@@ -15,7 +16,9 @@ import { useNavigation } from '@react-navigation/native';
 const SearchInput = ({ type = 'input', screen }) => {
   const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <Pressable onPress={()=>{
+      navigation.navigate('Search');
+    }} style={styles.container}>
       <TextInput
         onPress={() => {
           if (type === 'navigation') {
@@ -23,6 +26,7 @@ const SearchInput = ({ type = 'input', screen }) => {
             navigation.navigate(screen);
           }
         }}
+        editable={false}
         placeholder="Search"
         style={styles.textInput}
         selectionColor={'#000'}
@@ -33,7 +37,7 @@ const SearchInput = ({ type = 'input', screen }) => {
       <TouchableOpacity>
         <Octicons name="search" size={20} color="black" />
       </TouchableOpacity>
-    </View>
+    </Pressable>
   );
 };
 
