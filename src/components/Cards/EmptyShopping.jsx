@@ -1,6 +1,7 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { fonts } from '../../utils/fonts';
+import { colors } from '../../utils/colors';
 
 const EmptyShopping = () => {
   return (
@@ -13,6 +14,9 @@ const EmptyShopping = () => {
       <Text style={styles.subTitleText}>
         Enjoy searching for the best deals
       </Text>
+      <TouchableOpacity style={styles.btnContainer}>
+        <Text style={styles.btnText}>Browse Products</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -32,7 +36,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: fonts.semiBold,
     color: '#00000080',
-    marginTop: 5
+    marginTop: 5,
   },
   subTitleText: {
     fontSize: 12,
@@ -40,6 +44,20 @@ const styles = StyleSheet.create({
     color: '#00000060',
     marginTop: -5,
   },
+  btnContainer: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginVertical: 20
+  },
+  btnText:{
+    fontSize: 14,
+    fontFamily: fonts.semiBold,
+    color: colors.inputBackground
+  }
 });
 
 export default EmptyShopping;
