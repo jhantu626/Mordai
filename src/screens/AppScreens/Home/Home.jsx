@@ -290,7 +290,7 @@ const Home = () => {
                   return (
                     <View
                       style={{
-                        width: width - 40,
+                        width: width - 20,
                       }}
                       key={index}
                     >

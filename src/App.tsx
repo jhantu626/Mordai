@@ -51,12 +51,12 @@ const App = () => {
           name="Search"
           component={Search}
           options={{
-            presentation: 'modal',
+            
             transitionSpec: {
               open: {
                 animation: 'timing',
                 config: {
-                  duration: 200,
+                  duration: 400,
                 },
               },
               close: {
@@ -99,6 +99,7 @@ const App = () => {
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="home" size={24} color={color} />
             ),
+            tabBarHideOnKeyboard: true,
           }}
         />
         <Tab.Screen
