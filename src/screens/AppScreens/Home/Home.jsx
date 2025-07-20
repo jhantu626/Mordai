@@ -264,7 +264,7 @@ const Home = () => {
           {...props}
           disappearsOnIndex={-1}
           appearsOnIndex={0}
-          opacity={0.8}
+          opacity={0.5}
         />
       ),
     [],
