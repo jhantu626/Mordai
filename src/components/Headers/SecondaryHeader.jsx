@@ -2,11 +2,16 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { fonts } from '../../utils/fonts';
+import { useNavigation } from '@react-navigation/native';
 
 const SecondaryHeader = ({ title = 'Cart' }) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backBtn}>
+      <TouchableOpacity
+        style={styles.backBtn}
+        onPress={() => navigation.goBack()}
+      >
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
       <Text style={styles.titleText}>{title}</Text>
