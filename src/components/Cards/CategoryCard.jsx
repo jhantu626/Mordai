@@ -7,7 +7,7 @@ const { width } = Dimensions.get('window');
 
 
 const CARD_CONTAINER_WIDTH = width / 4-11; 
-const CARD_IMAGE_SIZE = CARD_CONTAINER_WIDTH * 0.8;
+const CARD_IMAGE_SIZE = CARD_CONTAINER_WIDTH * 0.95;
 
 const CategoryCard = ({ category }) => {
   return (
