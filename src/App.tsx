@@ -10,8 +10,8 @@ import {
   Cart,
   Home,
   LoginSignup,
-  Order,
   Otp,
+  Products,
   Search,
 } from './screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -51,7 +51,6 @@ const App = () => {
           name="Search"
           component={Search}
           options={{
-            
             transitionSpec: {
               open: {
                 animation: 'timing',
@@ -76,7 +75,7 @@ const App = () => {
     const { numOfCarts } = useCartContext();
     return (
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName="Shop"
         backBehavior="fullHistory"
         screenOptions={{
           headerShown: false,
@@ -102,6 +101,17 @@ const App = () => {
             tabBarHideOnKeyboard: true,
           }}
         />
+
+        <Tab.Screen
+          name="Shop"
+          component={Products}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name="shopping-bag" size={24} color={color} />
+            ),
+            tabBarHideOnKeyboard: true,
+          }}
+        />
         <Tab.Screen
           name="Cart"
           component={Cart}
@@ -114,15 +124,6 @@ const App = () => {
               backgroundColor: colors.primary,
               color: '#fff',
             },
-          }}
-        />
-        <Tab.Screen
-          name="Order"
-          component={Order}
-          options={{
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons name="shopping-bag" size={24} color={color} />
-            ),
           }}
         />
         <Tab.Screen
