@@ -52,30 +52,32 @@ const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = ({ item }) => {
-    setCarts((prevCarts) => {
+    setCarts(prevCarts => {
       // Find the cart item matching both id and size
       const cartItem = prevCarts.find(
-        (cartItem) => cartItem.id === item.id && cartItem.size === item.size
+        cartItem => cartItem.id === item.id && cartItem.size === item.size,
       );
 
       // If item is not found, return the previous cart unchanged
       if (!cartItem) {
-        console.warn(`Item with id ${item.id} and size ${item.size} not found in cart.`);
+        console.warn(
+          `Item with id ${item.id} and size ${item.size} not found in cart.`,
+        );
         return prevCarts;
       }
 
       // If quantity is 1, remove the item from the cart
       if (cartItem.quantity === 1) {
         return prevCarts.filter(
-          (cartItem) => !(cartItem.id === item.id && cartItem.size === item.size)
+          cartItem => !(cartItem.id === item.id && cartItem.size === item.size),
         );
       }
 
       // Otherwise, decrease the quantity by 1
-      return prevCarts.map((cartItem) =>
+      return prevCarts.map(cartItem =>
         cartItem.id === item.id && cartItem.size === item.size
           ? { ...cartItem, quantity: cartItem.quantity - 1 }
-          : cartItem
+          : cartItem,
       );
     });
   };
@@ -87,6 +89,13 @@ const CartProvider = ({ children }) => {
     return cart ? cart.quantity : 0;
   };
 
+  const isCartPresent = ({ id, size }) => {
+    const cart = carts.some(
+      cartItem => cartItem.id === id && cartItem.size === size,
+    );
+    return cart ? true : false;
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -95,6 +104,7 @@ const CartProvider = ({ children }) => {
         removeFromCart,
         numOfCarts: carts.length,
         getQuiantity,
+        isCartPresent
       }}
     >
       {children}
