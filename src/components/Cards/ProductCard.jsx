@@ -1,17 +1,33 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, { useEffect } from 'react';
 import { colors } from '../../utils/colors';
 import { fonts } from '../../utils/fonts';
 import { useCartContext } from '../../contexts/CartContext';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { useNavigation } from '@react-navigation/native';
 
 const ProductCard = ({ product, openBottomSheet }) => {
   const { carts, addToCart, getQuiantity, removeFromCart } = useCartContext();
 
   const hasProductInCart = carts.some(cart => cart.id === product.id);
 
+  const navigation = useNavigation();
+
   return (
-    <View style={styles.container}>
+    <Pressable
+      style={styles.container}
+      onPress={() => {
+        navigation.navigate('ProductDetails', { product: product });
+        console.log(product);
+      }}
+    >
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={product.image} />
         {product.hasOwnProperty('discount') && (
@@ -100,7 +116,7 @@ const ProductCard = ({ product, openBottomSheet }) => {
           <Text style={styles.addToCartText}>Add To Cart</Text>
         </TouchableOpacity>
       )}
-    </View>
+    </Pressable>
   );
 };
 
