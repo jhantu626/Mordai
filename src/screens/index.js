@@ -10,6 +10,7 @@ import Otp from './AuthScreens/Otp';
 import Home from './AppScreens/Home/Home';
 import Search from './AppScreens/Home/Search';
 import Products from './AppScreens/Products/Products';
+import ProductDetails from './AppScreens/Products/ProductDetails';
 
 // Cart
 import Cart from './AppScreens/Cart/Cart';
@@ -30,4 +31,5 @@ export {
   Accounts,
   Search,
   Products,
+  ProductDetails
 };

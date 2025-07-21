@@ -1,6 +1,7 @@
 import {
   FlatList,
   KeyboardAvoidingView,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -63,13 +64,24 @@ const Products = () => {
             >
               <Ionicons name="chevron-back" size={20} color="#00000080" />
             </TouchableOpacity>
-            <TextInput
-              placeholder="Search"
-              style={styles.searchInput}
-              selectionColor={'#000'}
-              placeholderTextColor={'#00000080'}
-              textAlignVertical="center"
-            />
+            <Pressable
+              style={styles.searchInputContainer}
+              onPress={() => {
+                navigation.navigate('Search');
+              }}
+            >
+              <TextInput
+                onPress={() => {
+                  navigation.navigate('Search');
+                }}
+                placeholder="Search"
+                style={styles.searchInput}
+                selectionColor={'#000'}
+                placeholderTextColor={'#00000080'}
+                textAlignVertical="center"
+                editable={false}
+              />
+            </Pressable>
           </View>
           {/* Filter Container */}
           <ScrollView
@@ -152,6 +164,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 10,
+  },
+  searchInputContainer: {
+    flex: 1,
   },
   searchInput: {
     flex: 1,

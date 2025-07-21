@@ -15,6 +15,7 @@ import CategoryCard from './Cards/CategoryCard';
 import ExploreNewCategory from './Cards/ExploreNewCategory';
 import EmptyShopping from './Cards/EmptyShopping';
 import PopularProducts from './Cards/PopularProducts';
+import ReletedProduct from './Cards/ReletedProduct';
 
 // Dividers
 import DottedDivider from './Dividers/DottedDivider';
@@ -32,5 +33,6 @@ export {
   CategoryCard,
   ExploreNewCategory,
   EmptyShopping,
-  PopularProducts
+  PopularProducts,
+  ReletedProduct
 };

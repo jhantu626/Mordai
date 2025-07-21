@@ -11,6 +11,7 @@ import {
   Home,
   LoginSignup,
   Otp,
+  ProductDetails,
   Products,
   Search,
 } from './screens';
@@ -67,6 +68,39 @@ const App = () => {
             },
           }}
         />
+        <Stack.Screen name="ProductDetails" component={ProductDetails} />
+      </Stack.Navigator>
+    );
+  };
+
+  const ShopStack = () => {
+    return (
+      <Stack.Navigator
+        initialRouteName="Shop"
+        screenOptions={{ headerShown: false, animation: 'slide_from_bottom' }}
+      >
+        <Stack.Screen name="Shop" component={Products} />
+        <Stack.Screen
+          name="Search"
+          component={Search}
+          options={{
+            transitionSpec: {
+              open: {
+                animation: 'timing',
+                config: {
+                  duration: 400,
+                },
+              },
+              close: {
+                animation: 'timing',
+                config: {
+                  duration: 400,
+                },
+              },
+            },
+          }}
+        />
+        <Stack.Screen name="ProductDetails" component={ProductDetails} />
       </Stack.Navigator>
     );
   };
@@ -75,7 +109,7 @@ const App = () => {
     const { numOfCarts } = useCartContext();
     return (
       <Tab.Navigator
-        initialRouteName="Shop"
+        initialRouteName="Home"
         backBehavior="fullHistory"
         screenOptions={{
           headerShown: false,
@@ -104,7 +138,7 @@ const App = () => {
 
         <Tab.Screen
           name="Shop"
-          component={Products}
+          component={ShopStack}
           options={{
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="shopping-bag" size={24} color={color} />
