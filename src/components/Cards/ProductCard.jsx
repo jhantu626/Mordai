@@ -29,8 +29,8 @@ const ProductCard = ({ product, openBottomSheet }) => {
       }}
     >
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={product.image} />
-        {product.hasOwnProperty('discount') && (
+        <Image style={styles.image} source={{ uri: product?.image }} />
+        {product.hasOwnProperty('discount') && product.discount && (
           <View style={styles.discountContainer}>
             <Text style={styles.discountText}>{product.discount}</Text>
           </View>
@@ -45,7 +45,11 @@ const ProductCard = ({ product, openBottomSheet }) => {
         )}
       </View>
       <Text style={styles.weightText}>{product.sizes[0].label}</Text>
-      <Text style={styles.productName}>{product.name}</Text>
+      <Text style={styles.productName}>
+        {product.name.length > 18
+          ? product.name.slice(0, 18) + '...'
+          : product.name}
+      </Text>
       {product.sizes.length > 1 ? (
         <TouchableOpacity
           style={styles.addToCartBtn}
