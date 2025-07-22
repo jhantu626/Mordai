@@ -20,6 +20,9 @@ import ReletedProduct from './Cards/ReletedProduct';
 // Dividers
 import DottedDivider from './Dividers/DottedDivider';
 
+// Shimmer
+import ProductCardShimmer from './Shimmers/ProductCardShimmer';
+
 export {
   DefaultInput,
   PrimaryHeader,
@@ -34,5 +37,6 @@ export {
   ExploreNewCategory,
   EmptyShopping,
   PopularProducts,
-  ReletedProduct
+  ReletedProduct,
+  ProductCardShimmer,
 };
