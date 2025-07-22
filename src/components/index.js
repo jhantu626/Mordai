@@ -24,6 +24,7 @@ import DottedDivider from './Dividers/DottedDivider';
 import ProductCardShimmer from './Shimmers/ProductCardShimmer';
 import BannerCardShimmer from './Shimmers/BannerCardShimmer';
 import CategoryShimmer from './Shimmers/CategoryShimmer';
+import CategoryCardShimmer from './Shimmers/CategoryCardShimmer';
 
 export {
   DefaultInput,
@@ -43,4 +44,5 @@ export {
   ProductCardShimmer,
   BannerCardShimmer,
   CategoryShimmer,
+  CategoryCardShimmer,
 };
