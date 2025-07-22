@@ -1,33 +1,35 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Dimensions,
+} from 'react-native';
 import React from 'react';
 import { colors } from '../../utils/colors';
 import { fonts } from '../../utils/fonts';
 
 const { width } = Dimensions.get('window');
 
-
-const CARD_CONTAINER_WIDTH = width / 4-11; 
+const CARD_CONTAINER_WIDTH = width / 4 - 11;
 const CARD_IMAGE_SIZE = CARD_CONTAINER_WIDTH * 0.95;
 
 const CategoryCard = ({ category }) => {
   return (
-    <TouchableOpacity 
-      key={category.id + "innercategory"} 
+    <TouchableOpacity
+      key={category.id + 'innercategory'}
       style={styles.container}
-      activeOpacity={0.7} 
+      activeOpacity={0.7}
     >
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
-          source={category.image}
+          source={{ uri: category.image }}
           resizeMode="contain"
         />
       </View>
-      <Text 
-        style={styles.text}
-        numberOfLines={2}
-        ellipsizeMode="tail"
-      >
+      <Text style={styles.text} numberOfLines={2} ellipsizeMode="tail">
         {category.name}
       </Text>
     </TouchableOpacity>
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 2, 
+    elevation: 2,
   },
   image: {
     width: '80%',
@@ -67,8 +69,8 @@ const styles = StyleSheet.create({
     fontSize: width < 400 ? 10 : 12,
     fontFamily: fonts.medium,
     color: colors.textPrimary,
-    lineHeight: 14, 
-    width: '100%', 
+    lineHeight: 14,
+    width: '100%',
   },
 });
 
