@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import Layout from '../../Layout/Layout';
 import {
   BannerCard,
@@ -16,6 +16,7 @@ import {
   CategoryCard,
   PrimaryHeader,
   ProductCard,
+  ProductCardShimmer,
   SearchInput,
 } from '../../../components';
 import { colors } from '../../../utils/colors';
@@ -26,105 +27,107 @@ import BottomSheet, {
   BottomSheetFlatList,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+import { productService } from '../../../services/ProductService';
+import { useFocusEffect } from '@react-navigation/native';
 
 const categories = ['All', 'Fruits', 'Vegetables', 'Juice', 'Dairy', 'Bakery'];
 
-const product = [
-  {
-    id: 1,
-    name: 'Orange Juice',
-    sizes: [
-      { label: '500ml', price: 30.0, originalPrice: 35.0 },
-      { label: '1L', price: 50.0, originalPrice: 55.0 },
-    ],
-    discount: '10% Off',
-    category: 'Juices',
-    image: require('./../../../../assets/images/product1.png'),
-  },
-  {
-    id: 2,
-    name: 'Capsicum',
-    sizes: [
-      { label: '250g', price: 15.0, originalPrice: 18.0 },
-      { label: '500g', price: 30.0, originalPrice: 35.0 },
-    ],
-    discount: '8% Off',
-    category: 'Vegetables',
-    image: require('./../../../../assets/images/product2.png'),
-  },
-  {
-    id: 3,
-    name: 'Ripe Mango',
-    sizes: [{ label: '1kg', price: 50.0, originalPrice: 55.0 }],
-    discount: '10% Off',
-    category: 'Fruits',
-    image: require('./../../../../assets/images/product3.png'),
-  },
-  {
-    id: 4,
-    name: 'Black Grape',
-    sizes: [{ label: '500g', price: 30.0, originalPrice: 35.0 }],
-    category: 'Fruits',
-    image: require('./../../../../assets/images/product4.png'),
-  },
-  {
-    id: 5,
-    name: 'Fresh Coconut',
-    sizes: [
-      { label: '1 pc', price: 30.0, originalPrice: 35.0 },
-      { label: '2 pcs', price: 55.0, originalPrice: 70.0 },
-    ],
-    category: 'Fruits',
-    image: require('./../../../../assets/images/product5.png'),
-  },
-  {
-    id: 6,
-    name: 'Carrot',
-    sizes: [
-      { label: '250g', price: 12.0, originalPrice: 15.0 },
-      { label: '500g', price: 22.0, originalPrice: 28.0 },
-    ],
-    discount: '7% Off',
-    category: 'Vegetables',
-    image: require('./../../../../assets/images/product6.png'),
-  },
-  {
-    id: 7,
-    name: 'Pineapple Juice',
-    sizes: [
-      { label: '500ml', price: 35.0, originalPrice: 40.0 },
-      { label: '1L', price: 60.0, originalPrice: 65.0 },
-    ],
-    discount: '8% Off',
-    category: 'Juices',
-    image: require('./../../../../assets/images/product7.png'),
-  },
-  {
-    id: 8,
-    name: 'Banana',
-    sizes: [{ label: '1 dozen', price: 40.0, originalPrice: 45.0 }],
-    category: 'Fruits',
-    image: require('./../../../../assets/images/product8.png'),
-  },
-  {
-    id: 9,
-    name: 'Tomato',
-    sizes: [
-      { label: '250g', price: 10.0, originalPrice: 12.0 },
-      { label: '500g', price: 18.0, originalPrice: 22.0 },
-    ],
-    discount: '5% Off',
-    category: 'Vegetables',
-    image: require('./../../../../assets/images/product9.png'),
-  },
-  {
-    id: 10,
-    name: 'Watermelon Slice',
-    sizes: [{ label: '1 slice', price: 25.0, originalPrice: 30.0 }],
-    category: 'Fruits',
-    image: require('./../../../../assets/images/product10.png'),
-  },
-];
+// const product = [
+//   {
+//     id: 1,
+//     name: 'Orange Juice',
+//     sizes: [
+//       { label: '500ml', price: 30.0, originalPrice: 35.0 },
+//       { label: '1L', price: 50.0, originalPrice: 55.0 },
+//     ],
+//     discount: '10% Off',
+//     category: 'Juices',
+//     image: require('./../../../../assets/images/product1.png'),
+//   },
+//   {
+//     id: 2,
+//     name: 'Capsicum',
+//     sizes: [
+//       { label: '250g', price: 15.0, originalPrice: 18.0 },
+//       { label: '500g', price: 30.0, originalPrice: 35.0 },
+//     ],
+//     discount: '8% Off',
+//     category: 'Vegetables',
+//     image: require('./../../../../assets/images/product2.png'),
+//   },
+//   {
+//     id: 3,
+//     name: 'Ripe Mango',
+//     sizes: [{ label: '1kg', price: 50.0, originalPrice: 55.0 }],
+//     discount: '10% Off',
+//     category: 'Fruits',
+//     image: require('./../../../../assets/images/product3.png'),
+//   },
+//   {
+//     id: 4,
+//     name: 'Black Grape',
+//     sizes: [{ label: '500g', price: 30.0, originalPrice: 35.0 }],
+//     category: 'Fruits',
+//     image: require('./../../../../assets/images/product4.png'),
+//   },
+//   {
+//     id: 5,
+//     name: 'Fresh Coconut',
+//     sizes: [
+//       { label: '1 pc', price: 30.0, originalPrice: 35.0 },
+//       { label: '2 pcs', price: 55.0, originalPrice: 70.0 },
+//     ],
+//     category: 'Fruits',
+//     image: require('./../../../../assets/images/product5.png'),
+//   },
+//   {
+//     id: 6,
+//     name: 'Carrot',
+//     sizes: [
+//       { label: '250g', price: 12.0, originalPrice: 15.0 },
+//       { label: '500g', price: 22.0, originalPrice: 28.0 },
+//     ],
+//     discount: '7% Off',
+//     category: 'Vegetables',
+//     image: require('./../../../../assets/images/product6.png'),
+//   },
+//   {
+//     id: 7,
+//     name: 'Pineapple Juice',
+//     sizes: [
+//       { label: '500ml', price: 35.0, originalPrice: 40.0 },
+//       { label: '1L', price: 60.0, originalPrice: 65.0 },
+//     ],
+//     discount: '8% Off',
+//     category: 'Juices',
+//     image: require('./../../../../assets/images/product7.png'),
+//   },
+//   {
+//     id: 8,
+//     name: 'Banana',
+//     sizes: [{ label: '1 dozen', price: 40.0, originalPrice: 45.0 }],
+//     category: 'Fruits',
+//     image: require('./../../../../assets/images/product8.png'),
+//   },
+//   {
+//     id: 9,
+//     name: 'Tomato',
+//     sizes: [
+//       { label: '250g', price: 10.0, originalPrice: 12.0 },
+//       { label: '500g', price: 18.0, originalPrice: 22.0 },
+//     ],
+//     discount: '5% Off',
+//     category: 'Vegetables',
+//     image: require('./../../../../assets/images/product9.png'),
+//   },
+//   {
+//     id: 10,
+//     name: 'Watermelon Slice',
+//     sizes: [{ label: '1 slice', price: 25.0, originalPrice: 30.0 }],
+//     category: 'Fruits',
+//     image: require('./../../../../assets/images/product10.png'),
+//   },
+// ];
 
 const category = [
   {
@@ -201,7 +204,6 @@ const category = [
 
 const { width } = Dimensions.get('window');
 
-
 const Home = () => {
   const [banners, setBanners] = useState([
     {
@@ -251,9 +253,14 @@ const Home = () => {
   // Ref
   const bottomSheetRef = useRef(null);
 
+  // State variables
+  const [product, setProduct] = useState([]);
+
+  // Loading state
+  const [isProductLoading, setIsProductLoading] = useState(true);
+
   const openBottomSheet = ({ product }) => {
     setSelectedProductBottomSheet(product);
-    console.log(product);
     bottomSheetRef.current?.expand();
   };
 
@@ -270,17 +277,43 @@ const Home = () => {
     [],
   );
 
+  const fetchProducts = async () => {
+    try {
+      setIsProductLoading(true);
+      const data = await productService.getProducts();
+      if (data?.success) {
+        const filtProduct = data?.data.filter(item => item.sizes.length > 0);
+        setProduct(filtProduct);
+        console.log("filtProduct",filtProduct);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsProductLoading(false);
+    }
+  };
+
+  const fetchBanner=async ()=>{
+    
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchProducts();
+    }, []),
+  );
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Layout>
         <PrimaryHeader />
         <FlatList
           contentContainerStyle={styles.container}
-          data={product}
+          data={isProductLoading ? [1, 2, 3, 4] : product}
           keyExtractor={(item, index) => index + 'product'}
           ListHeaderComponent={() => (
             <View style={{ marginTop: 20, gap: 10 }}>
-              <SearchInput type='navigation' screen={'Search'}/>
+              <SearchInput type="navigation" screen={'Search'} />
               <ScrollView
                 horizontal
                 pagingEnabled
@@ -347,13 +380,17 @@ const Home = () => {
           )}
           numColumns={2}
           columnWrapperStyle={styles.row}
-          renderItem={({ item }, index) => (
-            <ProductCard
-              product={item}
-              key={'product-' + index}
-              openBottomSheet={openBottomSheet}
-            />
-          )}
+          renderItem={({ item }, index) =>
+            isProductLoading ? (
+              <ProductCardShimmer />
+            ) : (
+              <ProductCard
+                product={item}
+                key={'product-' + index}
+                openBottomSheet={openBottomSheet}
+              />
+            )
+          }
           showsVerticalScrollIndicator={false}
           ListFooterComponent={() => (
             <View style={styles.footerContent}>
@@ -460,9 +497,9 @@ const styles = StyleSheet.create({
   },
   footerContent: {
     justifyContent: 'center',
-    gap: 6, 
+    gap: 6,
     paddingTop: 8,
-    marginTop: 10
+    marginTop: 10,
   },
   categoryTitle: {
     fontSize: width < 400 ? 14 : 16,
