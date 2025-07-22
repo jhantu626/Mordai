@@ -12,8 +12,11 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import Layout from '../../Layout/Layout';
 import {
   BannerCard,
+  BannerCardShimmer,
   CartAdd,
   CategoryCard,
+  CategoryCardShimmer,
+  CategoryShimmer,
   PrimaryHeader,
   ProductCard,
   ProductCardShimmer,
@@ -29,223 +32,14 @@ import BottomSheet, {
 } from '@gorhom/bottom-sheet';
 import { productService } from '../../../services/ProductService';
 import { useFocusEffect } from '@react-navigation/native';
-
-const categories = ['All', 'Fruits', 'Vegetables', 'Juice', 'Dairy', 'Bakery'];
-
-// const product = [
-//   {
-//     id: 1,
-//     name: 'Orange Juice',
-//     sizes: [
-//       { label: '500ml', price: 30.0, originalPrice: 35.0 },
-//       { label: '1L', price: 50.0, originalPrice: 55.0 },
-//     ],
-//     discount: '10% Off',
-//     category: 'Juices',
-//     image: require('./../../../../assets/images/product1.png'),
-//   },
-//   {
-//     id: 2,
-//     name: 'Capsicum',
-//     sizes: [
-//       { label: '250g', price: 15.0, originalPrice: 18.0 },
-//       { label: '500g', price: 30.0, originalPrice: 35.0 },
-//     ],
-//     discount: '8% Off',
-//     category: 'Vegetables',
-//     image: require('./../../../../assets/images/product2.png'),
-//   },
-//   {
-//     id: 3,
-//     name: 'Ripe Mango',
-//     sizes: [{ label: '1kg', price: 50.0, originalPrice: 55.0 }],
-//     discount: '10% Off',
-//     category: 'Fruits',
-//     image: require('./../../../../assets/images/product3.png'),
-//   },
-//   {
-//     id: 4,
-//     name: 'Black Grape',
-//     sizes: [{ label: '500g', price: 30.0, originalPrice: 35.0 }],
-//     category: 'Fruits',
-//     image: require('./../../../../assets/images/product4.png'),
-//   },
-//   {
-//     id: 5,
-//     name: 'Fresh Coconut',
-//     sizes: [
-//       { label: '1 pc', price: 30.0, originalPrice: 35.0 },
-//       { label: '2 pcs', price: 55.0, originalPrice: 70.0 },
-//     ],
-//     category: 'Fruits',
-//     image: require('./../../../../assets/images/product5.png'),
-//   },
-//   {
-//     id: 6,
-//     name: 'Carrot',
-//     sizes: [
-//       { label: '250g', price: 12.0, originalPrice: 15.0 },
-//       { label: '500g', price: 22.0, originalPrice: 28.0 },
-//     ],
-//     discount: '7% Off',
-//     category: 'Vegetables',
-//     image: require('./../../../../assets/images/product6.png'),
-//   },
-//   {
-//     id: 7,
-//     name: 'Pineapple Juice',
-//     sizes: [
-//       { label: '500ml', price: 35.0, originalPrice: 40.0 },
-//       { label: '1L', price: 60.0, originalPrice: 65.0 },
-//     ],
-//     discount: '8% Off',
-//     category: 'Juices',
-//     image: require('./../../../../assets/images/product7.png'),
-//   },
-//   {
-//     id: 8,
-//     name: 'Banana',
-//     sizes: [{ label: '1 dozen', price: 40.0, originalPrice: 45.0 }],
-//     category: 'Fruits',
-//     image: require('./../../../../assets/images/product8.png'),
-//   },
-//   {
-//     id: 9,
-//     name: 'Tomato',
-//     sizes: [
-//       { label: '250g', price: 10.0, originalPrice: 12.0 },
-//       { label: '500g', price: 18.0, originalPrice: 22.0 },
-//     ],
-//     discount: '5% Off',
-//     category: 'Vegetables',
-//     image: require('./../../../../assets/images/product9.png'),
-//   },
-//   {
-//     id: 10,
-//     name: 'Watermelon Slice',
-//     sizes: [{ label: '1 slice', price: 25.0, originalPrice: 30.0 }],
-//     category: 'Fruits',
-//     image: require('./../../../../assets/images/product10.png'),
-//   },
-// ];
-
-const category = [
-  {
-    id: 1,
-    name: 'Cart 1',
-    image: require('./../../../../assets/images/cat1.png'),
-  },
-  {
-    id: 2,
-    name: 'Cart 2',
-    image: require('./../../../../assets/images/cat2.png'),
-  },
-  {
-    id: 3,
-    name: 'Cart 3',
-    image: require('./../../../../assets/images/cat3.png'),
-  },
-  {
-    id: 4,
-    name: 'Cart 4',
-    image: require('./../../../../assets/images/cart4.png'),
-  },
-  {
-    id: 5,
-    name: 'Cart 5',
-    image: require('./../../../../assets/images/cat1.png'),
-  },
-  {
-    id: 6,
-    name: 'Cart 6',
-    image: require('./../../../../assets/images/cat2.png'),
-  },
-  {
-    id: 7,
-    name: 'Cart 7',
-    image: require('./../../../../assets/images/cat3.png'),
-  },
-  {
-    id: 8,
-    name: 'Cart 8',
-    image: require('./../../../../assets/images/cart4.png'),
-  },
-  {
-    id: 9,
-    name: 'Cart 9',
-    image: require('./../../../../assets/images/cat1.png'),
-  },
-  {
-    id: 10,
-    name: 'Cart 10',
-    image: require('./../../../../assets/images/cat2.png'),
-  },
-  {
-    id: 15,
-    name: 'Cart 15',
-    image: require('./../../../../assets/images/cat3.png'),
-  },
-  {
-    id: 18,
-    name: 'Cart 18',
-    image: require('./../../../../assets/images/cat2.png'),
-  },
-  {
-    id: 19,
-    name: 'Cart 19',
-    image: require('./../../../../assets/images/cat3.png'),
-  },
-  {
-    id: 20,
-    name: 'Cart 20',
-    image: require('./../../../../assets/images/cart4.png'),
-  },
-];
+import { bannerService } from '../../../services/BannerService';
+import { categoryService } from '../../../services/CategoryService';
 
 const { width } = Dimensions.get('window');
 
 const Home = () => {
-  const [banners, setBanners] = useState([
-    {
-      id: 1,
-      title: 'Savon Stories',
-      subtitle: 'Cold Process Organic',
-      offer: 'BUY 1 GET 1 FREE',
-      buttonText: 'Shop Now',
-      category: 'Fruits',
-      backgroundColor: '#fef07a',
-      image: require('./../../../../assets/images/straw.png'),
-    },
-    {
-      id: 2,
-      title: 'Fresh Farm',
-      subtitle: 'Cold Process Organic',
-      offer: '20% Off',
-      buttonText: 'Shop Now',
-      backgroundColor: '#dceccf',
-      image: require('./../../../../assets/images/banner2.png'),
-    },
-    {
-      id: 3,
-      title: 'Juicy Deals',
-      subtitle: 'Cold Pressed Juices',
-      offer: 'Flat 15% Off',
-      buttonText: 'Buy Now',
-      backgroundColor: '#ffd6a5',
-      image: require('./../../../../assets/images/banner.png'),
-    },
-    {
-      id: 4,
-      title: 'Green Basket',
-      subtitle: 'Fresh Vegetables',
-      offer: 'Buy 2 Get 1 Free',
-      buttonText: 'Explore',
-      backgroundColor: '#caffbf',
-      image: require('./../../../../assets/images/banner3.png'),
-    },
-  ]);
+  const [banners, setBanners] = useState([]);
   // const { width } = Dimensions.get('screen');
-  const [selectedCategory, setSelectedCategory] = useState('All');
 
   const [selectedProductBottomSheet, setSelectedProductBottomSheet] = useState(
     {},
@@ -255,9 +49,16 @@ const Home = () => {
 
   // State variables
   const [product, setProduct] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState({
+    id: 0,
+    name: 'All',
+  });
 
   // Loading state
   const [isProductLoading, setIsProductLoading] = useState(true);
+  const [isBannerLoading, setIsBannerLoading] = useState(true);
+  const [isCategoryLoading, setIsCategoryLoading] = useState(true);
 
   const openBottomSheet = ({ product }) => {
     setSelectedProductBottomSheet(product);
@@ -284,7 +85,7 @@ const Home = () => {
       if (data?.success) {
         const filtProduct = data?.data.filter(item => item.sizes.length > 0);
         setProduct(filtProduct);
-        console.log("filtProduct",filtProduct);
+        console.log('filtProduct', filtProduct);
       }
     } catch (error) {
       console.error(error);
@@ -293,13 +94,41 @@ const Home = () => {
     }
   };
 
-  const fetchBanner=async ()=>{
-    
-  }
+  const fetchBanner = async () => {
+    try {
+      setIsBannerLoading(true);
+      const data = await bannerService.getBanners();
+      console.log('banner', data);
+      if (data?.success) {
+        setBanners(data?.data);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsBannerLoading(false);
+    }
+  };
+
+  const fetchCategory = async () => {
+    try {
+      setIsCategoryLoading(true);
+      const data = await categoryService.getCategories();
+      console.log('category', data.category);
+      if (data?.success) {
+        setCategory([{ id: 0, name: 'All' }, ...data?.category]);
+      }
+    } catch (error) {
+      console.error(error);
+    }finally{
+      setIsCategoryLoading(false);
+    }
+  };
 
   useFocusEffect(
     useCallback(() => {
       fetchProducts();
+      fetchBanner();
+      fetchCategory();
     }, []),
   );
 
@@ -319,62 +148,80 @@ const Home = () => {
                 pagingEnabled
                 showsHorizontalScrollIndicator={false}
               >
-                {banners.map((banner, index) => {
-                  return (
-                    <View
-                      style={{
-                        width: width - 20,
-                      }}
-                      key={index}
-                    >
-                      <BannerCard banner={banner} />
-                    </View>
-                  );
-                })}
+                {isBannerLoading ? (
+                  <View
+                    style={{
+                      width: width - 20,
+                    }}
+                  >
+                    <BannerCardShimmer />
+                  </View>
+                ) : (
+                  banners.map((banner, index) => {
+                    return (
+                      <View
+                        style={{
+                          width: width - 20,
+                        }}
+                        key={index}
+                      >
+                        <BannerCard banner={banner} />
+                      </View>
+                    );
+                  })
+                )}
               </ScrollView>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <TouchableOpacity
-                  onPress={() => {
-                    setSelectedCategory(category);
-                  }}
-                  style={[
-                    styles.categoryCont,
-                    {
-                      backgroundColor: colors.primary,
-                    },
-                  ]}
-                >
-                  <Text style={[styles.categoryText, { color: '#fff' }]}>
-                    {selectedCategory}
-                  </Text>
-                </TouchableOpacity>
-                {categories.map((category, index) => {
-                  return (
-                    selectedCategory !== category && (
-                      <TouchableOpacity
-                        onPress={() => {
-                          setSelectedCategory(category);
-                        }}
-                        style={[
-                          styles.categoryCont,
-                          selectedCategory === category && {
-                            backgroundColor: colors.primary,
-                          },
-                        ]}
-                        key={'category-' + index}
-                      >
-                        <Text
+                {!isCategoryLoading && selectedCategory && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedCategory(category[0]);
+                    }}
+                    style={[
+                      styles.categoryCont,
+                      {
+                        backgroundColor: colors.primary,
+                      },
+                    ]}
+                  >
+                    <Text style={[styles.categoryText, { color: '#fff' }]}>
+                      {selectedCategory?.name}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                {isCategoryLoading ? (
+                  <CategoryShimmer count={5} />
+                ) : (
+                  category.map((cat, index) => {
+                    return (
+                      selectedCategory?.id !== cat.id && (
+                        <TouchableOpacity
+                          onPress={() => {
+                            setSelectedCategory(cat);
+                          }}
                           style={[
-                            styles.categoryText,
-                            selectedCategory === category && { color: '#fff' },
+                            styles.categoryCont,
+                            selectedCategory?.id === cat.id && {
+                              backgroundColor: colors.primary,
+                            },
                           ]}
+                          key={'category-' + index}
                         >
-                          {category}
-                        </Text>
-                      </TouchableOpacity>
-                    )
-                  );
-                })}
+                          <Text
+                            style={[
+                              styles.categoryText,
+                              selectedCategory.id === cat.id && {
+                                color: '#fff',
+                              },
+                            ]}
+                          >
+                            {cat.name}
+                          </Text>
+                        </TouchableOpacity>
+                      )
+                    );
+                  })
+                )}
               </ScrollView>
             </View>
           )}
@@ -396,14 +243,18 @@ const Home = () => {
             <View style={styles.footerContent}>
               <Text style={styles.categoryTitle}>Shop by category</Text>
               <View style={styles.categoryContainer}>
-                {category.map((cat, index) => {
-                  return (
-                    <CategoryCard
-                      key={index + 'category-card'}
-                      category={cat}
-                    />
-                  );
-                })}
+                {isCategoryLoading
+                  ? [0, 4, 1, 2, 3, 5, 6, 7].map(item => (
+                      <CategoryCardShimmer key={item+"category-card-shimmer"}/>
+                    ))
+                  : category.map((cat, index) => {
+                      return cat.id!==0 && (
+                        <CategoryCard
+                          key={index + 'category-card'}
+                          category={cat}
+                        />
+                      );
+                    })}
               </View>
               <View style={styles.poweredBy}>
                 <Image

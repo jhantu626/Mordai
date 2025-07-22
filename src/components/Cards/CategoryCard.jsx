@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 4, // Reduced from 5 for better spacing
-    marginVertical: 0, // Reduced from 15 for compact layout
+    marginVertical: 5, // Reduced from 15 for compact layout
   },
   imageContainer: {
     width: CARD_IMAGE_SIZE,
