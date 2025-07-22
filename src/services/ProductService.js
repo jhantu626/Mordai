@@ -25,7 +25,7 @@ class ProductService {
 
   // GET PRODUCT BY ID
   async getProductById({id}) {
-    const uri=`${this.baseUrl}product/${id}`
+    const uri=`${this.baseUrl}products/${id}`
     try {
       const response=await axios.get(uri);
       const data=await response.data;

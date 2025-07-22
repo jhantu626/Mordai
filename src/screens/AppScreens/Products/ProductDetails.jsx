@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import Layout from '../../Layout/Layout';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
@@ -27,54 +27,27 @@ import BottomSheet, {
   BottomSheetFlatList,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
+import { productService } from '../../../services/ProductService';
 
 const { width } = Dimensions.get('window');
 
 const ProductDetails = () => {
+  const route = useRoute();
+  const { id } = route.params;
+
+  const snapPoints = useMemo(() => ['20%'], []);
+
   // Context
   const { addToCart, removeFromCart, getQuiantity, isCartPresent } =
     useCartContext();
 
-  const [product, setProduct] = useState({
-    id: 25,
-    name: '\u09b2\u0999\u09cd\u0995\u09be (Green Chili)',
-    description: '',
-    category: '\u09b8\u09ac\u099c\u09bf \u09ac\u09be\u099c\u09be\u09b0',
-    image: require('./../../../../assets/images/product1.png'),
-    gallery: [
-      require('./../../../../assets/images/product1.png'),
-      require('./../../../../assets/images/product2.png'),
-      require('./../../../../assets/images/product3.png'),
-      require('./../../../../assets/images/product4.png'),
-    ],
-    sizes: [
-      {
-        id: 77,
-        label: '100 Gm',
-        price: 16,
-        original_price: 0,
-        stock: 5,
-        sku: null,
-      },
-      {
-        id: 77,
-        label: '200 Gm',
-        price: 16,
-        original_price: 0,
-        stock: 5,
-        sku: null,
-      },
-    ],
-    specifications: [],
-    rating: 0,
-    review_count: 0,
-    created_at: '2024-10-17 07:57:40',
-    updated_at: '2025-03-01 10:33:55',
-  });
+  const [product, setProduct] = useState({ gallery: [], sizes: [] });
+  const [page, setPage] = useState(0);
 
   const bottomSheetRef = useRef(null);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const openBottomSheet = () => {
     bottomSheetRef.current?.expand();
@@ -92,7 +65,26 @@ const ProductDetails = () => {
     [],
   );
 
-  const [page, setPage] = useState(0);
+  const fetchProduct = async () => {
+    try {
+      setIsLoading(true);
+      const data = await productService.getProductById({ id: id });
+      if (data?.success) {
+        setProduct(data?.product);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchProduct();
+    }, []),
+  );
+
   return isLoading ? (
     <ProductDetailsShimmer />
   ) : (
@@ -122,14 +114,13 @@ const ProductDetails = () => {
                   event.nativeEvent.contentOffset.x /
                     event.nativeEvent.layoutMeasurement.width,
                 );
-                console.log(page);
                 setPage(page);
               }}
               showsHorizontalScrollIndicator={false}
             >
               {product.gallery.map((item, index) => (
                 <View style={styles.imageContainer} key={index + 'image'}>
-                  <Image style={styles.image} source={item} />
+                  <Image style={styles.image} source={{ uri: item }} />
                 </View>
               ))}
             </ScrollView>
@@ -158,10 +149,7 @@ const ProductDetails = () => {
             <Text style={styles.categoryText}>{product.category}</Text>
             <Text style={styles.productName}>{product.name}</Text>
             <Text style={styles.description}>
-              {'Fresh fruits offer vibrant colors, juicy textures, and naturally sweet flavors. They provide essential vitamins, antioxidants, hydration, and fiber. Enjoy apples, berries, mangoes, oranges, pineapples, kiwis, melons, peaches, nectarines, plums, pomegranates, guavas, figs, and watermelon for a delicious, healthy boost supporting immunity and digestion.'.slice(
-                0,
-                200,
-              )}
+              {product.description.slice(0, 200)}
             </Text>
           </View>
           <ReletedProduct />
@@ -197,7 +185,6 @@ const ProductDetails = () => {
               <TouchableOpacity
                 style={styles.btnContainer}
                 onPress={() => {
-                  console.log(product);
                   removeFromCart({
                     item: {
                       id: product.id,
@@ -232,7 +219,7 @@ const ProductDetails = () => {
       </Layout>
       <BottomSheet
         ref={bottomSheetRef}
-        snapPoints={useMemo(() => ['20%'], [])}
+        snapPoints={snapPoints}
         index={-1}
         enablePanDownToClose
         dynam
