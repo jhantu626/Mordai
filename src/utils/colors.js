@@ -4,7 +4,8 @@ const colors = {
   background: '#85c32510',
   inputBackground: '#F2F5F2',
   borderColor: '#D1D5DB',
-  productImageBackgorund: '#f7f5f0'
+  productImageBackgorund: '#f7f5f0',
+  itemBackgrounds: '#F0F2F5',
 };
 
 export { colors };
