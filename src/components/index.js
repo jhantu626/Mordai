@@ -25,6 +25,7 @@ import ProductCardShimmer from './Shimmers/ProductCardShimmer';
 import BannerCardShimmer from './Shimmers/BannerCardShimmer';
 import CategoryShimmer from './Shimmers/CategoryShimmer';
 import CategoryCardShimmer from './Shimmers/CategoryCardShimmer';
+import ProductDetailsShimmer from './Shimmers/ProductDetailsShimmer';
 
 export {
   DefaultInput,
@@ -45,4 +46,5 @@ export {
   BannerCardShimmer,
   CategoryShimmer,
   CategoryCardShimmer,
+  ProductDetailsShimmer
 };

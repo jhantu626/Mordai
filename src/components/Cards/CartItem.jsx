@@ -13,7 +13,7 @@ const CartItem = ({ item, onIncrease, onDecrease }) => {
           <Image
             style={styles.image}
             resizeMode="contain"
-            source={item.image}
+            source={{ uri: item.image }}
           />
         </View>
         <View style={styles.leftRightContainer}>

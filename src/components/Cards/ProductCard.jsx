@@ -24,7 +24,7 @@ const ProductCard = ({ product, openBottomSheet }) => {
     <Pressable
       style={styles.container}
       onPress={() => {
-        navigation.navigate('ProductDetails', { product: product });
+        navigation.navigate('ProductDetails', { id: product.id });
         console.log(product);
       }}
     >

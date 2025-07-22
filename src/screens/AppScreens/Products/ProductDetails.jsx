@@ -11,7 +11,12 @@ import {
 import React, { useMemo, useRef, useState } from 'react';
 import Layout from '../../Layout/Layout';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { CartAdd, ReletedProduct, SecondaryHeader } from '../../../components';
+import {
+  CartAdd,
+  ProductDetailsShimmer,
+  ReletedProduct,
+  SecondaryHeader,
+} from '../../../components';
 import { colors } from '../../../utils/colors';
 import LinearGradient from 'react-native-linear-gradient';
 import { fonts } from '../../../utils/fonts';
@@ -69,6 +74,8 @@ const ProductDetails = () => {
 
   const bottomSheetRef = useRef(null);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const openBottomSheet = () => {
     bottomSheetRef.current?.expand();
   };
@@ -86,7 +93,9 @@ const ProductDetails = () => {
   );
 
   const [page, setPage] = useState(0);
-  return (
+  return isLoading ? (
+    <ProductDetailsShimmer />
+  ) : (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Layout>
         <SecondaryHeader title="" />
@@ -321,13 +330,16 @@ const styles = StyleSheet.create({
   bottomContainer: {
     position: 'absolute',
     flexDirection: 'row',
+    backgroundColor: '#ffffff50',
     justifyContent: 'space-between',
-    width: width - 20,
+    width: width,
     alignItems: 'center',
-    paddingHorizontal: 20,
-    bottom: 5,
-    left: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    bottom: 0,
+    left: 0,
     zIndex: 1000,
+    backdropFilter: 'blur(10px)',
   },
   priceContainer: {},
   priceText: {

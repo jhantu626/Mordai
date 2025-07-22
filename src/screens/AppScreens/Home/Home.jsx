@@ -85,7 +85,6 @@ const Home = () => {
       if (data?.success) {
         const filtProduct = data?.data.filter(item => item.sizes.length > 0);
         setProduct(filtProduct);
-        console.log('filtProduct', filtProduct);
       }
     } catch (error) {
       console.error(error);
@@ -98,7 +97,6 @@ const Home = () => {
     try {
       setIsBannerLoading(true);
       const data = await bannerService.getBanners();
-      console.log('banner', data);
       if (data?.success) {
         setBanners(data?.data);
       }
@@ -113,22 +111,19 @@ const Home = () => {
     try {
       setIsCategoryLoading(true);
       const data = await categoryService.getCategories();
-      console.log('category', data.category);
       if (data?.success) {
         setCategory([{ id: 0, name: 'All' }, ...data?.category]);
       }
     } catch (error) {
       console.error(error);
-    }finally{
+    } finally {
       setIsCategoryLoading(false);
     }
   };
 
   useFocusEffect(
     useCallback(() => {
-      fetchProducts();
-      fetchBanner();
-      fetchCategory();
+      Promise.all([fetchProducts(), fetchBanner(), fetchCategory()]);
     }, []),
   );
 
@@ -245,14 +240,18 @@ const Home = () => {
               <View style={styles.categoryContainer}>
                 {isCategoryLoading
                   ? [0, 4, 1, 2, 3, 5, 6, 7].map(item => (
-                      <CategoryCardShimmer key={item+"category-card-shimmer"}/>
+                      <CategoryCardShimmer
+                        key={item + 'category-card-shimmer'}
+                      />
                     ))
                   : category.map((cat, index) => {
-                      return cat.id!==0 && (
-                        <CategoryCard
-                          key={index + 'category-card'}
-                          category={cat}
-                        />
+                      return (
+                        cat.id !== 0 && (
+                          <CategoryCard
+                            key={index + 'category-card'}
+                            category={cat}
+                          />
+                        )
                       );
                     })}
               </View>

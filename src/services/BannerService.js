@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { API_URI } from '../utils/config';
 
 class BannerService {
