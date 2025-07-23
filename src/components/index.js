@@ -27,6 +27,9 @@ import CategoryShimmer from './Shimmers/CategoryShimmer';
 import CategoryCardShimmer from './Shimmers/CategoryCardShimmer';
 import ProductDetailsShimmer from './Shimmers/ProductDetailsShimmer';
 
+// Loader
+import Loader from './Loader/Loader';
+
 export {
   DefaultInput,
   PrimaryHeader,
@@ -46,5 +49,6 @@ export {
   BannerCardShimmer,
   CategoryShimmer,
   CategoryCardShimmer,
-  ProductDetailsShimmer
+  ProductDetailsShimmer,
+  Loader,
 };

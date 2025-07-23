@@ -9,27 +9,43 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import Layout from '../../Layout/Layout';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { fonts } from '../../../utils/fonts';
 import { colors } from '../../../utils/colors';
-import { product } from '../../../utils/data';
-import { CartAdd, ProductCard } from '../../../components';
+import {
+  CartAdd,
+  Loader,
+  ProductCard,
+  ProductCardShimmer,
+} from '../../../components';
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetFlatList,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { productService } from '../../../services/ProductService';
 
 const Products = () => {
   const navigation = useNavigation();
 
+  const [product, setProduct] = useState([]);
   const [selectedProductBottomSheet, setSelectedProductBottomSheet] = useState(
     {},
   );
+  const [pageNo, setPageNo] = useState(1);
+  const [hasMorePage, setHasMorePage] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isBottomLoading, setIsBottomLoading] = useState(true);
   // Ref
   const bottomSheetRef = useRef(null);
 
@@ -51,6 +67,47 @@ const Products = () => {
       ),
     [],
   );
+
+  const fetchProduct = async () => {
+    try {
+      if (pageNo === 1) {
+        setIsLoading(true);
+      } else {
+        setIsBottomLoading(true);
+      }
+
+      const data = await productService.getProductsWithPage({ pageno: pageNo });
+      if (data?.success) {
+        console.log(data);
+        const filtData = data?.data.filter(item => item.sizes.length > 0);
+        console.log('page', pageNo);
+        if (pageNo === 1) {
+          setProduct(filtData);
+        } else {
+          setProduct(prev => [...prev, ...filtData]);
+        }
+      } else {
+        setHasMorePage(false);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+      setIsBottomLoading(false);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchProduct();
+    }, []),
+  );
+
+  useEffect(() => {
+    if (hasMorePage) {
+      fetchProduct();
+    }
+  }, [pageNo]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -100,15 +157,29 @@ const Products = () => {
             </TouchableOpacity>
           </ScrollView>
           <FlatList
-            data={product}
+            data={isLoading ? [0, 1, 2, 3] : product}
             keyExtractor={(_, index) => 'product-' + index}
-            renderItem={({ item }) => (
-              <ProductCard product={item} openBottomSheet={openBottomSheet} />
-            )}
+            renderItem={({ item }) =>
+              isLoading ? (
+                <ProductCardShimmer key={item + 'product-card-shimmer'} />
+              ) : (
+                <ProductCard product={item} openBottomSheet={openBottomSheet} />
+              )
+            }
             numColumns={2}
             columnWrapperStyle={{ justifyContent: 'space-between', gap: 4 }}
             contentContainerStyle={styles.contentContainerStyle}
             showsVerticalScrollIndicator={false}
+            onEndReached={() => {
+              if (!isLoading && hasMorePage) {
+                setPageNo(prev => prev + 1);
+              }
+              console.log(pageNo);
+            }}
+            ListFooterComponent={() =>
+              isBottomLoading && pageNo > 1 && <Loader />
+            }
+            ListFooterComponentStyle={{ marginTop: 10 }}
           />
         </Layout>
 

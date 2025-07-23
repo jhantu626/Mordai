@@ -21,6 +21,18 @@ class ProductService {
       return data;
     }
   }
+  
+  async getProductsWithPage({pageno=1}) {
+    const uri = `${this.baseUrl}products?page=${pageno}`;
+    try {
+      const response = await axios.get(uri);
+      const data = await response.data;
+      return data;
+    } catch (error) {
+      const data = await error.response.data;
+      return data;
+    }
+  }
 
 
   // GET PRODUCT BY ID
