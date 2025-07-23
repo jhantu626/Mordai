@@ -21,8 +21,8 @@ class ProductService {
       return data;
     }
   }
-  
-  async getProductsWithPage({pageno=1}) {
+
+  async getProductsWithPage({ pageno = 1 }) {
     const uri = `${this.baseUrl}products?page=${pageno}`;
     try {
       const response = await axios.get(uri);
@@ -34,20 +34,33 @@ class ProductService {
     }
   }
 
-
-  // GET PRODUCT BY ID
-  async getProductById({id}) {
-    const uri=`${this.baseUrl}products/${id}`
+  async getProductByCategory({ category = 0 }) {
+    const uri = `${this.baseUrl}products?${
+      category > 0 ? `category_id=${category}` : ''
+    }`;
+    console.log(uri)
     try {
-      const response=await axios.get(uri);
-      const data=await response.data;
+      const response = await axios.get(uri);
+      const data = await response.data;
       return data;
     } catch (error) {
-      const data=await error.response.data;
+      const data = await error.response.data;
       return data;
     }
   }
 
+  // GET PRODUCT BY ID
+  async getProductById({ id }) {
+    const uri = `${this.baseUrl}products/${id}`;
+    try {
+      const response = await axios.get(uri);
+      const data = await response.data;
+      return data;
+    } catch (error) {
+      const data = await error.response.data;
+      return data;
+    }
+  }
 }
 
 const productService = new ProductService();

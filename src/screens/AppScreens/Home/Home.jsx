@@ -91,7 +91,9 @@ const Home = () => {
   const fetchProducts = async () => {
     try {
       setIsProductLoading(true);
-      const data = await productService.getProducts();
+      const data = await productService.getProductByCategory({
+        category: selectedCategory.id,
+      });
       if (data?.success) {
         const filtProduct = data?.data.filter(item => item.sizes.length > 0);
         setProduct(filtProduct);
@@ -140,6 +142,12 @@ const Home = () => {
   useEffect(() => {
     Promise.all([fetchProducts(), fetchBanner(), fetchCategory()]);
   }, []);
+
+  useEffect(() => {
+    if (!isProductLoading) {
+      fetchProducts();
+    }
+  }, [selectedCategory]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -247,6 +255,15 @@ const Home = () => {
               />
             )
           }
+          ListEmptyComponent={() => (
+            <View style={styles.emptyContainer}>
+              <Image
+                style={styles.emptyImage}
+                source={require('./../../../../assets/images/empty-cart.png')}
+              />
+              <Text style={styles.emptyText}>No products found</Text>
+            </View>
+          )}
           showsVerticalScrollIndicator={false}
           ListFooterComponent={() => (
             <View style={styles.footerContent}>
@@ -284,6 +301,7 @@ const Home = () => {
               refreshing={refreshing}
               onRefresh={() => {
                 setRefreshing(true);
+                setSelectedCategory(category[0]);
                 fetchProducts();
                 setRefreshing(false);
               }}
@@ -397,6 +415,21 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     marginTop: -55,
   },
+  emptyContainer:{
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  emptyImage:{
+    width: 250,
+    height: 250,
+    resizeMode: 'contain',
+    opacity: 0.5
+  },
+  emptyText:{
+    fontSize: 16,
+    fontFamily: fonts.medium,
+    opacity: 0.5,
+  }
 });
 
 export default Home;
