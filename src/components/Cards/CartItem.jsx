@@ -17,7 +17,9 @@ const CartItem = ({ item, onIncrease, onDecrease }) => {
           />
         </View>
         <View style={styles.leftRightContainer}>
-          <Text style={styles.productName}>{item.name}</Text>
+          <Text style={styles.productName}>
+            {item.name.length > 15 ? item.name.slice(0, 18) + '...' : item.name}
+          </Text>
           <Text style={styles.weightText}>{item.size}</Text>
         </View>
       </View>

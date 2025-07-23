@@ -11,7 +11,7 @@ const CartAdd = ({ product }) => {
   return (
     <View style={styles.sizeContainer}>
       <View style={styles.leftCOntainer}>
-        <Image style={styles.image} source={product.image} />
+        <Image style={styles.image} source={{uri: product.image}} />
         <View>
           <Text style={styles.cartProductName}>{product.name}</Text>
           <Text style={styles.cartProductSize}>
