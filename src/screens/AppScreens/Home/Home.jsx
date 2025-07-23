@@ -8,7 +8,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import Layout from '../../Layout/Layout';
 import {
   BannerCard,
@@ -24,7 +30,10 @@ import {
 } from '../../../components';
 import { colors } from '../../../utils/colors';
 import { fonts } from '../../../utils/fonts';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {
+  GestureHandlerRootView,
+  RefreshControl,
+} from 'react-native-gesture-handler';
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetFlatList,
@@ -59,6 +68,7 @@ const Home = () => {
   const [isProductLoading, setIsProductLoading] = useState(true);
   const [isBannerLoading, setIsBannerLoading] = useState(true);
   const [isCategoryLoading, setIsCategoryLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   const openBottomSheet = ({ product }) => {
     setSelectedProductBottomSheet(product);
@@ -121,11 +131,15 @@ const Home = () => {
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      Promise.all([fetchProducts(), fetchBanner(), fetchCategory()]);
-    }, []),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     Promise.all([fetchProducts(), fetchBanner(), fetchCategory()]);
+  //   }, []),
+  // );
+
+  useEffect(() => {
+    Promise.all([fetchProducts(), fetchBanner(), fetchCategory()]);
+  }, []);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -265,6 +279,16 @@ const Home = () => {
             </View>
           )}
           // ListFooterComponentStyle={{ marginTop: 20 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => {
+                setRefreshing(true);
+                fetchProducts();
+                setRefreshing(false);
+              }}
+            />
+          }
         />
       </Layout>
       <BottomSheet
