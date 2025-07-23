@@ -32,7 +32,10 @@ import BottomSheet, {
   BottomSheetFlatList,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {
+  GestureHandlerRootView,
+  RefreshControl,
+} from 'react-native-gesture-handler';
 import { productService } from '../../../services/ProductService';
 
 const Products = () => {
@@ -46,6 +49,7 @@ const Products = () => {
   const [hasMorePage, setHasMorePage] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [isBottomLoading, setIsBottomLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   // Ref
   const bottomSheetRef = useRef(null);
 
@@ -97,11 +101,11 @@ const Products = () => {
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchProduct();
-    }, []),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     fetchProduct();
+  //   }, []),
+  // );
 
   useEffect(() => {
     if (hasMorePage) {
@@ -157,7 +161,7 @@ const Products = () => {
             </TouchableOpacity>
           </ScrollView>
           <FlatList
-            data={isLoading ? [0, 1, 2, 3] : product}
+            data={isLoading ? [0, 1, 2, 3,4,5] : product}
             keyExtractor={(_, index) => 'product-' + index}
             renderItem={({ item }) =>
               isLoading ? (
@@ -177,9 +181,22 @@ const Products = () => {
               console.log(pageNo);
             }}
             ListFooterComponent={() =>
-              isBottomLoading && pageNo > 1 && <Loader />
+              isBottomLoading && pageNo > 1 && hasMorePage && <Loader />
             }
             ListFooterComponentStyle={{ marginTop: 10 }}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() => {
+                  setPageNo(1);
+                  setRefreshing(true);
+                  fetchProduct();
+                  setTimeout(() => {
+                    setRefreshing(false);
+                  }, 1000);
+                }}
+              />
+            }
           />
         </Layout>
 
