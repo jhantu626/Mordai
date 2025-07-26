@@ -6,7 +6,6 @@ import { fonts } from '../../utils/fonts';
 import { useCartContext } from '../../contexts/CartContext';
 
 const CartItem = ({ item, onIncrease, onDecrease }) => {
-  console.log(item)
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
@@ -22,7 +21,7 @@ const CartItem = ({ item, onIncrease, onDecrease }) => {
             {item.name.length > 15 ? item.name.slice(0, 18) + '...' : item.name}
           </Text>
           <Text style={styles.weightText}>{item.size}</Text>
-          <Text style={styles.weightText}>₹{item.price} * {item.quantity}</Text>
+          <Text style={styles.weightText}>₹{item.price} * {item.quantity} Qty</Text>
         </View>
       </View>
       <View style={styles.rightContainer}>
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
   },
   leftRightContainer: {},
   productName: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: fonts.medium,
     color: '#00000099',
   },

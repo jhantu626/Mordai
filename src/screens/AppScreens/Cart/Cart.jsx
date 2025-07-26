@@ -62,11 +62,11 @@ const Cart = () => {
         <View style={{ gap: 7 }}>
           <View style={styles.bottomSubContainer}>
             <Text style={styles.totalAmountText}>Total Amount</Text>
-            <Text style={styles.amountText}>₹{totalAmount}</Text>
+            <Text style={styles.amountText}>₹{totalAmount.toFixed(2)}</Text>
           </View>
           <View style={styles.bottomSubContainer}>
             <Text style={styles.totalAmountText}>Shipping Charge</Text>
-            <Text style={styles.amountText}>₹{totalAmount * 0.05}</Text>
+            <Text style={styles.amountText}>₹{(totalAmount * 0.05).toFixed(2)}</Text>
           </View>
           <View style={styles.bottomSubContainer}>
             <Text style={styles.totalAmountText}>Packing Charge</Text>
