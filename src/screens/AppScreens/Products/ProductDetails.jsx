@@ -42,7 +42,9 @@ const ProductDetails = () => {
   const { addToCart, removeFromCart, getQuiantity, isCartPresent } =
     useCartContext();
 
+  const [productId, setProductId] = useState(id);
   const [product, setProduct] = useState({ gallery: [], sizes: [] });
+  const [reletedProducts, setReletedProducts] = useState([]);
   const [page, setPage] = useState(0);
 
   const bottomSheetRef = useRef(null);
@@ -68,10 +70,19 @@ const ProductDetails = () => {
   const fetchProduct = async () => {
     try {
       setIsLoading(true);
-      const data = await productService.getProductById({ id: id });
+      const data = await productService.getProductById({ id: productId });
       if (data?.success) {
         setProduct(data?.product);
       }
+      fetchReletedProducts({
+        name:
+          data?.product?.category === 'Uncategorized'
+            ? 'Haringhata'
+            : data?.product?.category
+            ? data?.product?.category
+            : 'Haringhata',
+      });
+      console.log(data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -79,10 +90,23 @@ const ProductDetails = () => {
     }
   };
 
+  const fetchReletedProducts = async ({ name }) => {
+    try {
+      const data = await productService.getProductsByCategoryName({
+        name: name,
+      });
+      setReletedProducts(data?.products);
+      console.log('releted products', data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       fetchProduct();
-    }, []),
+    }, [productId]),
   );
 
   return isLoading ? (
@@ -152,7 +176,13 @@ const ProductDetails = () => {
               {product.description.slice(0, 200)}
             </Text>
           </View>
-          <ReletedProduct />
+          {reletedProducts.length > 0 && (
+            <ReletedProduct
+              products={reletedProducts || []}
+              setProductId={setProductId}
+              productId={productId}
+            />
+          )}
         </ScrollView>
         <View style={styles.bottomContainer}>
           <View style={styles.priceContainer}>
