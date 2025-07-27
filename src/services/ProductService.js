@@ -38,7 +38,7 @@ class ProductService {
     const uri = `${this.baseUrl}products?${
       category > 0 ? `category_id=${category}` : ''
     }`;
-    console.log(uri)
+    console.log(uri);
     try {
       const response = await axios.get(uri);
       const data = await response.data;
@@ -55,6 +55,19 @@ class ProductService {
     try {
       const response = await axios.get(uri);
       const data = await response.data;
+      return data;
+    } catch (error) {
+      const data = await error.response.data;
+      return data;
+    }
+  }
+
+  async getProductsByCategoryName({ name, pageno = 1 }) {
+    const uri = `${this.baseUrl}search?query=${name}&search_type=category&page=${pageno}`;
+    console.log(uri)
+    try {
+      const response=await axios.get(uri);
+      const data=await response.data;
       return data;
     } catch (error) {
       const data = await error.response.data;

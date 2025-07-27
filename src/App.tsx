@@ -100,7 +100,10 @@ const App = () => {
             },
           }}
         />
-        <Stack.Screen name="ProductDetails" component={ProductDetails} />
+        <Stack.Screen
+          name="ProductDetails"
+          component={ProductDetails}
+        />
       </Stack.Navigator>
     );
   };
@@ -109,7 +112,7 @@ const App = () => {
     const { numOfCarts } = useCartContext();
     return (
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName="Shop"
         backBehavior="fullHistory"
         screenOptions={{
           headerShown: false,
