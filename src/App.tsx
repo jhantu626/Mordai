@@ -112,7 +112,7 @@ const App = () => {
     const { numOfCarts } = useCartContext();
     return (
       <Tab.Navigator
-        initialRouteName="Shop"
+        initialRouteName="Account"
         backBehavior="fullHistory"
         screenOptions={{
           headerShown: false,

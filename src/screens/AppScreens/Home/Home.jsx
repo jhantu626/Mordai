@@ -66,7 +66,7 @@ const Home = () => {
 
   // Loading state
   const [isProductLoading, setIsProductLoading] = useState(true);
-  const [isBannerLoading, setIsBannerLoading] = useState(true);
+  const [isBannerLoading, setIsBannerLoading] = useState(false);
   const [isCategoryLoading, setIsCategoryLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -140,7 +140,8 @@ const Home = () => {
   // );
 
   useEffect(() => {
-    Promise.all([fetchProducts(), fetchBanner(), fetchCategory()]);
+    // Promise.all([fetchProducts(), fetchBanner(), fetchCategory()]);
+    Promise.all([fetchProducts(), fetchCategory()]);
   }, []);
 
   useEffect(() => {

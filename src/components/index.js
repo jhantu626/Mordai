@@ -16,6 +16,7 @@ import ExploreNewCategory from './Cards/ExploreNewCategory';
 import EmptyShopping from './Cards/EmptyShopping';
 import PopularProducts from './Cards/PopularProducts';
 import ReletedProduct from './Cards/ReletedProduct';
+import ProfileCard from './Cards/ProfileCard';
 
 // Dividers
 import DottedDivider from './Dividers/DottedDivider';
@@ -51,4 +52,5 @@ export {
   CategoryCardShimmer,
   ProductDetailsShimmer,
   Loader,
+  ProfileCard
 };

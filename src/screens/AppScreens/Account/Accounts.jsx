@@ -1,11 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import React from 'react'
+import Layout from '../../Layout/Layout'
+import { ProfileCard } from '../../../components'
 
 const Accounts = () => {
   return (
-    <View>
-      <Text>Accounts</Text>
-    </View>
+    <Layout>
+      <ScrollView style={{flex: 1}}>
+        <ProfileCard/>
+      </ScrollView>
+    </Layout>
   )
 }
 
