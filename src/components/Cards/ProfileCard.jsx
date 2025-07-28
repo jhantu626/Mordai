@@ -7,7 +7,7 @@ import { colors } from '../../utils/colors';
 const ProfileCard = () => {
   return (
     <LinearGradient
-      colors={['#fdba74', '#fef7ed']}
+      colors={['#d9f99d', '#f7fee7']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
       style={styles.container}
@@ -22,7 +22,7 @@ const ProfileCard = () => {
         <View style={{ flexDirection: 'row', gap: 5 }}>
           <LinearGradient
             style={styles.dailyContainer}
-            colors={['#f97316', '#ea580c']}
+            colors={['#85c325', '#65a30d']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
           >
@@ -44,6 +44,11 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
     flexDirection: 'row',
     gap: 5,
+    shadowColor: '#00000080',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 6,
   },
   image: {
     width: 100,
