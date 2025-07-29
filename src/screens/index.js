@@ -20,6 +20,7 @@ import Order from './AppScreens/Orders/Order';
 
 // Account
 import Accounts from './AppScreens/Account/Accounts';
+import Address from './AppScreens/Account/Address';
 
 export {
   Layout,
@@ -31,5 +32,6 @@ export {
   Accounts,
   Search,
   Products,
-  ProductDetails
+  ProductDetails,
+  Address
 };

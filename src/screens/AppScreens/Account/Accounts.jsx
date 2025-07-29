@@ -1,4 +1,5 @@
 import {
+  Linking,
   ScrollView,
   StyleSheet,
   Text,
@@ -18,8 +19,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { fonts } from '../../../utils/fonts';
+import { useNavigation } from '@react-navigation/native';
 
 const Accounts = () => {
+  const navigation = useNavigation();
+
   return (
     <Layout>
       <SecondaryHeader title="Profile" />
@@ -58,7 +62,9 @@ const Accounts = () => {
               <Entypo name="chevron-small-right" size={24} color="#000000" />
             </TouchableOpacity>
             <DottedDivider borderWidth={1} />
-            <TouchableOpacity style={styles.infoCard}>
+            <TouchableOpacity style={styles.infoCard} onPress={()=>{
+              navigation.navigate('Address');
+            }}>
               <View style={styles.infoCardLeft}>
                 <Ionicons name="location-outline" size={24} color="#000000" />
                 <Text style={styles.infoText}>Saved Address</Text>
@@ -82,7 +88,13 @@ const Accounts = () => {
               <Entypo name="chevron-small-right" size={24} color="#000000" />
             </TouchableOpacity>
             <DottedDivider borderWidth={1} />
-            <TouchableOpacity style={styles.infoCard}>
+            <TouchableOpacity
+              style={styles.infoCard}
+              onPress={() => {
+                console.log('pressed');
+                Linking.openURL('https://www.google.com/');
+              }}
+            >
               <View style={styles.infoCardLeft}>
                 <MaterialIcons name="security" size={24} color="#000000" />
                 <Text style={styles.infoText}>Privecy Policy</Text>
@@ -120,11 +132,10 @@ const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 20,
   },
   card: {
-    width: '48%',
-    height: 100,
+    width: '49%',
+    height: 90,
     backgroundColor: '#fff',
     borderRadius: 15,
     shadowColor: '#000',
@@ -197,7 +208,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  publisherText:{
+  publisherText: {
     opacity: 0.5,
     fontSize: 12,
     fontFamily: fonts.semiBold,
