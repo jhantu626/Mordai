@@ -38,10 +38,10 @@ const ProfileCard = () => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: 200,
+    height: 150,
     borderRadius: 20,
     paddingHorizontal: 20,
-    paddingVertical: 40,
+    paddingVertical: 30,
     flexDirection: 'row',
     gap: 5,
     shadowColor: '#00000080',
