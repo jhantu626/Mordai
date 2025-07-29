@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   Accounts,
+  Address,
   Cart,
   Home,
   LoginSignup,
@@ -73,6 +74,16 @@ const App = () => {
     );
   };
 
+  const AccountStack = () => (
+    <Stack.Navigator
+      initialRouteName="Account"
+      screenOptions={{ headerShown: false, animation: 'slide_from_right' }}
+    >
+      <Stack.Screen name="Account" component={Accounts} />
+      <Stack.Screen name="Address" component={Address} />
+    </Stack.Navigator>
+  );
+
   const ShopStack = () => {
     return (
       <Stack.Navigator
@@ -100,10 +111,7 @@ const App = () => {
             },
           }}
         />
-        <Stack.Screen
-          name="ProductDetails"
-          component={ProductDetails}
-        />
+        <Stack.Screen name="ProductDetails" component={ProductDetails} />
       </Stack.Navigator>
     );
   };
@@ -112,7 +120,7 @@ const App = () => {
     const { numOfCarts } = useCartContext();
     return (
       <Tab.Navigator
-        initialRouteName="Account"
+        initialRouteName="Home"
         backBehavior="fullHistory"
         screenOptions={{
           headerShown: false,
@@ -165,7 +173,7 @@ const App = () => {
         />
         <Tab.Screen
           name="Account"
-          component={Accounts}
+          component={AccountStack}
           options={{
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="person" size={24} color={color} />
