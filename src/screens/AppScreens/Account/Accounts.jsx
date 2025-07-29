@@ -7,9 +7,16 @@ import {
 } from 'react-native';
 import React from 'react';
 import Layout from '../../Layout/Layout';
-import { ProfileCard, SecondaryHeader } from '../../../components';
+import {
+  DottedDivider,
+  ProfileCard,
+  SecondaryHeader,
+} from '../../../components';
 import Feather from 'react-native-vector-icons/Feather';
 import Octicons from 'react-native-vector-icons/Octicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { fonts } from '../../../utils/fonts';
 
 const Accounts = () => {
@@ -32,6 +39,62 @@ const Accounts = () => {
             </Text>
           </TouchableOpacity>
         </View>
+        <View style={{ gap: 5 }}>
+          <Text style={styles.infoTextMain}>Your Information</Text>
+          <View style={styles.infoContainer}>
+            <TouchableOpacity style={styles.infoCard}>
+              <View style={styles.infoCardLeft}>
+                <Ionicons
+                  name="person-circle-outline"
+                  size={24}
+                  color="#000000"
+                />
+                <Text style={styles.infoText}>Profile</Text>
+              </View>
+              <Entypo name="chevron-small-right" size={24} color="#000000" />
+            </TouchableOpacity>
+            <DottedDivider borderWidth={1} />
+            <TouchableOpacity style={styles.infoCard}>
+              <View style={styles.infoCardLeft}>
+                <Ionicons name="location-outline" size={24} color="#000000" />
+                <Text style={styles.infoText}>Saved Address</Text>
+              </View>
+              <Entypo name="chevron-small-right" size={24} color="#000000" />
+            </TouchableOpacity>
+            <DottedDivider borderWidth={1} />
+            <TouchableOpacity style={styles.infoCard}>
+              <View style={styles.infoCardLeft}>
+                <Feather name="shopping-bag" size={24} color="#000000" />
+                <Text style={styles.infoText}>Your Orders</Text>
+              </View>
+              <Entypo name="chevron-small-right" size={24} color="#000000" />
+            </TouchableOpacity>
+            <DottedDivider borderWidth={1} />
+            <TouchableOpacity style={styles.infoCard}>
+              <View style={styles.infoCardLeft}>
+                <Octicons name="comment-discussion" size={24} color="#000000" />
+                <Text style={styles.infoText}>Help & Support</Text>
+              </View>
+              <Entypo name="chevron-small-right" size={24} color="#000000" />
+            </TouchableOpacity>
+            <DottedDivider borderWidth={1} />
+            <TouchableOpacity style={styles.infoCard}>
+              <View style={styles.infoCardLeft}>
+                <MaterialIcons name="security" size={24} color="#000000" />
+                <Text style={styles.infoText}>Privecy Policy</Text>
+              </View>
+              <Entypo name="chevron-small-right" size={24} color="#000000" />
+            </TouchableOpacity>
+            <DottedDivider borderWidth={1} />
+            <TouchableOpacity style={styles.infoCard}>
+              <View style={styles.infoCardLeft}>
+                <MaterialIcons name="assignment" size={24} color="#000000" />
+                <Text style={styles.infoText}>Terms & Conditions</Text>
+              </View>
+              <Entypo name="chevron-small-right" size={24} color="#000000" />
+            </TouchableOpacity>
+          </View>
+        </View>
       </ScrollView>
     </Layout>
   );
@@ -39,7 +102,7 @@ const Accounts = () => {
 
 const styles = StyleSheet.create({
   container: {
-    gap: 20,
+    gap: 15,
   },
   cardContainer: {
     flexDirection: 'row',
@@ -64,7 +127,39 @@ const styles = StyleSheet.create({
     fontFamily: fonts.medium,
     width: 70,
     textAlign: 'center',
-    marginTop: 5
+    marginTop: 5,
+  },
+  infoTextMain: {
+    fontSize: 14,
+    fontFamily: fonts.semiBold,
+    marginLeft: 10,
+  },
+  infoContainer: {
+    width: '100%',
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 0.5,
+    gap: 5,
+  },
+  infoCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 10,
+  },
+  infoCardLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  infoText: {
+    fontSize: 12,
+    fontFamily: fonts.medium,
   },
 });
 
