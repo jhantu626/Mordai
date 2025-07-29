@@ -23,7 +23,11 @@ const Accounts = () => {
   return (
     <Layout>
       <SecondaryHeader title="Profile" />
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={styles.container}
+        showsVerticalScrollIndicator={false}
+      >
         <ProfileCard />
         <View style={styles.cardContainer}>
           <TouchableOpacity style={styles.card}>
@@ -95,6 +99,14 @@ const Accounts = () => {
             </TouchableOpacity>
           </View>
         </View>
+        <TouchableOpacity style={styles.logoutContainer}>
+          <MaterialIcons name="logout" size={24} color="#000000" />
+          <Text style={styles.logoutText}>Logout</Text>
+        </TouchableOpacity>
+        <View style={styles.footerContainer}>
+          <Text style={styles.publisherText}>Powered by মড়াই</Text>
+          <Text style={styles.licenseText}>Licensed © 2025, owned by মড়াই</Text>
+        </View>
       </ScrollView>
     </Layout>
   );
@@ -103,6 +115,7 @@ const Accounts = () => {
 const styles = StyleSheet.create({
   container: {
     gap: 15,
+    paddingBottom: 20,
   },
   cardContainer: {
     flexDirection: 'row',
@@ -160,6 +173,41 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 12,
     fontFamily: fonts.medium,
+  },
+  logoutContainer: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 0.5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 7,
+  },
+  logoutText: {
+    fontSize: 13,
+    fontFamily: fonts.semiBold,
+  },
+  footerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  publisherText:{
+    opacity: 0.5,
+    fontSize: 12,
+    fontFamily: fonts.semiBold,
+    color: '#00000080',
+  },
+  licenseText: {
+    opacity: 0.5,
+    fontSize: 12,
+    fontFamily: fonts.semiBold,
+    color: '#00000080',
   },
 });
 
