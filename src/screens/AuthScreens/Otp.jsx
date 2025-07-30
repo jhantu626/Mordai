@@ -70,9 +70,9 @@ const Otp = () => {
             >
               <TextInput
                 ref={ref => (inputRefs.current[index] = ref)}
-                style={styles.inputText}
+                style={[styles.inputText, digit && { color: '#fff' }]}
                 maxLength={1}
-                selectionColor={'#000'}
+                selectionColor={digit ? '#fff' : '#000'}
                 keyboardType="numeric"
                 value={digit}
                 onChangeText={text => handleOtpChange(text, index)}
