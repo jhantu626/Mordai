@@ -1,6 +1,7 @@
 // Inputs
 import DefaultInput from './Inputs/DefaultInput';
 import SearchInput from './Inputs/SearchInput';
+import LabelInput from './Inputs/LabelInput';
 
 // Headers
 import PrimaryHeader from './Headers/PrimaryHeader';
@@ -52,5 +53,6 @@ export {
   CategoryCardShimmer,
   ProductDetailsShimmer,
   Loader,
-  ProfileCard
+  ProfileCard,
+  LabelInput,
 };
