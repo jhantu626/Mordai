@@ -23,9 +23,12 @@ const Address = () => {
     <Layout>
       <SecondaryHeader title={'Address'} />
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>
-        <TouchableOpacity style={styles.addCard} onPress={() => {
-          navigation.navigate('AddAddress');
-        }}>
+        <TouchableOpacity
+          style={styles.addCard}
+          onPress={() => {
+            navigation.navigate('AddAddress');
+          }}
+        >
           <View style={styles.leftContainer}>
             <AntDesign name="plus" size={20} color={colors.pinkColor} />
             <Text style={styles.addText}>Add New Address</Text>
@@ -51,7 +54,7 @@ const Address = () => {
                   <Text style={styles.titleText}>Home</Text>
                   <Text style={styles.selectedText}>Selected</Text>
                 </View>
-                <Text numberOfLines={1}>
+                <Text numberOfLines={1} style={styles.addressText}>
                   8/1/C Gururdas Dutta Garden Lane, Ultadanga, Kolkata, West
                   Bengal, 700067
                 </Text>
@@ -62,6 +65,24 @@ const Address = () => {
             </TouchableOpacity>
           </View>
           <DottedDivider borderWidth={1} />
+          <View style={styles.addressCard}>
+            <View style={[styles.leftContainer, { gap: 10, width: '80%' }]}>
+              <Octicons name="location" size={24} color={'#00000090'} />
+              <View>
+                <View style={{ flexDirection: 'row', gap: 5 }}>
+                  <Text style={styles.titleText}>Others</Text>
+                  {/* <Text style={styles.selectedText}>Selected</Text> */}
+                </View>
+                <Text numberOfLines={1} style={styles.addressText}>
+                  8/1/C Gururdas Dutta Garden Lane, Ultadanga, Kolkata, West
+                  Bengal, 700067
+                </Text>
+              </View>
+            </View>
+            <TouchableOpacity>
+              <Entypo name="dots-three-vertical" size={20} color="#00000090" />
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </Layout>
@@ -139,10 +160,17 @@ const styles = StyleSheet.create({
     fontFamily: fonts.semiBold,
     color: colors.pinkColor,
     backgroundColor: '#FF69B420',
-    paddingHorizontal: 10,
-    // paddingVertical: 5,
+    paddingHorizontal: 7,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 10,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+  addressText: {
+    fontSize: 12,
+    fontFamily: fonts.light,
+    color: '#000000',
   },
 });
 
