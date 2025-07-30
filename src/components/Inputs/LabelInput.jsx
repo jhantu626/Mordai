@@ -3,13 +3,33 @@ import React from 'react';
 import { fonts } from '../../utils/fonts';
 import { colors } from '../../utils/colors';
 
-const LabelInput = ({ label = 'Enter Label' }) => {
+const LabelInput = ({
+  label = 'Enter Label',
+  value,
+  setValue,
+  error = '',
+  minLength = 0,
+  maxLenth = 100,
+  keyboardType = 'default',
+}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.inputContainer}>
-        <TextInput style={styles.input} selectionColor={colors.primary} />
+        <TextInput
+          value={value}
+          onChangeText={text => {
+            if (text.length >= minLength) {
+              setValue(text);
+            }
+          }}
+          style={styles.input}
+          selectionColor={colors.primary}
+          maxLength={maxLenth}
+          keyboardType={keyboardType}
+        />
       </View>
+      {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 };
@@ -37,6 +57,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     marginLeft: 5,
     color: '#00000095',
+    letterSpacing: 0.5,
+  },
+  errorText: {
+    fontSize: 11.5,
+    fontFamily: fonts.regular,
+    marginLeft: 5,
+    color: 'red',
     letterSpacing: 0.5,
   },
 });
