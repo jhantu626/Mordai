@@ -3,7 +3,7 @@ import React from 'react';
 import { fonts } from '../../utils/fonts';
 import { colors } from '../../utils/colors';
 
-const LabelInput = ({label="Enter Label"}) => {
+const LabelInput = ({ label = 'Enter Label' }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
@@ -17,7 +17,7 @@ const LabelInput = ({label="Enter Label"}) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    gap: 5
+    gap: 5,
   },
   inputContainer: {
     width: '100%',
@@ -33,9 +33,11 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
   },
   label: {
-    fontSize: 10,
+    fontSize: 11.5,
     fontFamily: fonts.regular,
-    marginLeft: 5
+    marginLeft: 5,
+    color: '#00000095',
+    letterSpacing: 0.5,
   },
 });
 
