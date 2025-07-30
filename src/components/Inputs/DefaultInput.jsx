@@ -9,17 +9,22 @@ const DefaultInput = ({
   value,
   setValue,
   keyboardType = 'default',
+  maxLength = 100,
+  minLength = 0,
 }) => {
   return (
     <View style={[styles.container, { height: height }]}>
       <TextInput
         value={value}
-        onChangeText={text => setValue(text)}
+        onChangeText={text => {
+          if (text.length >= minLength) setValue(text);
+        }}
         placeholder={placeholder}
         selectionColor={colors.primary}
         style={styles.inputBox}
         keyboardType={keyboardType}
         placeholderTextColor={'#00000050'}
+        maxLength={maxLength}
       />
     </View>
   );

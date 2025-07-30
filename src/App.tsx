@@ -21,6 +21,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SplashScreen from 'react-native-splash-screen';
 import CartProvider, { useCartContext } from './contexts/CartContext';
+import AuthProvider, { useAuth } from './contexts/AuthContext';
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -188,18 +189,20 @@ const App = () => {
   };
 
   const AppNav = () => {
-    const isLoggedIn = true;
+    const { authToken } = useAuth();
     return (
       <NavigationContainer>
-        {isLoggedIn ? <AppStack /> : <AuthStack />}
+        {authToken ? <AppStack /> : <AuthStack />}
       </NavigationContainer>
     );
   };
 
   return (
-    <CartProvider>
-      <AppNav />
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <AppNav />
+      </CartProvider>
+    </AuthProvider>
   );
 };
 
