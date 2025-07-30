@@ -5,17 +5,39 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../Layout/Layout';
 import { DefaultInput } from '../../components';
 import { colors } from '../../utils/colors';
 import { fonts } from '../../utils/fonts';
 import { useNavigation } from '@react-navigation/native';
+import { validateIndianPhoneNumber } from '../../utils/validations';
 
 const LoginSignup = () => {
   const navigation = useNavigation();
 
-  const [mobileNumber, setMobileNumber] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('+91 ');
+
+  // ERROR STATE
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (mobileNumber.length > 4) {
+      if (!validateIndianPhoneNumber(mobileNumber)) {
+        setError('Mobile number is not valid');
+      } else {
+        setError('');
+      }
+    }
+  }, [mobileNumber]);
+
+  // HANDLE SUBMIT
+  const handleSubmit = () => {
+    if (validateIndianPhoneNumber(mobileNumber)) {
+      navigation.navigate('Otp');
+    }
+  };
+
   return (
     <Layout>
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>
@@ -26,12 +48,15 @@ const LoginSignup = () => {
           keyboardType="phone-pad"
           value={mobileNumber}
           setValue={setMobileNumber}
+          maxLength={14}
+          minLength={4}
         />
+        {error && mobileNumber.length > 4 && (
+          <Text style={styles.errorText}>{error}</Text>
+        )}
         <TouchableOpacity
           style={styles.btnContainer}
-          onPress={() => {
-            navigation.navigate('Otp');
-          }}
+          onPress={handleSubmit}
         >
           <Text style={styles.btnText}>Send OTP</Text>
         </TouchableOpacity>
@@ -81,6 +106,11 @@ const styles = StyleSheet.create({
     color: '#00000080',
     alignSelf: 'center',
     marginBottom: 20,
+  },
+  errorText: {
+    fontSize: 12,
+    color: 'red',
+    marginTop: -15,
   },
 });
 
