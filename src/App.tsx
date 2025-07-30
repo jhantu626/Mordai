@@ -130,7 +130,7 @@ const App = () => {
           tabBarInactiveTintColor: 'gray',
           tabBarActiveTintColor: colors.primary,
           tabBarStyle: {
-            paddingVertical: 20,
+            paddingVertical: 5,
           },
           tabBarLabelStyle: {
             fontSize: 12,
