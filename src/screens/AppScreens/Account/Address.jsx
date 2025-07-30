@@ -13,16 +13,21 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { fonts } from '../../../utils/fonts';
+import { colors } from '../../../utils/colors';
+import { useNavigation } from '@react-navigation/native';
 
 const Address = () => {
   const [hasSavedAddress, setHasSavedAddress] = useState(true);
+  const navigation = useNavigation();
   return (
     <Layout>
       <SecondaryHeader title={'Address'} />
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>
-        <TouchableOpacity style={styles.addCard}>
+        <TouchableOpacity style={styles.addCard} onPress={() => {
+          navigation.navigate('AddAddress');
+        }}>
           <View style={styles.leftContainer}>
-            <AntDesign name="plus" size={20} color={'#FF69B4'} />
+            <AntDesign name="plus" size={20} color={colors.pinkColor} />
             <Text style={styles.addText}>Add New Address</Text>
           </View>
           <Entypo name="chevron-small-right" size={24} color="#000000" />
@@ -132,7 +137,7 @@ const styles = StyleSheet.create({
   selectedText: {
     fontSize: 10,
     fontFamily: fonts.semiBold,
-    color: '#FF69B4',
+    color: colors.pinkColor,
     backgroundColor: '#FF69B420',
     paddingHorizontal: 10,
     // paddingVertical: 5,

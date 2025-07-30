@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   Accounts,
+  AddAddress,
   Address,
   Cart,
   Home,
@@ -81,6 +82,7 @@ const App = () => {
     >
       <Stack.Screen name="Account" component={Accounts} />
       <Stack.Screen name="Address" component={Address} />
+      <Stack.Screen name="AddAddress" component={AddAddress} />
     </Stack.Navigator>
   );
 
@@ -178,6 +180,7 @@ const App = () => {
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="person" size={24} color={color} />
             ),
+            tabBarHideOnKeyboard: true,
           }}
         />
       </Tab.Navigator>
