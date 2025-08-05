@@ -34,7 +34,7 @@ const LoginSignup = () => {
   // HANDLE SUBMIT
   const handleSubmit = () => {
     if (validateIndianPhoneNumber(mobileNumber)) {
-      navigation.navigate('Otp');
+      navigation.navigate('Otp', { mobile: mobileNumber });
     }
   };
 
@@ -54,10 +54,7 @@ const LoginSignup = () => {
         {error && mobileNumber.length > 4 && (
           <Text style={styles.errorText}>{error}</Text>
         )}
-        <TouchableOpacity
-          style={styles.btnContainer}
-          onPress={handleSubmit}
-        >
+        <TouchableOpacity style={styles.btnContainer} onPress={handleSubmit}>
           <Text style={styles.btnText}>Send OTP</Text>
         </TouchableOpacity>
         <Text style={styles.otpText}>

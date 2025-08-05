@@ -10,12 +10,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import Layout from '../Layout/Layout';
 import { fonts } from '../../utils/fonts';
 import { colors } from '../../utils/colors';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const Otp = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { mobile } = route.params || {};
+  console.log(mobile);
 
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(180);
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -61,7 +64,7 @@ const Otp = () => {
     <Layout>
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>
         <Text style={styles.loginText}>Enter OTP</Text>
-        <Text style={styles.otpSentText}>OTP sent to +91-9775746484</Text>
+        <Text style={styles.otpSentText}>OTP sent to {mobile.replace(' ','-')}</Text>
         <View style={{ flexDirection: 'row', gap: 10 }}>
           {otp.map((digit, index) => (
             <View
