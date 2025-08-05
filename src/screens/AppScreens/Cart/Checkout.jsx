@@ -18,8 +18,8 @@ import { colors } from '../../../utils/colors';
 import { fonts } from '../../../utils/fonts';
 import { useCartContext } from '../../../contexts/CartContext';
 import { pincodeService } from '../../../services/PincodeService';
-import { add } from 'react-native/types_generated/Libraries/Animated/AnimatedExports';
 import { validateIndianPhoneNumber } from '../../../utils/validations';
+import RazorPay from 'react-native-razorpay';
 
 const Checkout = () => {
   const [bottomContainerHeight, setBOttomContainerHeight] = useState(0);
@@ -96,7 +96,7 @@ const Checkout = () => {
       return;
     }
 
-    if (!isPincodeAvailable) {
+    if (isPincodeAvailable) {
       ToastAndroid.show(
         'Delivery to this pincode is not available',
         ToastAndroid.LONG,
@@ -107,6 +107,32 @@ const Checkout = () => {
     if (carts.length === 0) {
       ToastAndroid.show('Your cart is empty', ToastAndroid.SHORT);
       return;
+    }
+
+    const options = {
+      description: `Paymenty for Order At Mordai Platform`,
+      image: require('./../../../../assets/images/logo.png'),
+      currency: 'INR',
+      key: 'rzp_test_S7hkZjIJiSVaAd',
+      amount: grandTotal * 100,
+      name: 'Paymenty',
+      theme: { color: colors.primary },
+      prefill: {
+        contact: address.phoneNumber
+      },
+    };
+
+    if(selectedPaymentMethod==="online"){
+        RazorPay.open(options)
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+      .finally(() => {
+        console.info('payment completed');
+      });
     }
   };
 
