@@ -17,12 +17,15 @@ import { fonts } from '../../../utils/fonts';
 import { colors } from '../../../utils/colors';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useAddress } from '../../../contexts/AddressContext';
 
 const Address = () => {
   const [hasSavedAddress, setHasSavedAddress] = useState(true);
   const navigation = useNavigation();
 
-  const address = [1, 2];
+  const { address } = useAddress();
+
+  console.log(JSON.stringify(address));
 
   return (
     <Layout>
@@ -63,12 +66,11 @@ const Address = () => {
                     <Octicons name="location" size={24} color={'#00000090'} />
                     <View>
                       <View style={{ flexDirection: 'row', gap: 5 }}>
-                        <Text style={styles.titleText}>Home</Text>
-                        <Text style={styles.selectedText}>Selected</Text>
+                        <Text style={styles.titleText}>{item.labe}</Text>
+                        {index === 0 && <Text style={styles.selectedText}>Selected</Text>}
                       </View>
                       <Text numberOfLines={1} style={styles.addressText}>
-                        8/1/C Gururdas Dutta Garden Lane, Ultadanga, Kolkata,
-                        West Bengal, 700067
+                        {item.house}, {item.building}, {item.area}, {item.pincode},{' '}
                       </Text>
                     </View>
                   </View>
