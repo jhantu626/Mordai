@@ -150,14 +150,22 @@ const Address = () => {
         <BottomSheetView style={styles.bottomSheetContainer}>
           <View>
             <Text style={styles.bottomsheetTitleText}>
-              {selectedAddress.labe}
+              {selectedAddress?.labe}
             </Text>
             <Text style={styles.bottomsheetAddressText}>
-              {selectedAddress.house}, {selectedAddress.building},{' '}
-              {selectedAddress.area}, {selectedAddress.pincode}
+              {selectedAddress?.house}, {selectedAddress?.building},{' '}
+              {selectedAddress?.area}, {selectedAddress?.pincode}
             </Text>
           </View>
-          <TouchableOpacity style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => {
+              navigation.navigate('AddAddress', {
+                add: selectedAddress,
+                mode: 'edit',
+              });
+            }}
+          >
             <AntDesign name="edit" size={36} color="#000000" />
             <Text style={styles.buttonText}>Edit</Text>
           </TouchableOpacity>

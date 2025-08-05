@@ -11,7 +11,11 @@ import {
 import React, { useEffect, useState } from 'react';
 import Layout from '../../Layout/Layout';
 import { LabelInput, SecondaryHeader } from '../../../components';
-import { getActionFromState, useNavigation } from '@react-navigation/native';
+import {
+  getActionFromState,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { fonts } from '../../../utils/fonts';
 import { colors } from '../../../utils/colors';
 import {
@@ -23,17 +27,24 @@ import { pincodeService } from '../../../services/PincodeService';
 import { useAddress } from '../../../contexts/AddressContext';
 
 const AddAddress = () => {
-  const { addAddress, address } = useAddress();
+  const { addAddress, address, updateAddress } = useAddress();
   const navigation = useNavigation();
+  const route = useRoute();
+  console.log(route.params);
+  const { mode, add } = route.params || { mode: 'create', add: {} };
 
   // STATE VARIABLES
-  const [house, setHouse] = useState('');
-  const [building, setBuilding] = useState('');
-  const [area, setArea] = useState('');
-  const [pincode, setPincode] = useState('');
-  const [labe, setLabel] = useState('Home');
-  const [reciverName, setReciverName] = useState('');
-  const [reciverPhone, setReciverPhone] = useState('+91 ');
+  const [house, setHouse] = useState(mode === 'edit' ? add.house : '');
+  const [building, setBuilding] = useState(mode === 'edit' ? add.building : '');
+  const [area, setArea] = useState(mode === 'edit' ? add.area : '');
+  const [pincode, setPincode] = useState(mode === 'edit' ? add.pincode : '');
+  const [labe, setLabel] = useState(mode === 'edit' ? add.labe : 'Home');
+  const [reciverName, setReciverName] = useState(
+    mode === 'edit' ? add.reciverName : '',
+  );
+  const [reciverPhone, setReciverPhone] = useState(
+    mode === 'edit' ? add.reciverPhone : '+91 ',
+  );
 
   // LOADING STATE
   const [isLoading, setIsLoading] = useState(false);
@@ -115,6 +126,23 @@ const AddAddress = () => {
     if (validation()) {
       try {
         setIsLoading(true);
+        if (mode === 'edit') {
+          const payload = {
+            id: add.id,
+            house,
+            building,
+            area,
+            pincode,
+            labe,
+            reciverName,
+            reciverPhone,
+          };
+          await updateAddress({ add: payload });
+          ToastAndroid.show('Address updated successfully', ToastAndroid.SHORT);
+          resetForm();
+          navigation.navigate('Address');
+          return;
+        }
         const payload = {
           id: new Date().toISOString(),
           house,
@@ -166,7 +194,9 @@ const AddAddress = () => {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
       <Layout>
-        <SecondaryHeader title="Add Address" />
+        <SecondaryHeader
+          title={mode === 'edit' ? 'Edit Address' : 'Add Address'}
+        />
         <ScrollView
           style={{ flex: 1 }}
           contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
@@ -251,7 +281,9 @@ const AddAddress = () => {
           {isLoading ? (
             <ActivityIndicator size={'large'} color={'#fff'} />
           ) : (
-            <Text style={styles.saveBtnText}>SAVE ADDRESS</Text>
+            <Text style={styles.saveBtnText}>
+              {mode === 'edit' ? 'UPDATE' : 'SAVE'} ADDRESS
+            </Text>
           )}
         </TouchableOpacity>
       </View>
