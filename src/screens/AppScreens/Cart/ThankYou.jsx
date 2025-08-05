@@ -151,7 +151,7 @@ const ThankYou = ({ route }) => {
   };
 
   const handleContinueShopping = () => {
-    navigation.dispatch(StackActions.replace('Home'));
+    navigation.navigate('Home');
   };
 
   const handleTrackOrder = () => {
