@@ -4,13 +4,14 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Layout from '../../Layout/Layout';
 import { LabelInput, SecondaryHeader } from '../../../components';
-import { getActionFromState } from '@react-navigation/native';
+import { getActionFromState, useNavigation } from '@react-navigation/native';
 import { fonts } from '../../../utils/fonts';
 import { colors } from '../../../utils/colors';
 import {
@@ -19,8 +20,12 @@ import {
   validatePersonName,
 } from '../../../utils/validations';
 import { pincodeService } from '../../../services/PincodeService';
+import { useAddress } from '../../../contexts/AddressContext';
 
 const AddAddress = () => {
+  const { addAddress, address } = useAddress();
+  const navigation = useNavigation();
+
   // STATE VARIABLES
   const [house, setHouse] = useState('');
   const [building, setBuilding] = useState('');
@@ -102,23 +107,16 @@ const AddAddress = () => {
       });
       return false;
     }
+
+    return true;
   };
 
   const handleSubmit = async () => {
     if (validation()) {
-      console.log({
-        house,
-        building,
-        area,
-        pincode,
-        labe,
-        reciverName,
-        reciverPhone,
-      });
       try {
         setIsLoading(true);
         const payload = {
-          id: new Date().toLocaleDateString(),
+          id: new Date().toISOString(),
           house,
           building,
           area,
@@ -127,6 +125,10 @@ const AddAddress = () => {
           reciverName,
           reciverPhone,
         };
+        await addAddress({ add: payload });
+        ToastAndroid.show('Address added successfully', ToastAndroid.SHORT);
+        resetForm();
+        navigation.navigate('Address');
       } catch (error) {
         console.error(error);
       } finally {
@@ -149,6 +151,16 @@ const AddAddress = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const resetForm = () => {
+    setHouse('');
+    setBuilding('');
+    setArea('');
+    setPincode('');
+    setLabel('Home');
+    setReciverName('');
+    setReciverPhone('+91 ');
   };
 
   return (
@@ -234,7 +246,7 @@ const AddAddress = () => {
         <TouchableOpacity
           style={styles.saveBtn}
           onPress={handleSubmit}
-          disabled={isPincodeAvailable || isLoading}
+          disabled={isLoading}
         >
           {isLoading ? (
             <ActivityIndicator size={'large'} color={'#fff'} />
