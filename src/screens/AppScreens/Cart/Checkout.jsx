@@ -20,8 +20,10 @@ import { useCartContext } from '../../../contexts/CartContext';
 import { pincodeService } from '../../../services/PincodeService';
 import { validateIndianPhoneNumber } from '../../../utils/validations';
 import RazorPay from 'react-native-razorpay';
+import { StackActions, useNavigation } from '@react-navigation/native';
 
 const Checkout = () => {
+  const navigation = useNavigation();
   const [bottomContainerHeight, setBOttomContainerHeight] = useState(0);
 
   const { carts } = useCartContext();
@@ -118,21 +120,22 @@ const Checkout = () => {
       name: 'Paymenty',
       theme: { color: colors.primary },
       prefill: {
-        contact: address.phoneNumber
+        contact: address.phoneNumber,
       },
     };
 
-    if(selectedPaymentMethod==="online"){
-        RazorPay.open(options)
-      .then(data => {
-        console.log(data);
-      })
-      .catch(error => {
-        console.log(error);
-      })
-      .finally(() => {
-        console.info('payment completed');
-      });
+    if (selectedPaymentMethod === 'online') {
+      RazorPay.open(options)
+        .then(data => {
+          console.log(data);
+          navigation.dispatch(StackActions.replace('ThankYou'));
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          console.info('payment completed');
+        });
     }
   };
 
