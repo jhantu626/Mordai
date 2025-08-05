@@ -9,19 +9,24 @@ import {
   TouchableOpacity,
   View,
   Alert,
+  ToastAndroid,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../../Layout/Layout';
 import { DottedDivider, SecondaryHeader } from '../../../components';
 import { colors } from '../../../utils/colors';
 import { fonts } from '../../../utils/fonts';
 import { useCartContext } from '../../../contexts/CartContext';
+import { pincodeService } from '../../../services/PincodeService';
+import { add } from 'react-native/types_generated/Libraries/Animated/AnimatedExports';
+import { validateIndianPhoneNumber } from '../../../utils/validations';
 
 const Checkout = () => {
   const [bottomContainerHeight, setBOttomContainerHeight] = useState(0);
 
   const { carts } = useCartContext();
   const { width } = Dimensions.get('screen');
+  const [isPincodeAvailable, setIsPincodeAvailable] = useState(true);
 
   // Address state
   const [address, setAddress] = useState({
@@ -47,10 +52,21 @@ const Checkout = () => {
   const grandTotal = totalAmount + shippingCharge + packingCharge;
 
   const paymentMethods = [
-    { id: 'cod', name: 'Cash on Delivery', icon: '💵' },
-    { id: 'upi', name: 'UPI Payment', icon: '📱' },
-    { id: 'card', name: 'Credit/Debit Card', icon: '💳' },
-    { id: 'wallet', name: 'Digital Wallet', icon: '👛' },
+    {
+      id: 'cod',
+      name: 'Cash on Delivery',
+      icon: '💵',
+    },
+    {
+      id: 'wallet',
+      name: 'Digital Wallet',
+      icon: '👛',
+    },
+    {
+      id: 'online',
+      name: 'Pay Online (UPI / Credit / Debit Card)',
+      icon: '🌐',
+    },
   ];
 
   const handleAddressChange = (field, value) => {
@@ -60,35 +76,61 @@ const Checkout = () => {
   const validateAddress = () => {
     const { fullName, phoneNumber, addressLine1, city, state, pincode } =
       address;
-    return fullName && phoneNumber && addressLine1 && city && state && pincode;
+    return (
+      fullName &&
+      phoneNumber &&
+      addressLine1 &&
+      city &&
+      state &&
+      pincode &&
+      validateIndianPhoneNumber('+91 ' + address.phoneNumber)
+    );
   };
 
   const handlePlaceOrder = () => {
     if (!validateAddress()) {
-      Alert.alert('Error', 'Please fill in all required address fields');
+      ToastAndroid.show(
+        'Please fill in all the required fields',
+        ToastAndroid.SHORT,
+      );
+      return;
+    }
+
+    if (!isPincodeAvailable) {
+      ToastAndroid.show(
+        'Delivery to this pincode is not available',
+        ToastAndroid.LONG,
+      );
       return;
     }
 
     if (carts.length === 0) {
-      Alert.alert('Error', 'Your cart is empty');
+      ToastAndroid.show('Your cart is empty', ToastAndroid.SHORT);
       return;
     }
-
-    Alert.alert(
-      'Order Confirmation',
-      `Place order for ₹${grandTotal.toFixed(2)}?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Place Order',
-          onPress: () => {
-            // Here you would typically call your order placement API
-            Alert.alert('Success', 'Order placed successfully!');
-          },
-        },
-      ],
-    );
   };
+
+  const checkPincode = async () => {
+    try {
+      const data = await pincodeService.checkPincodeAvailablity({
+        pincode: address.pincode,
+      });
+      console.log(data);
+      if (data?.success) {
+        setIsPincodeAvailable(true);
+      } else {
+        setIsPincodeAvailable(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (address.pincode.length === 6) {
+      checkPincode();
+    }
+  }, [address.pincode]);
 
   const renderOrderItem = ({ item }) => (
     <View style={styles.orderItem}>
@@ -162,7 +204,13 @@ const Checkout = () => {
               value={address.pincode}
               onChangeText={text => handleAddressChange('pincode', text)}
               keyboardType="numeric"
+              maxLength={6}
             />
+            {!isPincodeAvailable && (
+              <Text style={styles.errorText}>
+                Delivery not available in this area
+              </Text>
+            )}
           </View>
         </View>
 
@@ -400,5 +448,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: fonts.semiBold,
     color: colors.inputBackground,
+  },
+  errorText: {
+    fontSize: 12,
+    fontFamily: fonts.regular,
+    color: 'red',
+    marginTop: -8,
+    marginLeft: 5,
   },
 });
