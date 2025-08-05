@@ -30,16 +30,14 @@ const Checkout = () => {
   const { width } = Dimensions.get('screen');
   const [isPincodeAvailable, setIsPincodeAvailable] = useState(true);
 
-  // Address state
-  const [address, setAddress] = useState({
-    fullName: '',
-    phoneNumber: '',
-    addressLine1: '',
-    addressLine2: '',
-    city: '',
-    state: '',
-    pincode: '',
-  });
+  // Address state - using separate state variables
+  const [house, setHouse] = useState('');
+  const [building, setBuilding] = useState('');
+  const [area, setArea] = useState('');
+  const [pincode, setPincode] = useState('');
+  const [label, setLabel] = useState('Home');
+  const [reciverName, setReciverName] = useState('');
+  const [reciverPhone, setReciverPhone] = useState('+91 ');
 
   // Payment method state
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('cod');
@@ -71,21 +69,14 @@ const Checkout = () => {
     },
   ];
 
-  const handleAddressChange = (field, value) => {
-    setAddress(prev => ({ ...prev, [field]: value }));
-  };
-
   const validateAddress = () => {
-    const { fullName, phoneNumber, addressLine1, city, state, pincode } =
-      address;
     return (
-      fullName &&
-      phoneNumber &&
-      addressLine1 &&
-      city &&
-      state &&
+      reciverName &&
+      reciverPhone &&
+      house &&
+      area &&
       pincode &&
-      validateIndianPhoneNumber('+91 ' + address.phoneNumber)
+      validateIndianPhoneNumber(reciverPhone)
     );
   };
 
@@ -112,15 +103,15 @@ const Checkout = () => {
     }
 
     const options = {
-      description: `Paymenty for Order At Mordai Platform`,
+      description: `Payment for Order At Mordai Platform`,
       image: require('./../../../../assets/images/logo.png'),
       currency: 'INR',
       key: 'rzp_test_S7hkZjIJiSVaAd',
       amount: grandTotal * 100,
-      name: 'Paymenty',
+      name: 'Payment',
       theme: { color: colors.primary },
       prefill: {
-        contact: address.phoneNumber,
+        contact: reciverPhone.replace('+91 ', ''),
       },
     };
 
@@ -136,13 +127,16 @@ const Checkout = () => {
         .finally(() => {
           console.info('payment completed');
         });
+    } else {
+      // Handle COD or other payment methods
+      navigation.dispatch(StackActions.replace('ThankYou'));
     }
   };
 
   const checkPincode = async () => {
     try {
       const data = await pincodeService.checkPincodeAvailablity({
-        pincode: address.pincode,
+        pincode: pincode,
       });
       console.log(data);
       if (data?.success) {
@@ -156,10 +150,10 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    if (address.pincode.length === 6) {
+    if (pincode.length === 6) {
       checkPincode();
     }
-  }, [address.pincode]);
+  }, [pincode]);
 
   const renderOrderItem = ({ item }) => (
     <View style={styles.orderItem}>
@@ -190,56 +184,72 @@ const Checkout = () => {
           <View style={styles.addressContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Full Name *"
-              value={address.fullName}
-              onChangeText={text => handleAddressChange('fullName', text)}
+              placeholder="Receiver Name *"
+              value={reciverName}
+              onChangeText={setReciverName}
             />
             <TextInput
               style={styles.input}
               placeholder="Phone Number *"
-              value={address.phoneNumber}
-              onChangeText={text => handleAddressChange('phoneNumber', text)}
+              value={reciverPhone}
+              onChangeText={setReciverPhone}
               keyboardType="phone-pad"
             />
             <TextInput
               style={styles.input}
-              placeholder="Address Line 1 *"
-              value={address.addressLine1}
-              onChangeText={text => handleAddressChange('addressLine1', text)}
+              placeholder="House/Flat No. *"
+              value={house}
+              onChangeText={setHouse}
             />
             <TextInput
               style={styles.input}
-              placeholder="Address Line 2"
-              value={address.addressLine2}
-              onChangeText={text => handleAddressChange('addressLine2', text)}
+              placeholder="Building/Apartment Name"
+              value={building}
+              onChangeText={setBuilding}
             />
-            <View style={styles.row}>
-              <TextInput
-                style={[styles.input, styles.halfInput]}
-                placeholder="City *"
-                value={address.city}
-                onChangeText={text => handleAddressChange('city', text)}
-              />
-              <TextInput
-                style={[styles.input, styles.halfInput]}
-                placeholder="State *"
-                value={address.state}
-                onChangeText={text => handleAddressChange('state', text)}
-              />
-            </View>
+            <TextInput
+              style={styles.input}
+              placeholder="Area/Locality *"
+              value={area}
+              onChangeText={setArea}
+            />
             <TextInput
               style={styles.input}
               placeholder="Pincode *"
-              value={address.pincode}
-              onChangeText={text => handleAddressChange('pincode', text)}
+              value={pincode}
+              onChangeText={setPincode}
               keyboardType="numeric"
               maxLength={6}
             />
-            {!isPincodeAvailable && (
+            {!isPincodeAvailable && pincode.length === 6 && (
               <Text style={styles.errorText}>
                 Delivery not available in this area
               </Text>
             )}
+            
+            {/* Address Label */}
+            <View style={styles.labelContainer}>
+              <Text style={styles.labelTitle}>Save address as:</Text>
+              <View style={styles.labelButtons}>
+                {['Home', 'Work', 'Other'].map((labelType) => (
+                  <TouchableOpacity
+                    key={labelType}
+                    style={[
+                      styles.labelButton,
+                      label === labelType && styles.selectedLabel
+                    ]}
+                    onPress={() => setLabel(labelType)}
+                  >
+                    <Text style={[
+                      styles.labelButtonText,
+                      label === labelType && styles.selectedLabelText
+                    ]}>
+                      {labelType}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
           </View>
         </View>
 
@@ -360,6 +370,41 @@ const styles = StyleSheet.create({
   },
   halfInput: {
     flex: 1,
+  },
+
+  // Label Styles
+  labelContainer: {
+    marginTop: 5,
+  },
+  labelTitle: {
+    fontSize: 14,
+    fontFamily: fonts.medium,
+    color: '#000000',
+    marginBottom: 10,
+  },
+  labelButtons: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  labelButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    backgroundColor: '#FAFAFA',
+  },
+  selectedLabel: {
+    borderColor: colors.primary,
+    backgroundColor: colors.primary,
+  },
+  labelButtonText: {
+    fontSize: 12,
+    fontFamily: fonts.medium,
+    color: '#666666',
+  },
+  selectedLabelText: {
+    color: '#FFFFFF',
   },
 
   // Payment Method Styles
