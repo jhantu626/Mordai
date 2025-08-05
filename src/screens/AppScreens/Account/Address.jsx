@@ -22,7 +22,7 @@ const Address = () => {
   const [hasSavedAddress, setHasSavedAddress] = useState(true);
   const navigation = useNavigation();
 
-  const { address } = useAuth();
+  const address = [1, 2];
 
   return (
     <Layout>
@@ -83,7 +83,7 @@ const Address = () => {
                 {index !== 2 && <DottedDivider borderWidth={1} />}
               </View>
             )}
-            ListEmptyComponent={()=>{
+            ListEmptyComponent={() => {
               return (
                 <View style={styles.notFOundContainer}>
                   <Image

@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
@@ -28,6 +29,9 @@ const AddAddress = () => {
   const [labe, setLabel] = useState('Home');
   const [reciverName, setReciverName] = useState('');
   const [reciverPhone, setReciverPhone] = useState('+91 ');
+
+  // LOADING STATE
+  const [isLoading, setIsLoading] = useState(false);
 
   // VALIDATION STATES
   const [isPincodeAvailable, setIsPincodeAvailable] = useState(true);
@@ -100,7 +104,7 @@ const AddAddress = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validation()) {
       console.log({
         house,
@@ -111,6 +115,23 @@ const AddAddress = () => {
         reciverName,
         reciverPhone,
       });
+      try {
+        setIsLoading(true);
+        const payload = {
+          id: new Date().toLocaleDateString(),
+          house,
+          building,
+          area,
+          pincode,
+          labe,
+          reciverName,
+          reciverPhone,
+        };
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -213,9 +234,13 @@ const AddAddress = () => {
         <TouchableOpacity
           style={styles.saveBtn}
           onPress={handleSubmit}
-          disabled={isPincodeAvailable ? false : true}
+          disabled={isPincodeAvailable || isLoading}
         >
-          <Text style={styles.saveBtnText}>SAVE ADDRESS</Text>
+          {isLoading ? (
+            <ActivityIndicator size={'large'} color={'#fff'} />
+          ) : (
+            <Text style={styles.saveBtnText}>SAVE ADDRESS</Text>
+          )}
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
