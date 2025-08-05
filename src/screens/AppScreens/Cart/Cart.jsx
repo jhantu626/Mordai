@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -14,9 +15,11 @@ import { CartItem, DottedDivider, SecondaryHeader } from '../../../components';
 import { colors } from '../../../utils/colors';
 import { fonts } from '../../../utils/fonts';
 import { useCartContext } from '../../../contexts/CartContext';
+import { useNavigation } from '@react-navigation/native';
 
 const Cart = () => {
   const { carts, addToCart, removeFromCart } = useCartContext();
+  const navigation = useNavigation();
 
   const { width } = Dimensions.get('screen');
 
@@ -66,7 +69,9 @@ const Cart = () => {
           </View>
           <View style={styles.bottomSubContainer}>
             <Text style={styles.totalAmountText}>Shipping Charge</Text>
-            <Text style={styles.amountText}>₹{(totalAmount * 0.05).toFixed(2)}</Text>
+            <Text style={styles.amountText}>
+              ₹{(totalAmount * 0.05).toFixed(2)}
+            </Text>
           </View>
           <View style={styles.bottomSubContainer}>
             <Text style={styles.totalAmountText}>Packing Charge</Text>
@@ -82,7 +87,16 @@ const Cart = () => {
             ₹{totalAmount + totalAmount * 0.05}
           </Text>
         </View>
-        <TouchableOpacity style={styles.checkoutBtn}>
+        <TouchableOpacity
+          style={styles.checkoutBtn}
+          onPress={() => {
+            if (carts.length > 0) {
+              navigation.navigate('Checkout');
+            } else {
+              ToastAndroid.show('Cart is empty', ToastAndroid.SHORT);
+            }
+          }}
+        >
           <Text style={styles.checkoutBtnText}>Checkout</Text>
         </TouchableOpacity>
       </View>

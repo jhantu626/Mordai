@@ -14,6 +14,7 @@ import ProductDetails from './AppScreens/Products/ProductDetails';
 
 // Cart
 import Cart from './AppScreens/Cart/Cart';
+import Checkout from './AppScreens/Cart/Checkout';
 
 // Orders
 import Order from './AppScreens/Orders/Order';
@@ -36,4 +37,5 @@ export {
   ProductDetails,
   Address,
   AddAddress,
+  Checkout
 };
