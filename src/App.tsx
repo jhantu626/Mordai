@@ -24,6 +24,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SplashScreen from 'react-native-splash-screen';
 import CartProvider, { useCartContext } from './contexts/CartContext';
 import AuthProvider, { useAuth } from './contexts/AuthContext';
+import AddressProvider from './contexts/AddressContext';
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -214,9 +215,11 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <CartProvider>
-        <AppNav />
-      </CartProvider>
+      <AddressProvider>
+        <CartProvider>
+          <AppNav />
+        </CartProvider>
+      </AddressProvider>
     </AuthProvider>
   );
 };
