@@ -17,6 +17,7 @@ import {
   ProductDetails,
   Products,
   Search,
+  ThankYou,
 } from './screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -128,6 +129,7 @@ const App = () => {
       >
         <Stack.Screen name="Cart" component={Cart} />
         <Stack.Screen name="Checkout" component={Checkout} />
+        <Stack.Screen name="ThankYou" component={ThankYou} />
       </Stack.Navigator>
     );
   };
