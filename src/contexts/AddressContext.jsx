@@ -26,6 +26,18 @@ const AddressProvider = ({ children }) => {
     }
   };
 
+  const updateAddress = async ({ add }) => {
+    try {
+      const updatedAddress = address.map(item =>
+        item.id === add.id ? add : item,
+      );
+      setAddress(updatedAddress);
+      await AsyncStorage.setItem('address', JSON.stringify(updatedAddress));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const check = async () => {
     try {
       const data = await AsyncStorage.getItem('address');
@@ -47,6 +59,7 @@ const AddressProvider = ({ children }) => {
         address,
         addAddress,
         removeAddress,
+        updateAddress,
       }}
     >
       {children}
