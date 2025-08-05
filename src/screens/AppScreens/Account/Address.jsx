@@ -1,4 +1,5 @@
 import {
+  FlatList,
   Image,
   ScrollView,
   StyleSheet,
@@ -15,10 +16,14 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import { fonts } from '../../../utils/fonts';
 import { colors } from '../../../utils/colors';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const Address = () => {
   const [hasSavedAddress, setHasSavedAddress] = useState(true);
   const navigation = useNavigation();
+
+  const { address } = useAuth();
+
   return (
     <Layout>
       <SecondaryHeader title={'Address'} />
@@ -46,43 +51,50 @@ const Address = () => {
           </View>
         )}
         <View style={styles.addreddContainer}>
-          <View style={styles.addressCard}>
-            <View style={[styles.leftContainer, { gap: 10, width: '80%' }]}>
-              <Octicons name="location" size={24} color={'#00000090'} />
+          <FlatList
+            data={address}
+            keyExtractor={(_, index) => index + '-addresses'}
+            renderItem={({ item, index }) => (
               <View>
-                <View style={{ flexDirection: 'row', gap: 5 }}>
-                  <Text style={styles.titleText}>Home</Text>
-                  <Text style={styles.selectedText}>Selected</Text>
+                <View style={styles.addressCard}>
+                  <View
+                    style={[styles.leftContainer, { gap: 10, width: '80%' }]}
+                  >
+                    <Octicons name="location" size={24} color={'#00000090'} />
+                    <View>
+                      <View style={{ flexDirection: 'row', gap: 5 }}>
+                        <Text style={styles.titleText}>Home</Text>
+                        <Text style={styles.selectedText}>Selected</Text>
+                      </View>
+                      <Text numberOfLines={1} style={styles.addressText}>
+                        8/1/C Gururdas Dutta Garden Lane, Ultadanga, Kolkata,
+                        West Bengal, 700067
+                      </Text>
+                    </View>
+                  </View>
+                  <TouchableOpacity>
+                    <Entypo
+                      name="dots-three-vertical"
+                      size={20}
+                      color="#00000090"
+                    />
+                  </TouchableOpacity>
                 </View>
-                <Text numberOfLines={1} style={styles.addressText}>
-                  8/1/C Gururdas Dutta Garden Lane, Ultadanga, Kolkata, West
-                  Bengal, 700067
-                </Text>
+                {index !== 2 && <DottedDivider borderWidth={1} />}
               </View>
-            </View>
-            <TouchableOpacity>
-              <Entypo name="dots-three-vertical" size={20} color="#00000090" />
-            </TouchableOpacity>
-          </View>
-          <DottedDivider borderWidth={1} />
-          <View style={styles.addressCard}>
-            <View style={[styles.leftContainer, { gap: 10, width: '80%' }]}>
-              <Octicons name="location" size={24} color={'#00000090'} />
-              <View>
-                <View style={{ flexDirection: 'row', gap: 5 }}>
-                  <Text style={styles.titleText}>Others</Text>
-                  {/* <Text style={styles.selectedText}>Selected</Text> */}
+            )}
+            ListEmptyComponent={()=>{
+              return (
+                <View style={styles.notFOundContainer}>
+                  <Image
+                    style={styles.image}
+                    source={require('./../../../../assets/images/address.png')}
+                  />
+                  <Text style={styles.notFoundText}>No Saved Address</Text>
                 </View>
-                <Text numberOfLines={1} style={styles.addressText}>
-                  8/1/C Gururdas Dutta Garden Lane, Ultadanga, Kolkata, West
-                  Bengal, 700067
-                </Text>
-              </View>
-            </View>
-            <TouchableOpacity>
-              <Entypo name="dots-three-vertical" size={20} color="#00000090" />
-            </TouchableOpacity>
-          </View>
+              );
+            }}
+          />
         </View>
       </ScrollView>
     </Layout>
