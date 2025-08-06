@@ -34,7 +34,12 @@ const Accounts = () => {
       >
         <ProfileCard />
         <View style={styles.cardContainer}>
-          <TouchableOpacity style={styles.card}>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => {
+              navigation.navigate('Orders');
+            }}
+          >
             <Feather name="shopping-bag" size={30} color="#000000" />
             <Text numberOfLines={2} style={styles.cartText}>
               Your Orders
@@ -62,9 +67,12 @@ const Accounts = () => {
               <Entypo name="chevron-small-right" size={24} color="#000000" />
             </TouchableOpacity>
             <DottedDivider borderWidth={1} />
-            <TouchableOpacity style={styles.infoCard} onPress={()=>{
-              navigation.navigate('Address');
-            }}>
+            <TouchableOpacity
+              style={styles.infoCard}
+              onPress={() => {
+                navigation.navigate('Address');
+              }}
+            >
               <View style={styles.infoCardLeft}>
                 <Ionicons name="location-outline" size={24} color="#000000" />
                 <Text style={styles.infoText}>Saved Address</Text>

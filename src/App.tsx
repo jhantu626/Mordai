@@ -13,6 +13,7 @@ import {
   Checkout,
   Home,
   LoginSignup,
+  Orders,
   Otp,
   ProductDetails,
   Products,
@@ -81,12 +82,13 @@ const App = () => {
 
   const AccountStack = () => (
     <Stack.Navigator
-      initialRouteName="Address"
+      initialRouteName="Account"
       screenOptions={{ headerShown: false, animation: 'slide_from_right' }}
     >
       <Stack.Screen name="Account" component={Accounts} />
       <Stack.Screen name="Address" component={Address} />
       <Stack.Screen name="AddAddress" component={AddAddress} />
+      <Stack.Screen name="Orders" component={Orders} />
     </Stack.Navigator>
   );
 
@@ -139,7 +141,7 @@ const App = () => {
     const { numOfCarts } = useCartContext();
     return (
       <Tab.Navigator
-        initialRouteName="Account"
+        initialRouteName="Home"
         backBehavior="fullHistory"
         screenOptions={{
           headerShown: false,
