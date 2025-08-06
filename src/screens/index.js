@@ -24,6 +24,7 @@ import Order from './AppScreens/Orders/Order';
 import Accounts from './AppScreens/Account/Accounts';
 import Address from './AppScreens/Account/Address';
 import AddAddress from './AppScreens/Account/AddAddress';
+import Orders from './AppScreens/Account/Orders';
 
 export {
   Layout,
@@ -40,4 +41,5 @@ export {
   AddAddress,
   Checkout,
   ThankYou,
+  Orders
 };
