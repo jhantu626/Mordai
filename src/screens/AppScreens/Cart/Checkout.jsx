@@ -401,6 +401,7 @@ const Checkout = () => {
           <View
             style={{
               gap: 10,
+              marginTop: 10
             }}
           >
             {address.length > 0 ? (
