@@ -397,59 +397,73 @@ const Checkout = () => {
       >
         <BottomSheetView style={styles.bottomSheet}>
           <Text style={styles.bottomSheetTitle}>Select Delivery Address</Text>
-          <View style={{
-            gap: 10
-          }}>
-            {address.map(
-              ({
-                id,
-                label,
-                house,
-                building,
-                area,
-                pincode,
-                receiverName,
-                receiverPhone,
-              }) => (
-                <TouchableOpacity
-                  key={id}
-                  style={[
-                    styles.paymentMethod,
-                    selectedAddress === id && styles.selectedPaymentMethod,
-                    {
-                      paddingHorizontal: 10
-                    }
-                  ]}
-                  onPress={() => setSelectedAddress(id)}
-                  activeOpacity={0.8}
-                  accessible={true}
-                  accessibilityRole="button"
-                >
-                  <Text style={styles.paymentIcon}>
-                    {getAddressIcon(label)}
-                  </Text>
-
-                  <View style={styles.paymentText}>
-                    <Text style={styles.addressLabel}>{label}</Text>
-                    <Text style={styles.addressText}>
-                      {house}, {building}
-                    </Text>
-                    <Text style={styles.addressText}>
-                      {area}, {pincode}
-                    </Text>
-                    <Text style={styles.receiverInfo}>
-                      {receiverName} • {receiverPhone}
-                    </Text>
-                  </View>
-
-                  <View
+          <View
+            style={{
+              gap: 10,
+            }}
+          >
+            {address.length > 0 ? (
+              address.map(
+                ({
+                  id,
+                  label,
+                  house,
+                  building,
+                  area,
+                  pincode,
+                  receiverName,
+                  receiverPhone,
+                }) => (
+                  <TouchableOpacity
+                    key={id}
                     style={[
-                      styles.radioButton,
-                      selectedAddress === id && styles.radioButtonSelected,
+                      styles.paymentMethod,
+                      selectedAddress === id && styles.selectedPaymentMethod,
+                      {
+                        paddingHorizontal: 10,
+                      },
                     ]}
-                  />
-                </TouchableOpacity>
-              ),
+                    onPress={() => setSelectedAddress(id)}
+                    activeOpacity={0.8}
+                    accessible={true}
+                    accessibilityRole="button"
+                  >
+                    <Text style={styles.paymentIcon}>
+                      {getAddressIcon(label)}
+                    </Text>
+
+                    <View style={styles.paymentText}>
+                      <Text style={styles.addressLabel}>{label}</Text>
+                      <Text style={styles.addressText}>
+                        {house}, {building}
+                      </Text>
+                      <Text style={styles.addressText}>
+                        {area}, {pincode}
+                      </Text>
+                      <Text style={styles.receiverInfo}>
+                        {receiverName} • {receiverPhone}
+                      </Text>
+                    </View>
+
+                    <View
+                      style={[
+                        styles.radioButton,
+                        selectedAddress === id && styles.radioButtonSelected,
+                      ]}
+                    />
+                  </TouchableOpacity>
+                ),
+              )
+            ) : (
+              <View style={{
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Image
+                style={styles.emptyAddressImage}
+                source={require('./../../../../assets/images/address.png')}
+              />
+              </View>
             )}
           </View>
         </BottomSheetView>
@@ -692,6 +706,11 @@ const styles = StyleSheet.create({
     fontFamily: fonts.medium,
     color: '#888888',
     marginTop: 4,
+  },
+  emptyAddressImage: {
+    width: 200,
+    height: 200,
+    resizeMode: 'contain',
   },
 });
 
