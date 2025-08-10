@@ -193,10 +193,10 @@ const ProductDetails = () => {
                   ₹{product?.sizes[0]?.price}
                 </Text>
                 <Text style={styles.originalPriceText}>
-                  ₹{product.sizes[0].original_price}
+                  ₹{product.sizes[0]?.original_price}
                 </Text>
               </View>
-              <Text style={styles.weightText}>{product?.sizes[0]?.label}</Text>
+              <Text style={styles.weightText}>{product?.sizes[0]?.name}</Text>
             </View>
             {product?.sizes.length > 1 ? (
               <TouchableOpacity
@@ -222,7 +222,7 @@ const ProductDetails = () => {
                     removeFromCart({
                       item: {
                         id: product?.id,
-                        size: product?.sizes[0]?.label,
+                        size: product?.sizes[0]?.name,
                       },
                     });
                   }}
@@ -231,7 +231,7 @@ const ProductDetails = () => {
                 </TouchableOpacity>
                 <Text style={styles.quantityText}>
                   {getQuiantity({
-                    item: { id: product?.id, size: product?.sizes[0].label },
+                    item: { id: product?.id, size: product?.sizes[0].name },
                   })}
                 </Text>
                 <TouchableOpacity
@@ -240,8 +240,8 @@ const ProductDetails = () => {
                     addToCart({
                       cart: {
                         id: product?.id,
-                        size: product?.sizes[0].label,
-                        image: product?.image,
+                        size: product?.sizes[0].name,
+                        image: product?.main_image,
                         name: product?.name,
                         price: product?.sizes[0].price,
                       },
@@ -277,9 +277,9 @@ const ProductDetails = () => {
                 product={{
                   id: product?.id,
                   name: product?.name,
-                  image: product?.image,
+                  image: product?.main_image,
                   price: item?.price,
-                  size: item?.label,
+                  size: item?.name,
                 }}
               />
             )}
