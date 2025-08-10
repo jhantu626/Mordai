@@ -34,8 +34,6 @@ const Checkout = () => {
   const { address } = useAddress();
   const [selectedAddress, setSelectedAddress] = useState(null);
 
-  console.log(JSON.stringify(address));
-
   const navigation = useNavigation();
   const [bottomContainerHeight, setBOttomContainerHeight] = useState(0);
 
@@ -147,15 +145,12 @@ const Checkout = () => {
     if (selectedPaymentMethod === 'online') {
       RazorPay.open(options)
         .then(data => {
-          console.log(data);
           navigation.dispatch(StackActions.replace('ThankYou'));
         })
         .catch(error => {
           console.log(error);
         })
-        .finally(() => {
-          console.info('payment completed');
-        });
+        .finally(() => {});
     } else {
       // Handle COD or other payment methods
       navigation.dispatch(StackActions.replace('ThankYou'));
@@ -167,7 +162,6 @@ const Checkout = () => {
       const data = await pincodeService.checkPincodeAvailablity({
         pincode: pincode,
       });
-      console.log(data);
       if (data?.success) {
         setIsPincodeAvailable(true);
       } else {
@@ -281,7 +275,7 @@ const Checkout = () => {
               <View style={styles.labelContainer}>
                 <Text style={styles.labelTitle}>Save address as:</Text>
                 <View style={styles.labelButtons}>
-                  {['Home', 'Work', 'Other'].map(labelType => (
+                  {['Home', 'Office', 'Other'].map(labelType => (
                     <TouchableOpacity
                       key={labelType}
                       style={[
@@ -308,7 +302,11 @@ const Checkout = () => {
           {/* Payment Method Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Payment Method</Text>
-            <View>
+            <View
+              style={{
+                gap: 10,
+              }}
+            >
               {paymentMethods.map(method => (
                 <TouchableOpacity
                   key={method.id}
@@ -316,6 +314,9 @@ const Checkout = () => {
                     styles.paymentMethod,
                     selectedPaymentMethod === method.id &&
                       styles.selectedPaymentMethod,
+                    {
+                      padding: 10,
+                    },
                   ]}
                   onPress={() => setSelectedPaymentMethod(method.id)}
                 >
@@ -406,13 +407,13 @@ const Checkout = () => {
               address.map(
                 ({
                   id,
-                  label,
                   house,
                   building,
                   area,
                   pincode,
-                  receiverName,
-                  receiverPhone,
+                  labe,
+                  reciverName,
+                  reciverPhone,
                 }) => (
                   <TouchableOpacity
                     key={id}
@@ -423,7 +424,29 @@ const Checkout = () => {
                         paddingHorizontal: 10,
                       },
                     ]}
-                    onPress={() => setSelectedAddress(id)}
+                    onPress={() => {
+                      console.log(
+                        '{',
+                        id,
+                        area,
+                        building,
+                        house,
+                        labe,
+                        pincode,
+                        reciverName,
+                        reciverPhone,
+                        '}',
+                      );
+                      setSelectedAddress(id);
+                      setArea(area);
+                      setBuilding(building);
+                      setHouse(house);
+                      setLabel(labe);
+                      setPincode(pincode);
+                      setReciverName(reciverName);
+                      setReciverPhone(reciverPhone);
+                      bottomSheetRef.current?.close();
+                    }}
                     activeOpacity={0.8}
                     accessible={true}
                     accessibilityRole="button"
@@ -433,7 +456,7 @@ const Checkout = () => {
                     </Text>
 
                     <View style={styles.paymentText}>
-                      <Text style={styles.addressLabel}>{label}</Text>
+                      <Text style={styles.addressLabel}>{labe}</Text>
                       <Text style={styles.addressText}>
                         {house}, {building}
                       </Text>
@@ -441,7 +464,7 @@ const Checkout = () => {
                         {area}, {pincode}
                       </Text>
                       <Text style={styles.receiverInfo}>
-                        {receiverName} • {receiverPhone}
+                        {reciverName} • {reciverPhone}
                       </Text>
                     </View>
 
@@ -455,14 +478,16 @@ const Checkout = () => {
                 ),
               )
             ) : (
-              <View style={{
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
                 <Image
-                style={styles.emptyAddressImage}
-                source={require('./../../../../assets/images/address.png')}
-              />
+                  style={styles.emptyAddressImage}
+                  source={require('./../../../../assets/images/address.png')}
+                />
               </View>
             )}
           </View>
