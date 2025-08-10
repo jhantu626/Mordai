@@ -11,7 +11,7 @@ import {
   Alert,
   ToastAndroid,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Layout from '../../Layout/Layout';
 import { DottedDivider, SecondaryHeader } from '../../../components';
 import { colors } from '../../../utils/colors';
@@ -21,8 +21,21 @@ import { pincodeService } from '../../../services/PincodeService';
 import { validateIndianPhoneNumber } from '../../../utils/validations';
 import RazorPay from 'react-native-razorpay';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import Feather from 'react-native-vector-icons/Feather';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetFlatList,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
+import { useAddress } from '../../../contexts/AddressContext';
 
 const Checkout = () => {
+  const { address } = useAddress();
+  const [selectedAddress, setSelectedAddress] = useState(null);
+
+  console.log(JSON.stringify(address));
+
   const navigation = useNavigation();
   const [bottomContainerHeight, setBOttomContainerHeight] = useState(0);
 
@@ -41,6 +54,8 @@ const Checkout = () => {
 
   // Payment method state
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('cod');
+
+  const bottomSheetRef = useRef(null);
 
   // Calculate totals
   const totalAmount = carts.reduce(
@@ -68,6 +83,20 @@ const Checkout = () => {
       icon: '🌐',
     },
   ];
+
+  const renderBackdrop = useMemo(
+    () => props =>
+      (
+        <BottomSheetBackdrop
+          {...props}
+          disappearsOnIndex={-1}
+          appearsOnIndex={0}
+          opacity={0.5}
+        />
+      ),
+    [],
+  );
+  const snapPoints = useMemo(() => ['75%'], []);
 
   const validateAddress = () => {
     return (
@@ -170,171 +199,264 @@ const Checkout = () => {
     </View>
   );
 
+  const getAddressIcon = label => {
+    switch (label?.toLowerCase()) {
+      case 'home':
+        return '🏠';
+      case 'office':
+        return '🏢';
+      case 'work':
+        return '💼';
+      default:
+        return '📍';
+    }
+  };
+
   return (
-    <Layout>
-      <SecondaryHeader title="Checkout" />
-      <ScrollView
-        style={styles.container}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: bottomContainerHeight }}
-      >
-        {/* Delivery Address Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Delivery Address</Text>
-          <View style={styles.addressContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Receiver Name *"
-              value={reciverName}
-              onChangeText={setReciverName}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Phone Number *"
-              value={reciverPhone}
-              onChangeText={setReciverPhone}
-              keyboardType="phone-pad"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="House/Flat No. *"
-              value={house}
-              onChangeText={setHouse}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Building/Apartment Name"
-              value={building}
-              onChangeText={setBuilding}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Area/Locality *"
-              value={area}
-              onChangeText={setArea}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Pincode *"
-              value={pincode}
-              onChangeText={setPincode}
-              keyboardType="numeric"
-              maxLength={6}
-            />
-            {!isPincodeAvailable && pincode.length === 6 && (
-              <Text style={styles.errorText}>
-                Delivery not available in this area
-              </Text>
-            )}
-            
-            {/* Address Label */}
-            <View style={styles.labelContainer}>
-              <Text style={styles.labelTitle}>Save address as:</Text>
-              <View style={styles.labelButtons}>
-                {['Home', 'Work', 'Other'].map((labelType) => (
-                  <TouchableOpacity
-                    key={labelType}
-                    style={[
-                      styles.labelButton,
-                      label === labelType && styles.selectedLabel
-                    ]}
-                    onPress={() => setLabel(labelType)}
-                  >
-                    <Text style={[
-                      styles.labelButtonText,
-                      label === labelType && styles.selectedLabelText
-                    ]}>
-                      {labelType}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Layout>
+        <SecondaryHeader title="Checkout" />
+        <ScrollView
+          style={styles.container}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: bottomContainerHeight }}
+        >
+          {/* Delivery Address Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Delivery Address</Text>
+            <TouchableOpacity
+              style={styles.addressBtn}
+              onPress={() => bottomSheetRef.current?.expand()}
+            >
+              <Feather name="map-pin" size={20} color={colors.primary} />
+              <Text style={styles.addressBtnText}>Select Address</Text>
+            </TouchableOpacity>
+            <View style={styles.addressContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Receiver Name *"
+                value={reciverName}
+                onChangeText={setReciverName}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Phone Number *"
+                value={reciverPhone}
+                onChangeText={setReciverPhone}
+                keyboardType="phone-pad"
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="House/Flat No. *"
+                value={house}
+                onChangeText={setHouse}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Building/Apartment Name"
+                value={building}
+                onChangeText={setBuilding}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Area/Locality *"
+                value={area}
+                onChangeText={setArea}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Pincode *"
+                value={pincode}
+                onChangeText={setPincode}
+                keyboardType="numeric"
+                maxLength={6}
+              />
+              {!isPincodeAvailable && pincode.length === 6 && (
+                <Text style={styles.errorText}>
+                  Delivery not available in this area
+                </Text>
+              )}
+
+              {/* Address Label */}
+              <View style={styles.labelContainer}>
+                <Text style={styles.labelTitle}>Save address as:</Text>
+                <View style={styles.labelButtons}>
+                  {['Home', 'Work', 'Other'].map(labelType => (
+                    <TouchableOpacity
+                      key={labelType}
+                      style={[
+                        styles.labelButton,
+                        label === labelType && styles.selectedLabel,
+                      ]}
+                      onPress={() => setLabel(labelType)}
+                    >
+                      <Text
+                        style={[
+                          styles.labelButtonText,
+                          label === labelType && styles.selectedLabelText,
+                        ]}
+                      >
+                        {labelType}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
               </View>
             </View>
           </View>
-        </View>
 
-        {/* Payment Method Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Payment Method</Text>
-          <View style={styles.paymentContainer}>
-            {paymentMethods.map(method => (
-              <TouchableOpacity
-                key={method.id}
-                style={[
-                  styles.paymentMethod,
-                  selectedPaymentMethod === method.id &&
-                    styles.selectedPaymentMethod,
-                ]}
-                onPress={() => setSelectedPaymentMethod(method.id)}
-              >
-                <Text style={styles.paymentIcon}>{method.icon}</Text>
-                <Text style={styles.paymentText}>{method.name}</Text>
-                <View
+          {/* Payment Method Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Payment Method</Text>
+            <View>
+              {paymentMethods.map(method => (
+                <TouchableOpacity
+                  key={method.id}
                   style={[
-                    styles.radioButton,
+                    styles.paymentMethod,
                     selectedPaymentMethod === method.id &&
-                      styles.radioButtonSelected,
+                      styles.selectedPaymentMethod,
                   ]}
-                />
-              </TouchableOpacity>
-            ))}
+                  onPress={() => setSelectedPaymentMethod(method.id)}
+                >
+                  <Text style={styles.paymentIcon}>{method.icon}</Text>
+                  <Text style={styles.paymentText}>{method.name}</Text>
+                  <View
+                    style={[
+                      styles.radioButton,
+                      selectedPaymentMethod === method.id &&
+                        styles.radioButtonSelected,
+                    ]}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
-        </View>
 
-        {/* Order Summary Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Order Summary</Text>
-          <View style={styles.orderSummary}>
-            <FlatList
-              data={carts}
-              renderItem={renderOrderItem}
-              keyExtractor={(_, index) => 'order-item-' + index}
-              scrollEnabled={false}
-            />
+          {/* Order Summary Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Order Summary</Text>
+            <View style={styles.orderSummary}>
+              <FlatList
+                data={carts}
+                renderItem={renderOrderItem}
+                keyExtractor={(_, index) => 'order-item-' + index}
+                scrollEnabled={false}
+              />
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
 
-      {/* Bottom Summary */}
-      <View
-        style={[styles.bottomContainer, { width: width }]}
-        onLayout={e => setBOttomContainerHeight(e.nativeEvent.layout.height)}
-      >
-        <View style={{ gap: 7 }}>
-          <View style={styles.bottomSubContainer}>
-            <Text style={styles.totalAmountText}>Total Amount</Text>
-            <Text style={styles.amountText}>₹{totalAmount.toFixed(2)}</Text>
-          </View>
-          <View style={styles.bottomSubContainer}>
-            <Text style={styles.totalAmountText}>Shipping Charge</Text>
-            <Text style={styles.amountText}>₹{shippingCharge.toFixed(2)}</Text>
-          </View>
-          <View style={styles.bottomSubContainer}>
-            <Text style={styles.totalAmountText}>Packing Charge</Text>
-            <Text style={styles.amountText}>₹{packingCharge.toFixed(2)}</Text>
-          </View>
-        </View>
-        <DottedDivider />
-        <View style={styles.bottomSubContainer}>
-          <Text style={[styles.totalAmountText, { fontFamily: fonts.bold }]}>
-            Grand Total
-          </Text>
-          <Text style={[styles.amountText, { fontFamily: fonts.bold }]}>
-            ₹{grandTotal.toFixed(2)}
-          </Text>
-        </View>
-        <TouchableOpacity
-          style={styles.placeOrderBtn}
-          onPress={handlePlaceOrder}
+        {/* Bottom Summary */}
+        <View
+          style={[styles.bottomContainer, { width: width }]}
+          onLayout={e => setBOttomContainerHeight(e.nativeEvent.layout.height)}
         >
-          <Text style={styles.placeOrderBtnText}>Place Order</Text>
-        </TouchableOpacity>
-      </View>
-    </Layout>
+          <View style={{ gap: 7 }}>
+            <View style={styles.bottomSubContainer}>
+              <Text style={styles.totalAmountText}>Total Amount</Text>
+              <Text style={styles.amountText}>₹{totalAmount.toFixed(2)}</Text>
+            </View>
+            <View style={styles.bottomSubContainer}>
+              <Text style={styles.totalAmountText}>Shipping Charge</Text>
+              <Text style={styles.amountText}>
+                ₹{shippingCharge.toFixed(2)}
+              </Text>
+            </View>
+            <View style={styles.bottomSubContainer}>
+              <Text style={styles.totalAmountText}>Packing Charge</Text>
+              <Text style={styles.amountText}>₹{packingCharge.toFixed(2)}</Text>
+            </View>
+          </View>
+          <DottedDivider />
+          <View style={styles.bottomSubContainer}>
+            <Text style={[styles.totalAmountText, { fontFamily: fonts.bold }]}>
+              Grand Total
+            </Text>
+            <Text style={[styles.amountText, { fontFamily: fonts.bold }]}>
+              ₹{grandTotal.toFixed(2)}
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={styles.placeOrderBtn}
+            onPress={handlePlaceOrder}
+          >
+            <Text style={styles.placeOrderBtnText}>Place Order</Text>
+          </TouchableOpacity>
+        </View>
+      </Layout>
+      <BottomSheet
+        ref={bottomSheetRef}
+        enablePanDownToClose
+        handleComponent={null}
+        backdropComponent={renderBackdrop}
+        snapPoints={snapPoints}
+        animationConfigs={{
+          duration: 200,
+        }}
+      >
+        <BottomSheetView style={styles.bottomSheet}>
+          <Text style={styles.bottomSheetTitle}>Select Delivery Address</Text>
+          <View style={{
+            gap: 10
+          }}>
+            {address.map(
+              ({
+                id,
+                label,
+                house,
+                building,
+                area,
+                pincode,
+                receiverName,
+                receiverPhone,
+              }) => (
+                <TouchableOpacity
+                  key={id}
+                  style={[
+                    styles.paymentMethod,
+                    selectedAddress === id && styles.selectedPaymentMethod,
+                    {
+                      paddingHorizontal: 10
+                    }
+                  ]}
+                  onPress={() => setSelectedAddress(id)}
+                  activeOpacity={0.8}
+                  accessible={true}
+                  accessibilityRole="button"
+                >
+                  <Text style={styles.paymentIcon}>
+                    {getAddressIcon(label)}
+                  </Text>
+
+                  <View style={styles.paymentText}>
+                    <Text style={styles.addressLabel}>{label}</Text>
+                    <Text style={styles.addressText}>
+                      {house}, {building}
+                    </Text>
+                    <Text style={styles.addressText}>
+                      {area}, {pincode}
+                    </Text>
+                    <Text style={styles.receiverInfo}>
+                      {receiverName} • {receiverPhone}
+                    </Text>
+                  </View>
+
+                  <View
+                    style={[
+                      styles.radioButton,
+                      selectedAddress === id && styles.radioButtonSelected,
+                    ]}
+                  />
+                </TouchableOpacity>
+              ),
+            )}
+          </View>
+        </BottomSheetView>
+      </BottomSheet>
+    </GestureHandlerRootView>
   );
 };
-
-export default Checkout;
 
 const styles = StyleSheet.create({
   container: {
@@ -414,7 +536,7 @@ const styles = StyleSheet.create({
   paymentMethod: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
+    padding: 0,
     borderWidth: 1,
     borderColor: '#E0E0E0',
     borderRadius: 8,
@@ -530,4 +652,47 @@ const styles = StyleSheet.create({
     marginTop: -8,
     marginLeft: 5,
   },
+  addressBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    marginBottom: 10,
+  },
+  addressBtnText: {
+    fontSize: 14,
+    fontFamily: fonts.semiBold,
+    color: colors.primary,
+  },
+  bottomSheet: {
+    // backgroundColor: '#d4f0bd',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+  },
+  bottomSheetTitle: {
+    fontSize: 16,
+    fontFamily: fonts.semiBold,
+    color: colors.primary,
+  },
+  addressLabel: {
+    fontSize: 14,
+    fontFamily: fonts.semiBold,
+    color: '#000000',
+    marginBottom: 2,
+  },
+  addressText: {
+    fontSize: 13,
+    fontFamily: fonts.regular,
+    color: '#666666',
+    lineHeight: 18,
+  },
+  receiverInfo: {
+    fontSize: 12,
+    fontFamily: fonts.medium,
+    color: '#888888',
+    marginTop: 4,
+  },
 });
+
+export default Checkout;

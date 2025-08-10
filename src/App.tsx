@@ -127,7 +127,7 @@ const App = () => {
   const CartStack = () => {
     return (
       <Stack.Navigator
-        initialRouteName="Cart"
+        initialRouteName="Checkout"
         screenOptions={{ headerShown: false, animation: 'slide_from_right' }}
       >
         <Stack.Screen name="Cart" component={Cart} />
@@ -141,7 +141,7 @@ const App = () => {
     const { numOfCarts } = useCartContext();
     return (
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName="Cart"
         backBehavior="fullHistory"
         screenOptions={{
           headerShown: false,
