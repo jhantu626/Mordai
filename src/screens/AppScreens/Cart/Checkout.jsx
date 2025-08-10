@@ -392,6 +392,7 @@ const Checkout = () => {
         handleComponent={null}
         backdropComponent={renderBackdrop}
         snapPoints={snapPoints}
+        index={-1}
         animationConfigs={{
           duration: 200,
         }}

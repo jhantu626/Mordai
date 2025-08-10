@@ -13,7 +13,7 @@ import Layout from '../../Layout/Layout';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   CartAdd,
-  ProductDetailsShimmer,
+  Loader,
   ReletedProduct,
   SecondaryHeader,
 } from '../../../components';
@@ -29,6 +29,7 @@ import BottomSheet, {
 } from '@gorhom/bottom-sheet';
 import { useFocusEffect, useRoute } from '@react-navigation/native';
 import { productService } from '../../../services/ProductService';
+import ShimmerLine from '../../../components/Shimmers/ShimmerLine';
 
 const { width } = Dimensions.get('window');
 
@@ -109,144 +110,146 @@ const ProductDetails = () => {
     }, [productId]),
   );
 
-  return isLoading ? (
-    <ProductDetailsShimmer />
-  ) : (
+  return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Layout>
-        <SecondaryHeader title="" />
-        <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={styles.container}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.topView}>
-            <LinearGradient
-              colors={['#d9cbe6', '#d1b8d9']}
-              style={styles.glossy}
-            />
-            <LinearGradient
-              colors={['#c1d3fe', '#abc4ff']}
-              style={[styles.glossy2]}
-            />
-            <ScrollView
-              horizontal
-              pagingEnabled
-              scrollEventThrottle={16}
-              onScroll={event => {
-                const page = Math.round(
-                  event.nativeEvent.contentOffset.x /
-                    event.nativeEvent.layoutMeasurement.width,
-                );
-                setPage(page);
-              }}
-              showsHorizontalScrollIndicator={false}
-            >
-              {product.gallery.map((item, index) => (
-                <View style={styles.imageContainer} key={index + 'image'}>
-                  <Image style={styles.image} source={{ uri: item }} />
-                </View>
-              ))}
-            </ScrollView>
-            <ScrollView
-              contentContainerStyle={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                gap: 10,
-              }}
-            >
-              {product.gallery.map((_, index) => (
-                <View
-                  key={index + 'dot'}
-                  style={[
-                    styles.dot,
-                    index === page && {
-                      backgroundColor: colors.primary,
-                      width: 20,
-                    },
-                  ]}
-                />
-              ))}
-            </ScrollView>
-          </View>
-          <View style={styles.contentContainer}>
-            <Text style={styles.categoryText}>{product.category}</Text>
-            <Text style={styles.productName}>{product.name}</Text>
-            <Text style={styles.description}>
-              {product.description.slice(0, 200)}
-            </Text>
-          </View>
-          {reletedProducts.length > 0 && (
-            <ReletedProduct
-              products={reletedProducts || []}
-              setProductId={setProductId}
-              productId={productId}
-            />
-          )}
-        </ScrollView>
-        <View style={styles.bottomContainer}>
-          <View style={styles.priceContainer}>
-            <View style={{ flexDirection: 'row', gap: 10 }}>
-              <Text style={styles.priceText}>₹{product.sizes[0].price}</Text>
-              <Text style={styles.originalPriceText}>
-                ₹{product.sizes[0].original_price}
-              </Text>
-            </View>
-            <Text style={styles.weightText}>{product.sizes[0].label}</Text>
-          </View>
-          {product.sizes.length > 1 ? (
-            <TouchableOpacity
-              style={styles.addToCartBtnFull}
-              onPress={openBottomSheet}
-            >
-              <Text style={styles.addToCartText}>Add to Cart</Text>
-            </TouchableOpacity>
-          ) : (
-            <View
-              style={[
-                styles.addToCartBtn,
-                {
-                  backgroundColor: 'transparent',
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Layout>
+          <SecondaryHeader title="" />
+          <ScrollView
+            style={{ flex: 1 }}
+            contentContainerStyle={styles.container}
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.topView}>
+              <LinearGradient
+                colors={['#d9cbe6', '#d1b8d9']}
+                style={styles.glossy}
+              />
+              <LinearGradient
+                colors={['#c1d3fe', '#abc4ff']}
+                style={[styles.glossy2]}
+              />
+              <ScrollView
+                horizontal
+                pagingEnabled
+                scrollEventThrottle={16}
+                onScroll={event => {
+                  const page = Math.round(
+                    event.nativeEvent.contentOffset.x /
+                      event.nativeEvent.layoutMeasurement.width,
+                  );
+                  setPage(page);
+                }}
+                showsHorizontalScrollIndicator={false}
+              >
+                {product.gallery.map((item, index) => (
+                  <View style={styles.imageContainer} key={index + 'image'}>
+                    <Image style={styles.image} source={{ uri: item }} />
+                  </View>
+                ))}
+              </ScrollView>
+              <ScrollView
+                contentContainerStyle={{
                   flexDirection: 'row',
-                  gap: 5,
-                },
-              ]}
-            >
-              <TouchableOpacity
-                style={styles.btnContainer}
-                onPress={() => {
-                  removeFromCart({
-                    item: {
-                      id: product.id,
-                      size: product.sizes[0].label,
-                    },
-                  });
+                  justifyContent: 'center',
+                  gap: 10,
                 }}
               >
-                <Entypo name="minus" size={21} color="#fff" />
-              </TouchableOpacity>
-              <Text style={styles.quantityText}>
-                {getQuiantity({
-                  item: { id: product.id, size: product.sizes[0].label },
-                })}
-              </Text>
-              <TouchableOpacity
-                style={styles.btnContainer}
-                onPress={() => {
-                  addToCart({
-                    cart: {
-                      id: product.id,
-                      size: product.sizes[0].label,
-                    },
-                  });
-                }}
-              >
-                <Entypo name="plus" size={21} color="#fff" />
-              </TouchableOpacity>
+                {product.gallery.map((_, index) => (
+                  <View
+                    key={index + 'dot'}
+                    style={[
+                      styles.dot,
+                      index === page && {
+                        backgroundColor: colors.primary,
+                        width: 20,
+                      },
+                    ]}
+                  />
+                ))}
+              </ScrollView>
             </View>
-          )}
-        </View>
-      </Layout>
+            <View style={styles.contentContainer}>
+              <Text style={styles.categoryText}>{product.category}</Text>
+              <Text style={styles.productName}>{product.name}</Text>
+              <Text style={styles.description}>
+                {product.description.slice(0, 200)}
+              </Text>
+            </View>
+            {reletedProducts.length > 0 && (
+              <ReletedProduct
+                products={reletedProducts || []}
+                setProductId={setProductId}
+                productId={productId}
+              />
+            )}
+          </ScrollView>
+          <View style={styles.bottomContainer}>
+            <View style={styles.priceContainer}>
+              <View style={{ flexDirection: 'row', gap: 10 }}>
+                <Text style={styles.priceText}>₹{product.sizes[0].price}</Text>
+                <Text style={styles.originalPriceText}>
+                  ₹{product.sizes[0].original_price}
+                </Text>
+              </View>
+              <Text style={styles.weightText}>{product.sizes[0].label}</Text>
+            </View>
+            {product.sizes.length > 1 ? (
+              <TouchableOpacity
+                style={styles.addToCartBtnFull}
+                onPress={openBottomSheet}
+              >
+                <Text style={styles.addToCartText}>Add to Cart</Text>
+              </TouchableOpacity>
+            ) : (
+              <View
+                style={[
+                  styles.addToCartBtn,
+                  {
+                    backgroundColor: 'transparent',
+                    flexDirection: 'row',
+                    gap: 5,
+                  },
+                ]}
+              >
+                <TouchableOpacity
+                  style={styles.btnContainer}
+                  onPress={() => {
+                    removeFromCart({
+                      item: {
+                        id: product.id,
+                        size: product.sizes[0].label,
+                      },
+                    });
+                  }}
+                >
+                  <Entypo name="minus" size={21} color="#fff" />
+                </TouchableOpacity>
+                <Text style={styles.quantityText}>
+                  {getQuiantity({
+                    item: { id: product.id, size: product.sizes[0].label },
+                  })}
+                </Text>
+                <TouchableOpacity
+                  style={styles.btnContainer}
+                  onPress={() => {
+                    addToCart({
+                      cart: {
+                        id: product.id,
+                        size: product.sizes[0].label,
+                      },
+                    });
+                  }}
+                >
+                  <Entypo name="plus" size={21} color="#fff" />
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        </Layout>
+      )}
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
