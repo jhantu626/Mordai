@@ -11,9 +11,13 @@ const CartAdd = ({ product }) => {
   return (
     <View style={styles.sizeContainer}>
       <View style={styles.leftCOntainer}>
-        <Image style={styles.image} source={{uri: product.image}} />
+        <Image style={styles.image} source={{ uri: product.image }} />
         <View>
-          <Text style={styles.cartProductName}>{product.name}</Text>
+          <Text style={styles.cartProductName}>
+            {product.name.length > 15
+              ? product.name.slice(0, 18) + '...'
+              : product.name}
+          </Text>
           <Text style={styles.cartProductSize}>
             {product.size} {'\u2022'} ₹{product.price}
           </Text>
