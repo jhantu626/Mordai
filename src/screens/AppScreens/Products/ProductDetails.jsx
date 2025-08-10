@@ -144,7 +144,7 @@ const ProductDetails = () => {
                 }}
                 showsHorizontalScrollIndicator={false}
               >
-                {product.gallery.map((item, index) => (
+                {product?.gallery?.map((item, index) => (
                   <View style={styles.imageContainer} key={index + 'image'}>
                     <Image style={styles.image} source={{ uri: item }} />
                   </View>
@@ -172,10 +172,10 @@ const ProductDetails = () => {
               </ScrollView>
             </View>
             <View style={styles.contentContainer}>
-              <Text style={styles.categoryText}>{product.category}</Text>
-              <Text style={styles.productName}>{product.name}</Text>
+              <Text style={styles.categoryText}>{product?.category}</Text>
+              <Text style={styles.productName}>{product?.name}</Text>
               <Text style={styles.description}>
-                {product.description.slice(0, 200)}
+                {product?.description.slice(0, 200)}
               </Text>
             </View>
             {reletedProducts.length > 0 && (
@@ -189,14 +189,16 @@ const ProductDetails = () => {
           <View style={styles.bottomContainer}>
             <View style={styles.priceContainer}>
               <View style={{ flexDirection: 'row', gap: 10 }}>
-                <Text style={styles.priceText}>₹{product.sizes[0].price}</Text>
+                <Text style={styles.priceText}>
+                  ₹{product?.sizes[0]?.price}
+                </Text>
                 <Text style={styles.originalPriceText}>
                   ₹{product.sizes[0].original_price}
                 </Text>
               </View>
-              <Text style={styles.weightText}>{product.sizes[0].label}</Text>
+              <Text style={styles.weightText}>{product?.sizes[0]?.label}</Text>
             </View>
-            {product.sizes.length > 1 ? (
+            {product?.sizes.length > 1 ? (
               <TouchableOpacity
                 style={styles.addToCartBtnFull}
                 onPress={openBottomSheet}
@@ -219,8 +221,8 @@ const ProductDetails = () => {
                   onPress={() => {
                     removeFromCart({
                       item: {
-                        id: product.id,
-                        size: product.sizes[0].label,
+                        id: product?.id,
+                        size: product?.sizes[0]?.label,
                       },
                     });
                   }}
@@ -229,7 +231,7 @@ const ProductDetails = () => {
                 </TouchableOpacity>
                 <Text style={styles.quantityText}>
                   {getQuiantity({
-                    item: { id: product.id, size: product.sizes[0].label },
+                    item: { id: product?.id, size: product?.sizes[0].label },
                   })}
                 </Text>
                 <TouchableOpacity
@@ -237,8 +239,11 @@ const ProductDetails = () => {
                   onPress={() => {
                     addToCart({
                       cart: {
-                        id: product.id,
-                        size: product.sizes[0].label,
+                        id: product?.id,
+                        size: product?.sizes[0].label,
+                        image: product?.image,
+                        name: product?.name,
+                        price: product?.sizes[0].price,
                       },
                     });
                   }}
@@ -270,11 +275,11 @@ const ProductDetails = () => {
             renderItem={({ item }, index) => (
               <CartAdd
                 product={{
-                  id: product.id,
-                  name: product.name,
-                  image: product.image,
-                  price: item.price,
-                  size: item.label,
+                  id: product?.id,
+                  name: product?.name,
+                  image: product?.image,
+                  price: item?.price,
+                  size: item?.label,
                 }}
               />
             )}

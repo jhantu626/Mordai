@@ -11,15 +11,15 @@ const CartAdd = ({ product }) => {
   return (
     <View style={styles.sizeContainer}>
       <View style={styles.leftCOntainer}>
-        <Image style={styles.image} source={{ uri: product.image }} />
+        <Image style={styles.image} source={{ uri: product?.image }} />
         <View>
           <Text style={styles.cartProductName}>
-            {product.name.length > 15
-              ? product.name.slice(0, 18) + '...'
-              : product.name}
+            {product?.name?.length > 15
+              ? product?.name?.slice(0, 18) + '...'
+              : product?.name}
           </Text>
           <Text style={styles.cartProductSize}>
-            {product.size} {'\u2022'} ₹{product.price}
+            {product?.size} {'\u2022'} ₹{product?.price}
           </Text>
         </View>
       </View>
@@ -38,7 +38,7 @@ const CartAdd = ({ product }) => {
           <Entypo name="minus" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.quantityText}>
-          {getQuiantity({ item: { id: product.id, size: product.size } })}
+          {getQuiantity({ item: { id: product?.id, size: product?.size } })}
         </Text>
         <TouchableOpacity
           style={styles.btnContainer}
