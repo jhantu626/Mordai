@@ -27,7 +27,6 @@ import ProductCardShimmer from './Shimmers/ProductCardShimmer';
 import BannerCardShimmer from './Shimmers/BannerCardShimmer';
 import CategoryShimmer from './Shimmers/CategoryShimmer';
 import CategoryCardShimmer from './Shimmers/CategoryCardShimmer';
-import ProductDetailsShimmer from './Shimmers/ProductDetailsShimmer';
 
 // Loader
 import Loader from './Loader/Loader';
@@ -51,7 +50,6 @@ export {
   BannerCardShimmer,
   CategoryShimmer,
   CategoryCardShimmer,
-  ProductDetailsShimmer,
   Loader,
   ProfileCard,
   LabelInput,
