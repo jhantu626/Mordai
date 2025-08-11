@@ -205,7 +205,7 @@ const ProductDetails = () => {
               >
                 <Text style={styles.addToCartText}>Add to Cart</Text>
               </TouchableOpacity>
-            ) : (
+            ) : product?.sizes.length === 0 ?(<Text>Out of Stock</Text>): (
               <View
                 style={[
                   styles.addToCartBtn,
