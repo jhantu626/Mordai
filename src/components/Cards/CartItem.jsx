@@ -76,12 +76,12 @@ const styles = StyleSheet.create({
   },
   leftRightContainer: {},
   productName: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: fonts.medium,
     color: '#00000099',
   },
   weightText: {
-    fontSize: 14,
+    fontSize: 11,
     fontFamily: fonts.medium,
     color: '#00000080',
     marginTop: -3,
