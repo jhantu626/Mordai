@@ -236,8 +236,13 @@ const Checkout = () => {
                 style={styles.input}
                 placeholder="Phone Number *"
                 value={reciverPhone}
-                onChangeText={setReciverPhone}
+                onChangeText={text => {
+                  if (text.length >= 4) {
+                    setReciverPhone(text);
+                  }
+                }}
                 keyboardType="phone-pad"
+                maxLength={14}
               />
               <TextInput
                 style={styles.input}
@@ -402,7 +407,7 @@ const Checkout = () => {
           <View
             style={{
               gap: 10,
-              marginTop: 10
+              marginTop: 10,
             }}
           >
             {address.length > 0 ? (
