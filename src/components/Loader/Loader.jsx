@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { memo, useEffect, useMemo, useRef } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 
 const BAR_COUNT = 12;
 
-const Loader = () => {
+const Loader = memo(() => {
   const opacityValues = useRef(
-    Array.from({ length: BAR_COUNT }, () => new Animated.Value(0.25))
+    Array.from({ length: BAR_COUNT }, () => new Animated.Value(0.25)),
   ).current;
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const Loader = () => {
             duration: 700,
             useNativeDriver: true,
           }),
-        ])
+        ]),
       );
     });
 
@@ -39,10 +39,7 @@ const Loader = () => {
       <View style={styles.loader}>
         {opacityValues.map((opacity, index) => {
           const rotate = `${index * (360 / BAR_COUNT)}deg`;
-          const transform = [
-            { rotate },
-            { translateY: -13 },
-          ];
+          const transform = [{ rotate }, { translateY: -13 }];
 
           return (
             <Animated.View
@@ -60,7 +57,7 @@ const Loader = () => {
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

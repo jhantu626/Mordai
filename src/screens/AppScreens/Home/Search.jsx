@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import Layout from '../../Layout/Layout';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { fonts } from '../../../utils/fonts';
@@ -19,11 +19,13 @@ import {
   PopularProducts,
 } from '../../../components';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { flatten } from 'react-native/types_generated/Libraries/StyleSheet/StyleSheetExports';
 import { searchService } from '../../../services/SearchService';
 import { categoryService } from '../../../services/CategoryService';
+import { productService } from '../../../services/ProductService';
 
 const Search = () => {
+  const MemoizedExploreNewCategory = memo(ExploreNewCategory);
+  const MemoizedPopularProducts = memo(PopularProducts);
   const navigation = useNavigation();
 
   // STATE VARIABLES
@@ -32,6 +34,8 @@ const Search = () => {
   const [categories, setCategories] = useState([]);
   const [categoryLoading, setCategoryLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [isProductLoading, setIsProdutLoading] = useState(false);
 
   // REf Variables
   const inputRef = useRef(null);
@@ -77,9 +81,29 @@ const Search = () => {
       setCategoryLoading(false);
     }
   };
+  const fetchProducts = async () => {
+    try {
+      setIsProdutLoading(true);
+      const data = await productService.getProducts();
+      console.log(data);
+      if (data?.success) {
+        setProducts(data?.data);
+      } else {
+        setProducts([]);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsProdutLoading(false);
+    }
+  };
 
   useEffect(() => {
-    fetchCategories();
+    const fetchData = async () => {
+      await fetchProducts();
+      await fetchCategories();
+    };
+    fetchData();
   }, []);
 
   const handleProductPress = id => {
@@ -160,14 +184,15 @@ const Search = () => {
 
           {/* Categories */}
           <View>
-            <ExploreNewCategory
-              isLoading={categoryLoading}
-              categories={categories}
-            />
+            {/* <ExploreNewCategory categories={categories} /> */}
+            {categoryLoading && <Loader />}
+            <MemoizedExploreNewCategory categories={categories} />
           </View>
 
           <View style={{ marginTop: 0 }}>
-            <PopularProducts />
+            {/* <PopularProducts isLaoding={isProductLoading} products={products} /> */}
+            {isProductLoading && <Loader />}
+            <MemoizedPopularProducts isLaoding={isProductLoading} products={products} />
           </View>
         </ScrollView>
       </Layout>

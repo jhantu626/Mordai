@@ -1,42 +1,18 @@
 import {
-  Dimensions,
   FlatList,
   Image,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { fonts } from '../../utils/fonts';
 import LinearGradient from 'react-native-linear-gradient';
-import { product } from '../../utils/data';
-import { productService } from '../../services/ProductService';
 import { useNavigation } from '@react-navigation/native';
 
-const PopularProducts = () => {
+const PopularProducts = ({ products = [] }) => {
   const navigation = useNavigation();
-  const [products, setProducts] = useState([]);
-  const [isLaoding, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
-    try {
-      const data = await productService.getProducts();
-      console.log(data);
-      if (data?.success) {
-        setProducts(data?.data);
-      } else {
-        setProducts([]);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -74,6 +50,7 @@ const PopularProducts = () => {
             </View>
           );
         }}
+
       />
     </View>
   );

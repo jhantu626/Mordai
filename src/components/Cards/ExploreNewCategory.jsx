@@ -8,19 +8,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import React from 'react';
 import { fonts } from '../../utils/fonts';
 import { colors } from '../../utils/colors';
 import LinearGradient from 'react-native-linear-gradient';
-import axios from 'axios';
-import { categoryService } from '../../services/CategoryService';
 import CategoryCardShimmer from '../Shimmers/CategoryCardShimmer';
-import CategoryShimmer from '../Shimmers/CategoryShimmer';
 
 const { width } = Dimensions.get('window');
 
-const ExploreNewCategory = ({ isLoading = false, categories = [] }) => {
+const ExploreNewCategory = ({ categories = [] }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerText}>
@@ -36,39 +32,34 @@ const ExploreNewCategory = ({ isLoading = false, categories = [] }) => {
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ gap: 10, marginTop: 10 }}
-          data={isLoading ? [1, 2, 3, 4] : categories}
+          data={categories}
           keyExtractor={(_, index) => 'category-item-' + index}
-          scrollEnabled={!isLoading}
-          renderItem={({ item, index }) =>
-            isLoading ? (
-              <CategoryCardShimmer />
-            ) : (
-              <View key={index + 'category-item'}>
-                <LinearGradient
-                  colors={['#d9cbe6', '#d1b8d9']}
-                  //   colors={['#90EE90', '#73C973']}
-                  style={styles.imageCOntainer}
+          renderItem={({ item, index }) => (
+            <View key={index + 'category-item'}>
+              <LinearGradient
+                colors={['#d9cbe6', '#d1b8d9']}
+                //   colors={['#90EE90', '#73C973']}
+                style={styles.imageCOntainer}
+              >
+                <TouchableOpacity
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
                 >
-                  <TouchableOpacity
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Image
-                      style={styles.categoryImage}
-                      source={{ uri: item.image }}
-                    />
-                  </TouchableOpacity>
-                </LinearGradient>
-                <Text style={styles.text} numberOfLines={2}>
-                  {item.name}
-                </Text>
-              </View>
-            )
-          }
+                  <Image
+                    style={styles.categoryImage}
+                    source={{ uri: item.image }}
+                  />
+                </TouchableOpacity>
+              </LinearGradient>
+              <Text style={styles.text} numberOfLines={2}>
+                {item.name}
+              </Text>
+            </View>
+          )}
         />
       </View>
     </View>
