@@ -3,14 +3,14 @@ import React from 'react';
 import { fonts } from '../../utils/fonts';
 import { colors } from '../../utils/colors';
 
-const EmptyShopping = () => {
+const EmptyShopping = ({title="Time to search some items!"}) => {
   return (
     <View style={styles.container}>
       <Image
         style={styles.image}
         source={require('./../../../assets/images/shoppingbag.png')}
       />
-      <Text style={styles.titleText}>Time to search some items!</Text>
+      <Text style={styles.titleText}>{title}</Text>
       <Text style={styles.subTitleText}>
         Enjoy searching for the best deals
       </Text>
