@@ -51,7 +51,7 @@ const App = () => {
   const HomeStack = () => {
     return (
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Search"
         screenOptions={{ headerShown: false, animation: 'slide_from_bottom' }}
       >
         <Stack.Screen name="Home" component={Home} />

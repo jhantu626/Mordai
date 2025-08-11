@@ -29,6 +29,8 @@ const Search = () => {
   // STATE VARIABLES
   const [query, setQuery] = useState('');
   const [searchProducts, setSearchProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [categoryLoading, setCategoryLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   // REf Variables
@@ -62,6 +64,23 @@ const Search = () => {
       setIsLoading(false);
     }
   };
+
+  const fetchCategories = async () => {
+    try {
+      setCategoryLoading(true);
+      const data = await categoryService.getCategories();
+      console.log('categoris', data);
+      setCategories(data?.category || []);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setCategoryLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const handleProductPress = id => {
     navigation.navigate('ProductDetails', { id: id });
@@ -141,7 +160,10 @@ const Search = () => {
 
           {/* Categories */}
           <View>
-            <ExploreNewCategory />
+            <ExploreNewCategory
+              isLoading={categoryLoading}
+              categories={categories}
+            />
           </View>
 
           <View style={{ marginTop: 0 }}>

@@ -1,5 +1,6 @@
 import {
   Dimensions,
+  FlatList,
   Image,
   ScrollView,
   StyleSheet,
@@ -7,43 +8,73 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { fonts } from '../../utils/fonts';
 import LinearGradient from 'react-native-linear-gradient';
 import { product } from '../../utils/data';
+import { productService } from '../../services/ProductService';
+import { useNavigation } from '@react-navigation/native';
 
 const PopularProducts = () => {
+  const navigation = useNavigation();
+  const [products, setProducts] = useState([]);
+  const [isLaoding, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const data = await productService.getProducts();
+      console.log(data);
+      if (data?.success) {
+        setProducts(data?.data);
+      } else {
+        setProducts([]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>Popular Products✨</Text>
-      <ScrollView
+      <FlatList
         contentContainerStyle={styles.contentContainerStyle}
         horizontal
         showsHorizontalScrollIndicator={false}
-      >
-        {product.map((item, index) => (
-          <View key={index + 'popular-product'} style={styles.innerContainer}>
-            <LinearGradient
-              colors={['#d9cbe6', '#d1b8d9']}
-              style={styles.imageCOntainer}
-            >
-              <TouchableOpacity
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
+        data={products}
+        keyExtractor={(_, index) => index + 'popular-product'}
+        renderItem={({ item }, index) => {
+          return (
+            <View key={index + 'popular-product'} style={styles.innerContainer}>
+              <LinearGradient
+                colors={['#d9cbe6', '#d1b8d9']}
+                style={styles.imageCOntainer}
               >
-                <Image style={styles.image} source={item.image} />
-              </TouchableOpacity>
-            </LinearGradient>
-            <Text style={styles.text} numberOfLines={2}>
-              {item.name}
-            </Text>
-          </View>
-        ))}
-      </ScrollView>
+                <TouchableOpacity
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  onPress={() =>
+                    navigation.navigate('ProductDetails', { id: item.id })
+                  }
+                >
+                  <Image style={styles.image} source={{ uri: item.image }} />
+                </TouchableOpacity>
+              </LinearGradient>
+              <Text style={styles.text} numberOfLines={2}>
+                {item.name}
+              </Text>
+            </View>
+          );
+        }}
+      />
     </View>
   );
 };

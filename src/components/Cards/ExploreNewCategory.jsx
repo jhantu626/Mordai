@@ -20,27 +20,7 @@ import CategoryShimmer from '../Shimmers/CategoryShimmer';
 
 const { width } = Dimensions.get('window');
 
-const ExploreNewCategory = () => {
-  const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetchCategories = async () => {
-    try {
-      setIsLoading(true);
-      const data = await categoryService.getCategories();
-      console.log('categoris', data);
-      setCategories(data.success ? data?.category : []);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
+const ExploreNewCategory = ({ isLoading = false, categories = [] }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerText}>
